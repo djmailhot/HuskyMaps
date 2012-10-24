@@ -1,0 +1,5 @@
+<project name = "ps3" basedir = "../">
+  <property name = "psetname" value = "${ant.project.name}"/>
+  <property name = "pset" location = "${psetname}"/>
+  <import file="${basedir}/common.xml"/>
+</project>

@@ -1,0 +1,10 @@
+
+Collaboration
+
+Chris L.  - general symbiotic morale boosting
+Matt - deep discussion of data representation in NumberSet
+Jared - general symbiotic morale boosting
+Lilana - general symbiotic morale boosting
+Kirsten - general symbiotic morale boosting
+
+Some random dude teaching me about data structures and range compression in NumberSet, constructed stress tests with him

@@ -1,0 +1,26 @@
+
+a.
+Design = 7 hours;
+Implementation = 16 hours;
+Testing = 8 hours;
+
+b.
+I could have optimized my testing strategy.  I spent an inordinate amount of time testing things that were pretty pointless.
+Also, I spent a surprising amount of time modularizing my DirectionsFinder.  This was quite unneccessary to my completion of the problem set (put it was fun to think about)
+
+c.
+If you look at the revision history, you'll notice my previous version notes very candidly:
+"No complaints here"
+
+I would like to retract this comment and add a new one that is exactly contrary.  I used the database information file segments.txt to produce my test cases.  This file is formatted thus:
+Seven Eagles Way	(48.041472,-122.539835)	(48.042119,-122.542421)	0.1	98249	98253	1301-1399	1300-1398
+
+As you may notice, this contains all needed information about the segment... except for one thing:  whether the street has increasing addresses or decreasing addresses.  Natually, being uninformed and ignorant of the consequences of misinterpreting this property of these streets, I assumed that the addresses were increasing on all streets lists in segments.txt.  Because there was no indication that it could be otherwise, I proceeded to write 5 hours of black box tests that relied on this assumption (testing the case of same-street directions.  For the street above, if start = 1301 (left side) and end = 1310 (right side), the database information above suggests that you must "turn left from start" and that "end is on your right".  This is opposite the result that the true data of the database produces).  I then proceeded to design my implementation of DirectionsFinder to fullfill these fundamentally-flawed test cases.  
+
+It was only 4 hours before my deadline that I directly consulted with classmates on the matter, which is when I finally realized my mistake.  In the resulting scramble and commotion, OF COURSE I DIDN'T FINISH ON TIME.
+
+So, relating to this comment c. :  I just wish that you provided database information to us in a way that did not allow the possiblity for us to produce invalid test cases.  (I also wish creating our own custom database was easier!  I never got mine to work)
+
+
+d.
+That I didn't implement Hash datasets in ALL areas that I could.  For instance, in my PathFinder I was searching through the priority queue for duplicates, which turned out to be 100x times more cumbersome than seraching a hashset of elements of the qriority queue.

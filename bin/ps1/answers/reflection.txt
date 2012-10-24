@@ -1,0 +1,19 @@
+a.
+pb0 = 3h
+pb1 = 2h
+pb2 = 4h
+pb3 = 11h 
+pb4 = 1h
+pb5 = 0h
+pb6 = 0h
+
+b.
+I could have made better use of debugging resources.  Additionally, actively seeking out collaboration partners would have been pretty useful.
+
+c.
+I don't know if the staff could have done anything.  Many many many of hte problems encountered arose just from the nature of the work:  coding implementations for rather extensively un-implemented classes.  The Junit test codes were immeasurably useful.
+
+You could consider decreasing the coding responsibility substancially with the tradeoff of not providing such extensive testing codes (i.s. we learn to teast our own code, though that may be frustrating for us.)
+
+d.
+I wish i'd known how useful the debugger and collaboration would be to my success.

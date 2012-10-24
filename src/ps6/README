@@ -1,0 +1,86 @@
+
+#############################################################################################
+
+                              HUSKYYYYYYYYY MAPSSSSSSSSSSSSSSSSSSSs
+
+#############################################################################################
+as specified in CSE331 Fall 2010
+
+
+
+######## FILE LIST
+
+ps6/DirectionsFinder.java
+ps6/GraphGenerator.java
+ps6/PathDirections.java
+ps6/TextUI.java
+ps6/test/ValidateQueries.java
+ps6/test/PathFindingQueries.java
+
+
+######### FILE DESCRIPTIONS
+
+>>>> ps6/DirectionsFinder.java
+Handles the tasks of:
+Tiger Database  =  reads street segments off of a tiger database and constructs collections of all segments represented by this DirectionsFinder
+Graph construction  =  calls GraphGenerator.java
+PathFinding  =  preparations to prepare for ps3.graph.PathFinder
+Directions  =  production of total list of directions contained in PathDirections object
+
+
+
+>>>> ps6/GraphGenerator.java
+	A GraphGenerator is a factory class to produce a Graph of GeoSegments of a geographic area.  Geographic information is obtained from a valid Tiger Database Directory, a directory of geographical street and address information.
+
+
+
+>>>> ps6/PathDirections.java
+	Simple data object that holds the exact directions to follow from one address to another.  It does absolutely no processing of input.  Simply a data-holding container
+
+
+
+>>>> ps6/TextUI.java
+	The root class that handles all operation of HuskyMaps.  Handles a user interaction loop and controls supporting class in the search for shortest-path directions.
+
+
+
+>>>> ps6/test/ValidateQueries.java
+	I modified the invalid-address checks to test more specific cases (ex. start address wrong VS desitnation address wrong).  Test collections:
+"allQueries"
+"sameQueries"
+"badQueries"
+
+
+
+>>>> ps6/test/PathFindingQueries.java
+	Exactly like ValidateQueries.java.  Contains test cases for same street segments as well as tests on the medium database.  Test collections:
+"allQueries"       ( doesn't contain tests of pathFindingStressQueries below)
+"sameStreetQueries"
+"medDBQueries"
+"pathFindingStressQueries"     ( Note, may take an impractical amount of time for some implementations, especially relying on the optimization of ps3.graph.PathFinder )
+
+
+
+
+
+
+############## TESTING STRATEGY
+
+For my testing, I almost entirely focused on the case of same street segments.  I found a really indicative segment for the correct handling of this test case:
+in TINY
+Graham Dr	(48.159175,-122.4857)	(48.159312,-122.48959)	0.2	98282	98292	1300-1398	77-1399
+
+segment looks like:
+left   
+1300                       1398
+p1___________________________p2
+77                   1301  1399
+right
+
+Are people able to distribute thier addresses correctly?  I thought I might have got this test case wrong, and furiously went through my code in the last few hours before the deadline, but, alas, I am at a loss as to if my teats were correct for this street 
+
+REFLECTION
+Something that REALLY threw me was there is no telling if the addresses are increasing or decreasing from the database info of segments.txt.  I was very VERY frusterated with this, and contributed to my wasting of an inordinate amount of time trying to figure out my problems.
+
+
+Additionally, stress tests on the medium database allowed me to optimize my performace.  A really interesting performance gain came about when I examined my PathFinder.  In checking for active path duplicates, calling PriorityQueue.contains() takes a magnitude 100x longer than HashSet.contains().  Therefore, I made a shadowing HashSet that always contained each and every element of the PriorityQueue.  For the test case 'testKingNorthEdgeToSouthEdge' in PathFindingQueries.java, this meant a performace gain of 360s calculaton time down to 8s calculation time.

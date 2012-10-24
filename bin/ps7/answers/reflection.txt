@@ -1,0 +1,19 @@
+
+
+a.
+GUI interface:  20 hours
+Extra Features:  15 hours
+Documentation:  7 hours
+PathfindingOptimization:  5 hours
+
+
+b.
+I could've not gotten so sucked into perfecting my GUI.  Its pretty damn slick, but at the cost of at least 5 hours.
+
+
+c.
+The staff could definitely provided support on GUI programming basics.  Figuring it all out on our own was doable, but wasn't so enjoyable with deadlines looming.
+
+
+d.
+I wish I'd known how SWEET the project would turn out!  HOT DAMN I love my HuskyMaps!

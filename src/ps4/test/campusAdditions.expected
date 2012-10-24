@@ -1,0 +1,385 @@
+# Build a map of UW and test a few queries
+# Staff version number: $Revision: 1.1 $
+
+created graph campus
+
+# Create the nodes of the graph, which are GeoSegments.  For
+# two-way streets, each segment and its reverse are added, since
+# travel can occur in two directions.
+
+created node MemDrive0: 42361797 -71079295 42360097 -71083996 Memorial_Dr
+added node MemDrive0 to campus
+
+created node Mason0: 47652310 -122306179 47651406 -122304730 Mason_Rd
+added node Mason0 to campus
+created node Mason0rev: 47651406 -122304730 47652310 -122306179 Mason_Rd
+added node Mason0rev to campus
+created node Mason1: 47651406 -122304730 47658135 -122302682 Mason_Rd
+added node Mason1 to campus
+created node Mason1rev: 47658135 -122302682 47651406 -122304730 Mason_Rd
+added node Mason1rev to campus
+created node Stevens0: 47659746 -122309623 47658980 -122306351 Stevens_Way
+added node Stevens0 to campus
+created node Stevens0rev: 47658980 -122306351 47659746 -122309623 Stevens_Way
+added node Stevens0rev to campus
+created node Stevens1: 47658980 -122306351 47658005 -122304989 Stevens_Way
+added node Stevens1 to campus
+created node Stevens1rev: 47658005 -122304989 47658980 -122306351 Stevens_Way
+added node Stevens1rev to campus
+created node Stevens2: 47658005 -122304989 47657838 -122304495 Stevens_Way
+added node Stevens2 to campus
+created node Stevens2rev: 47657838 -122304495 47658005 -122304989 Stevens_Way
+added node Stevens2rev to campus
+created node Stevens3: 47657838 -122304495 47657296 -122304645 Stevens_Way
+added node Stevens3 to campus
+created node Stevens3rev: 47657296 -122304645 47657838 -122304495 Stevens_Way
+added node Stevens3rev to campus
+created node Stevens4: 47657296 -122304645 47653567 -122305149 Stevens_Way
+added node Stevens4 to campus
+created node Stevens4rev: 47653567 -122305149 47657296 -122304645 Stevens_Way
+added node Stevens4rev to campus
+created node Stevens5: 47653567 -122305149 47652310 -122306179 Stevens_Way
+added node Stevens5 to campus
+created node Stevens5rev: 47652310 -122306179 47653567 -122305149 Stevens_Way
+added node Stevens5rev to campus
+created node Stevens6: 47652310 -122306179 47652050 -122308583 Stevens_Way
+added node Stevens6 to campus
+created node Stevens6rev: 47652050 -122308583 47652310 -122306179 Stevens_Way
+added node Stevens6rev to campus
+created node Stevens7: 47652050 -122308583 47653047 -122310385 Stevens_Way
+added node Stevens7 to campus
+created node Stevens7rev: 47653047 -122310385 47652050 -122308583 Stevens_Way
+added node Stevens7rev to campus
+created node Stevens8: 47653047 -122310385 47654052 -122310342 Stevens_Way
+added node Stevens8 to campus
+created node Stevens8rev: 47654052 -122310342 47653047 -122310385 Stevens_Way
+added node Stevens8rev to campus
+created node Stevens9: 47654052 -122310342 47654962 -122310383 Stevens_Way
+added node Stevens9 to campus
+created node Stevens9rev: 47654962 -122310383 47654052 -122310342 Stevens_Way
+added node Stevens9rev to campus
+created node Okanogan0: 47652050 -122308583 47654052 -122310342 Okanogan_Ln
+added node Okanogan0 to campus
+# No Okanogan0rev, because Okanogan Lane is one-way.
+created node Benton0: 47655377 -122307733 47653567 -122305149 Benton_Ln
+added node Benton0 to campus
+created node Benton0rev: 47653567 -122305149 47655377 -122307733 Benton_Ln
+added node Benton0rev to campus
+created node GeoWash0: 47655273 -122311394 47657000 -122311231 George_Washington_Ln
+added node GeoWash0 to campus
+created node GeoWash0rev: 47657000 -122311231 47655273 -122311394 George_Washington_Ln
+added node GeoWash0rev to campus
+created node GeoWash1: 47657000 -122311231 47657361 -122309688 George_Washington_Ln
+added node GeoWash1 to campus
+created node GeoWash1rev: 47657361 -122309688 47657000 -122311231 George_Washington_Ln
+added node GeoWash1rev to campus
+created node Spokane0: 47657361 -122309688 47656971 -122309023 Spokane_Ln
+added node Spokane0 to campus
+created node Spokane0rev: 47656971 -122309023 47657361 -122309688 Spokane_Ln
+added node Spokane0rev to campus
+created node Spokane1: 47656971 -122309023 47656025 -122307478 Spokane_Ln
+added node Spokane1 to campus
+created node Spokane1rev: 47656025 -122307478 47656971 -122309023 Spokane_Ln
+added node Spokane1rev to campus
+created node Skagit0: 47656025 -122307478 47658005 -122304989 Skagit_Ln
+added node Skagit0 to campus
+created node Skagit0rev: 47658005 -122304989 47656025 -122307478 Skagit_Ln
+added node Skagit0rev to campus
+created node PendOreille0: 47657296 -122304645 47658135 -122302682 Pend_Oreille_Rd
+added node PendOreille0 to campus
+created node PendOreille0rev: 47658135 -122302682 47657296 -122304645 Pend_Oreille_Rd
+added node PendOreille0rev to campus
+created node PendOreille1: 47658135 -122302682 47660519 -122300888 Pend_Oreille_Rd
+added node PendOreille1 to campus
+created node PendOreille1rev: 47660519 -122300888 47658135 -122302682 Pend_Oreille_Rd
+added node PendOreille1rev to campus
+created node Whitman0: 47657838 -122304495 47660122 -122304924 Whitman_Ct
+added node Whitman0 to campus
+created node Whitman0rev: 47660122 -122304924 47657838 -122304495 Whitman_Ct
+added node Whitman0rev to campus
+created node Memorial0: 47657361 -122309688 47659746 -122309623 Memorial_Way
+added node Memorial0 to campus
+created node Memorial0rev: 47659746 -122309623 47657361 -122309688 Memorial_Way
+added node Memorial0rev to campus
+created node Memorial1: 47659746 -122309623 47661249 -122309602 Memorial_Way
+added node Memorial1 to campus
+created node Memorial1rev: 47661249 -122309602 47659746 -122309623 Memorial_Way
+added node Memorial1rev to campus
+created node 45th0: 47661259 -122311935 47661249 -122309602 NE_45th_St
+added node 45th0 to campus
+created node 45th0rev: 47661249 -122309602 47661259 -122311935 NE_45th_St
+added node 45th0rev to campus
+created node 15th0: 47661259 -122311935 47659788 -122311972 15th_Ave_NE
+added node 15th0 to campus
+created node 15th0rev: 47659788 -122311972 47661259 -122311935 15th_Ave_NE
+added node 15th0rev to campus
+created node 15th1: 47659788 -122311972 47658286 -122312016 15th_Ave_NE
+added node 15th1 to campus
+created node 15th1rev: 47658286 -122312016 47659788 -122311972 15th_Ave_NE
+added node 15th1rev to campus
+created node 15th2: 47658286 -122312016 47656841 -122312059 15th_Ave_NE
+added node 15th2 to campus
+created node 15th2rev: 47656841 -122312059 47658286 -122312016 15th_Ave_NE
+added node 15th2rev to campus
+created node 15th3: 47656841 -122312059 47656126 -122312080 15th_Ave_NE
+added node 15th3 to campus
+created node 15th3rev: 47656126 -122312080 47656841 -122312059 15th_Ave_NE
+added node 15th3rev to campus
+created node 15th4: 47656126 -122312080 47655345 -122312059 15th_Ave_NE
+added node 15th4 to campus
+created node 15th4rev: 47655345 -122312059 47656126 -122312080 15th_Ave_NE
+added node 15th4rev to campus
+created node Grant0: 47655345 -122312059 47655273 -122311394 Grant_Ln
+added node Grant0 to campus
+created node Grant0rev: 47655273 -122311394 47655345 -122312059 Grant_Ln
+added node Grant0rev to campus
+created node Grant1: 47655273 -122311394 47654962 -122310383 Grant_Ln
+added node Grant1 to campus
+created node Grant1rev: 47654962 -122310383 47655273 -122311394 Grant_Ln
+added node Grant1rev to campus
+created node Grant2: 47654962 -122310383 47655377 -122307733 Grant_Ln
+added node Grant2 to campus
+created node Grant2rev: 47655377 -122307733 47654962 -122310383 Grant_Ln
+added node Grant2rev to campus
+created node Chelan0: 47656971 -122309023 47658980 -122306351 Chelan_Ln
+added node Chelan0 to campus
+created node Chelan0rev: 47658980 -122306351 47656971 -122309023 Chelan_Ln
+added node Chelan0rev to campus
+created node Heaven: 47653031 -122305791 47653139 -122306086 Heaven
+added node Heaven to campus
+
+
+# Add the edges to the graph.  Each edge represents an allowed turn
+# from one street to another.
+
+added edge from Stevens6 to Okanogan0 in campus
+added edge from Stevens7rev to Okanogan0 in campus
+added edge from Stevens6 to Stevens7 in campus
+added edge from Stevens7rev to Stevens6rev in campus
+
+added edge from Stevens5 to Mason0 in campus
+added edge from Stevens5 to Stevens6 in campus
+added edge from Stevens6rev to Mason0 in campus
+added edge from Stevens6rev to Stevens5rev in campus
+added edge from Mason0rev to Stevens6 in campus
+added edge from Mason0rev to Stevens5rev in campus
+
+added edge from Mason0 to Mason1 in campus
+added edge from Mason1rev to Mason0rev in campus
+
+added edge from Stevens7 to Stevens8 in campus
+added edge from Stevens8rev to Stevens7rev in campus
+
+added edge from Stevens4 to Stevens5 in campus
+added edge from Stevens4 to Benton0rev in campus
+added edge from Stevens5rev to Stevens4rev in campus
+added edge from Stevens5rev to Benton0rev in campus
+added edge from Benton0 to Stevens5 in campus
+added edge from Benton0 to Stevens4rev in campus
+
+added edge from Stevens8 to Stevens9 in campus
+added edge from Stevens9rev to Stevens8rev in campus
+added edge from Okanogan0 to Stevens9 in campus
+added edge from Okanogan0 to Stevens8rev in campus
+
+added edge from Grant2 to Benton0 in campus
+added edge from Benton0rev to Grant2rev in campus
+
+# U-turns are possible at Johnson Circle
+added edge from Grant1 to Grant1rev in campus
+added edge from Grant1 to Grant2 in campus
+added edge from Grant2rev to Grant2 in campus
+added edge from Grant2rev to Grant1rev in campus
+added edge from Grant1 to Stevens9rev in campus
+added edge from Grant2rev to Stevens9rev in campus
+added edge from Stevens9 to Stevens9rev in campus
+added edge from Stevens9 to Grant1rev in campus
+added edge from Stevens9 to Grant2 in campus
+
+added edge from GeoWash0 to GeoWash1 in campus
+added edge from GeoWash1rev to GeoWash0rev in campus
+
+added edge from Grant0 to GeoWash0 in campus
+added edge from Grant0 to Grant1 in campus
+added edge from Grant1rev to GeoWash0 in campus
+added edge from Grant1rev to Grant0rev in campus
+added edge from GeoWash0rev to Grant1 in campus
+added edge from GeoWash0rev to Grant0rev in campus
+
+added edge from 45th0rev to 15th0 in campus
+added edge from 15th0rev to 45th0 in campus
+added edge from 15th0 to 15th1 in campus
+added edge from 15th1rev to 15th0rev in campus
+added edge from 15th1 to 15th2 in campus
+added edge from 15th2rev to 15th1rev in campus
+added edge from 15th2 to 15th3 in campus
+added edge from 15th3rev to 15th2rev in campus
+added edge from 15th3 to 15th4 in campus
+added edge from 15th4rev to 15th3rev in campus
+added edge from 15th4 to Grant0 in campus
+added edge from Grant0rev to 15th4rev in campus
+
+added edge from Spokane1 to Skagit0 in campus
+added edge from Skagit0rev to Spokane1rev in campus
+
+added edge from Spokane0 to Spokane1 in campus
+added edge from Spokane0 to Chelan0 in campus
+added edge from Spokane1rev to Spokane0rev in campus
+added edge from Spokane1rev to Chelan0 in campus
+added edge from Chelan0rev to Spokane1 in campus
+added edge from Chelan0rev to Spokane0rev in campus
+
+added edge from Stevens3 to Stevens4 in campus
+added edge from Stevens3 to PendOreille0 in campus
+added edge from Stevens4rev to Stevens3rev in campus
+added edge from Stevens4rev to PendOreille0 in campus
+added edge from PendOreille0rev to Stevens4 in campus
+added edge from PendOreille0rev to Stevens3rev in campus
+
+# U-turns are possible at the War Memorial
+added edge from Spokane0rev to Spokane0 in campus
+added edge from Spokane0rev to Memorial0 in campus
+added edge from Spokane0rev to GeoWash1rev in campus
+added edge from Memorial0rev to Spokane0 in campus
+added edge from Memorial0rev to Memorial0 in campus
+added edge from Memorial0rev to GeoWash1rev in campus
+added edge from GeoWash1 to Spokane0 in campus
+added edge from GeoWash1 to Memorial0 in campus
+added edge from GeoWash1 to GeoWash1rev in campus
+
+added edge from Stevens2 to Whitman0 in campus
+added edge from Stevens2 to Stevens3 in campus
+added edge from Stevens3rev to Whitman0 in campus
+added edge from Stevens3rev to Stevens2rev in campus
+added edge from Whitman0rev to Stevens3 in campus
+added edge from Whitman0rev to Stevens2rev in campus
+
+added edge from Whitman0 to Whitman0rev in campus
+
+added edge from PendOreille0 to PendOreille1 in campus
+added edge from PendOreille0 to Mason1rev in campus
+added edge from Mason1 to PendOreille1 in campus
+added edge from Mason1 to PendOreille0rev in campus
+added edge from PendOreille1rev to Mason1rev in campus
+added edge from PendOreille1rev to PendOreille0rev in campus
+
+added edge from PendOreille1 to PendOreille1rev in campus
+
+added edge from 45th0 to Memorial1rev in campus
+added edge from Memorial1 to 45th0rev in campus
+added edge from Memorial1 to Memorial1rev in campus
+
+added edge from Memorial1rev to Memorial1 in campus
+added edge from Memorial1rev to Memorial0rev in campus
+added edge from Memorial1rev to Stevens0 in campus
+added edge from Memorial0 to Memorial1 in campus
+added edge from Memorial0 to Stevens0 in campus
+added edge from Stevens0rev to Memorial1 in campus
+added edge from Stevens0rev to Memorial0rev in campus
+
+added edge from Stevens0 to Stevens1 in campus
+added edge from Stevens0 to Chelan0rev in campus
+added edge from Stevens1rev to Stevens0rev in campus
+added edge from Stevens1rev to Chelan0rev in campus
+added edge from Chelan0 to Stevens1 in campus
+added edge from Chelan0 to Stevens0rev in campus
+
+added edge from Stevens1 to Stevens2 in campus
+added edge from Stevens1 to Skagit0rev in campus
+added edge from Stevens2rev to Stevens1rev in campus
+added edge from Stevens2rev to Skagit0rev in campus
+added edge from Skagit0 to Stevens2 in campus
+added edge from Skagit0 to Stevens1rev in campus
+
+added edge from Stevens2 to Stevens3 in campus
+added edge from Stevens2 to Whitman0 in campus
+added edge from Stevens3rev to Stevens2rev in campus
+added edge from Stevens3rev to Whitman0 in campus
+added edge from Whitman0rev to Stevens3 in campus
+added edge from Whitman0rev to Stevens2rev in campus
+
+# Benton0 -> Stevens5
+shortest path in campus:
+Turn sharp right onto Benton_Ln and go 0.2 miles.
+Turn right onto Stevens_Way and go 0.1 miles.
+
+# Memorial0rev -> Skagit0
+shortest path in campus:
+Turn sharp left onto Memorial_Way and go 0.2 miles.
+Turn slight left onto Spokane_Ln and go 0.1 miles.
+Turn left onto Skagit_Ln and go 0.2 miles.
+
+# The shorter path has more segments
+# 45th0rev -> Grant0
+shortest path in campus:
+Turn left onto NE_45th_St and go 0.1 miles.
+Turn left onto 15th_Ave_NE and go 0.4 miles.
+Turn left onto Grant_Ln and go 0.0 miles.
+
+# Reversed path is different than forward path, due to one-way street
+# Stevens6 -> Stevens9
+shortest path in campus:
+Turn left onto Stevens_Way and go 0.1 miles.
+Turn right onto Okanogan_Ln and go 0.2 miles.
+Turn slight right onto Stevens_Way and go 0.1 miles.
+
+# Stevens9rev -> Stevens6rev
+shortest path in campus:
+Turn sharp right onto Stevens_Way and go 0.4 miles.
+
+# Different paths depending on final orientation
+# PendOreille1rev -> Mason0
+shortest path in campus:
+Turn sharp left onto Pend_Oreille_Rd and go 0.3 miles.
+Turn slight left onto Stevens_Way and go 0.4 miles.
+Turn left onto Mason_Rd and go 0.1 miles.
+
+# PendOreille1rev -> Mason0rev
+shortest path in campus:
+Turn sharp left onto Pend_Oreille_Rd and go 0.2 miles.
+Turn slight left onto Mason_Rd and go 0.6 miles.
+
+# PendOreille1rev -> Mason0
+shortest path in campus:
+Turn sharp left onto Pend_Oreille_Rd and go 0.3 miles.
+Turn slight left onto Stevens_Way and go 0.4 miles.
+Turn left onto Mason_Rd and go 0.1 miles.
+
+# Two paths of similar length exist
+# Spokane0 -> Stevens2
+shortest path in campus:
+Turn sharp right onto Spokane_Ln and go 0.1 miles.
+Turn left onto Skagit_Ln and go 0.2 miles.
+Turn right onto Stevens_Way and go 0.0 miles.
+
+# Unreachable
+# Stevens5 -> Heaven
+shortest path in campus: no path found
+
+
+
+
+
+
+
+# APPENDED
+# Additional test cases covering ground not touched on above
+
+
+# Discrepancies with similar start and end points
+shortest path in campus:
+Turn sharp right onto Spokane_Ln and go 0.1 miles.
+Turn left onto Skagit_Ln and go 0.2 miles.
+Turn left onto Stevens_Way and go 0.1 miles.
+shortest path in campus:
+Turn sharp left onto Memorial_Way and go 0.2 miles.
+Turn slight left onto Spokane_Ln and go 0.1 miles.
+Turn left onto Skagit_Ln and go 0.2 miles.
+shortest path in campus:
+Turn sharp left onto Memorial_Way and go 0.2 miles.
+Turn slight left onto Spokane_Ln and go 0.1 miles.
+Turn left onto Skagit_Ln and go 0.2 miles.
+shortest path in campus:
+Turn slight left onto Spokane_Ln and go 0.1 miles.
+Turn slight right onto Memorial_Way and go 0.2 miles.
+Turn right onto Stevens_Way and go 0.2 miles.

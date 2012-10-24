@@ -1,0 +1,15 @@
+# Basic functionality test.  Tests implementation of 
+# accessing nodes and children
+
+CreateGraph X
+CreateNode n1 7
+CreateNode n2 2
+ListNodes X
+AddNode X n1
+AddNode X n2
+ListNodes X
+AddEdge X n1 n2
+
+ListNodes X
+ListChildren X n1
+ListChildren X n2

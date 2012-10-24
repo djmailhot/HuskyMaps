@@ -1,0 +1,18 @@
+
+
+
+CreateGraph - create a new graph
+If the graph already exists, the output of this command is not defined. 
+
+AddNode - add a specified node to the specified graph
+If the node is already in the graph, the output of this command is not defined. 
+
+AddEdge - add an edge from the specified parent node to the specified child node in the specified graph
+If the edge already exists, the output of this command is not defined. 
+
+ListNodes - outputs a list of all nodes in the specified graph
+
+
+ListChildren - lists all the childeren of the specified node in the specified graph
+
+

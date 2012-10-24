@@ -1,0 +1,23 @@
+
+a.  
+Ball.java has a single global variable and two methods:  a double recording the volume of the ball, a constructor, and a 'getVolume()' method.  This last method is specified to return the volume of the ball.  However, it's return statement is coded to always return 0.  Additionally, the constructor takes one parameter, a specified double 'volume' of the ball.  However, it uses the line "volume = volume;" to record this passed value over the global variable 'volume'.  There is no distinction between the passed parameter 'volume' and the global variable 'volume'.
+To fix these issues, first the return statement in 'getVolume()' should return the global variable 'volume':  "return volume;".  Second, the constructor should specify 'volume' variables with 'this.~':  "this.volume = volume;"
+
+
+b.  
+At first glance, the use of a private variable to keep track of the total volume is very appealing.  It uses much less system computation to keep track of the volume, which is always a great benefit.  Only a few lines of additional code needs to be used to keep such a variable up to date.
+
+However, a fellow student had thought about this as well and arrived at a different conclusion.  The reasoning in favor of an updated variable is based on the current functionality and behavior of the BallContainer and Ball classes.  This student surmised that there was a logical expansion of the Ball class that would turn the tables.  He reasoned that once a method to manually change a Ball object's volume was added to the Ball class, the constant updating of a volume variable in BallContainer would become highly unreliable.  He described his method in the name of limiting the number of faulty assumptions later programmers can make about the dependencies between classes.
+
+I soundly understand this student's reasoning.  It's kept me rather more weary of declaring a superior method between the two choices of implementing 'getVolume()'.  Based on the descriptions of the methods in the hand out, I have opted to arbitrarily select a solution.  As I understand it, iterators are less (if slightly) resource intensive than for-loops.  Thus, my 'getVolume()' method employs an iterator to iterate through the set every time 'getVolume()' is called.
+
+
+c.
+1.
+So the overarching problem seems to be that many implementations of 'Iterator' in collection classes don't guarantee any order to their output.  However, after exhaustive searching, three solutions were unearthed.  The iterator of a TreeSet returns elements in ascending order.  The iterator of a List returns elements in 'proper order'.  And finally, most handily, an iterator of a LinkedHashSet returns elements in the order they were added.  The tricky part is that two of these collections are not sorted by themselves.  For those collections that are unsorted, within the method 'getBallsFromSmallest' an exchange of elements must be performed from one collection to another.  This exchange must be done in a way that sorts the Balls by volume, ready to be iterated over in their new collection.
+
+One solution could involve creating a new LinkedHashSet with the intention of selecting and removing the smallest balls of the old LinkedHashSet and adding them in order to the new set.  An iterator of the new set would return elements in the order they were added: namely, from smallest to largest.  To execute this, we would iterate through the old set, keeping a Ball reference variable handy.  Each iteration, we would check the referenced ball to the current ball, and re-reference to whichever ball is smallest.  By the end of a complete loop of the set, we should a Ball reference to the smallest ball in the set.  We could then remove this ball from the old set, and add it to our new set.  In this way, balls would be added to our new set in order of increasing volume.  An iterator of the same set would return the same order of balls.
+
+Another solution could involve a TreeSet which orders it's elements automatically.  However, this would require the addition of a CompareTo method to the Ball class (as well as a Comparable interface).  As such implementation changes were discouraged, we will move on to the List case.
+
+Using a List collection, I believe the methodology of the first solution would work quite well.  The only change would be that instead of transferring to a new LinkedHashSet, we would use a List collection.  The only down side to this is that I am not sure we can use for a List the unmodifiableSet trick utilized in BallContainer's Iterator method.  Therefore, the first solution presented is the solution that will be implemented.

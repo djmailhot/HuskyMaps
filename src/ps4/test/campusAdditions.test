@@ -1,0 +1,350 @@
+# Build a map of UW and test a few queries
+# Staff version number: $Revision: 1.1 $
+
+CreateGraph campus
+
+# Create the nodes of the graph, which are GeoSegments.  For
+# two-way streets, each segment and its reverse are added, since
+# travel can occur in two directions.
+
+CreateGeoNode MemDrive0 42361797 -71079295 42360097 -71083996 Memorial_Dr
+AddNode campus MemDrive0
+
+CreateGeoNode Mason0 47652310 -122306179 47651406 -122304730 Mason_Rd
+AddNode campus Mason0
+CreateGeoNode Mason0rev 47651406 -122304730 47652310 -122306179 Mason_Rd
+AddNode campus Mason0rev
+CreateGeoNode Mason1 47651406 -122304730 47658135 -122302682 Mason_Rd
+AddNode campus Mason1
+CreateGeoNode Mason1rev 47658135 -122302682 47651406 -122304730 Mason_Rd
+AddNode campus Mason1rev
+CreateGeoNode Stevens0 47659746 -122309623 47658980 -122306351 Stevens_Way
+AddNode campus Stevens0
+CreateGeoNode Stevens0rev 47658980 -122306351 47659746 -122309623 Stevens_Way
+AddNode campus Stevens0rev
+CreateGeoNode Stevens1 47658980 -122306351 47658005 -122304989 Stevens_Way
+AddNode campus Stevens1
+CreateGeoNode Stevens1rev 47658005 -122304989 47658980 -122306351 Stevens_Way
+AddNode campus Stevens1rev
+CreateGeoNode Stevens2 47658005 -122304989 47657838 -122304495 Stevens_Way
+AddNode campus Stevens2
+CreateGeoNode Stevens2rev 47657838 -122304495 47658005 -122304989 Stevens_Way
+AddNode campus Stevens2rev
+CreateGeoNode Stevens3 47657838 -122304495 47657296 -122304645 Stevens_Way
+AddNode campus Stevens3
+CreateGeoNode Stevens3rev 47657296 -122304645 47657838 -122304495 Stevens_Way
+AddNode campus Stevens3rev
+CreateGeoNode Stevens4 47657296 -122304645 47653567 -122305149 Stevens_Way
+AddNode campus Stevens4
+CreateGeoNode Stevens4rev 47653567 -122305149 47657296 -122304645 Stevens_Way
+AddNode campus Stevens4rev
+CreateGeoNode Stevens5 47653567 -122305149 47652310 -122306179 Stevens_Way
+AddNode campus Stevens5
+CreateGeoNode Stevens5rev 47652310 -122306179 47653567 -122305149 Stevens_Way
+AddNode campus Stevens5rev
+CreateGeoNode Stevens6 47652310 -122306179 47652050 -122308583 Stevens_Way
+AddNode campus Stevens6
+CreateGeoNode Stevens6rev 47652050 -122308583 47652310 -122306179 Stevens_Way
+AddNode campus Stevens6rev
+CreateGeoNode Stevens7 47652050 -122308583 47653047 -122310385 Stevens_Way
+AddNode campus Stevens7
+CreateGeoNode Stevens7rev 47653047 -122310385 47652050 -122308583 Stevens_Way
+AddNode campus Stevens7rev
+CreateGeoNode Stevens8 47653047 -122310385 47654052 -122310342 Stevens_Way
+AddNode campus Stevens8
+CreateGeoNode Stevens8rev 47654052 -122310342 47653047 -122310385 Stevens_Way
+AddNode campus Stevens8rev
+CreateGeoNode Stevens9 47654052 -122310342 47654962 -122310383 Stevens_Way
+AddNode campus Stevens9
+CreateGeoNode Stevens9rev 47654962 -122310383 47654052 -122310342 Stevens_Way
+AddNode campus Stevens9rev
+CreateGeoNode Okanogan0 47652050 -122308583 47654052 -122310342 Okanogan_Ln
+AddNode campus Okanogan0
+# No Okanogan0rev, because Okanogan Lane is one-way.
+CreateGeoNode Benton0 47655377 -122307733 47653567 -122305149 Benton_Ln
+AddNode campus Benton0
+CreateGeoNode Benton0rev 47653567 -122305149 47655377 -122307733 Benton_Ln
+AddNode campus Benton0rev
+CreateGeoNode GeoWash0 47655273 -122311394 47657000 -122311231 George_Washington_Ln
+AddNode campus GeoWash0
+CreateGeoNode GeoWash0rev 47657000 -122311231 47655273 -122311394 George_Washington_Ln
+AddNode campus GeoWash0rev
+CreateGeoNode GeoWash1 47657000 -122311231 47657361 -122309688 George_Washington_Ln
+AddNode campus GeoWash1
+CreateGeoNode GeoWash1rev 47657361 -122309688 47657000 -122311231 George_Washington_Ln
+AddNode campus GeoWash1rev
+CreateGeoNode Spokane0 47657361 -122309688 47656971 -122309023 Spokane_Ln
+AddNode campus Spokane0
+CreateGeoNode Spokane0rev 47656971 -122309023 47657361 -122309688 Spokane_Ln
+AddNode campus Spokane0rev
+CreateGeoNode Spokane1 47656971 -122309023 47656025 -122307478 Spokane_Ln
+AddNode campus Spokane1
+CreateGeoNode Spokane1rev 47656025 -122307478 47656971 -122309023 Spokane_Ln
+AddNode campus Spokane1rev
+CreateGeoNode Skagit0 47656025 -122307478 47658005 -122304989 Skagit_Ln
+AddNode campus Skagit0
+CreateGeoNode Skagit0rev 47658005 -122304989 47656025 -122307478 Skagit_Ln
+AddNode campus Skagit0rev
+CreateGeoNode PendOreille0 47657296 -122304645 47658135 -122302682 Pend_Oreille_Rd
+AddNode campus PendOreille0
+CreateGeoNode PendOreille0rev 47658135 -122302682 47657296 -122304645 Pend_Oreille_Rd
+AddNode campus PendOreille0rev
+CreateGeoNode PendOreille1 47658135 -122302682 47660519 -122300888 Pend_Oreille_Rd
+AddNode campus PendOreille1
+CreateGeoNode PendOreille1rev 47660519 -122300888 47658135 -122302682 Pend_Oreille_Rd
+AddNode campus PendOreille1rev
+CreateGeoNode Whitman0 47657838 -122304495 47660122 -122304924 Whitman_Ct
+AddNode campus Whitman0
+CreateGeoNode Whitman0rev 47660122 -122304924 47657838 -122304495 Whitman_Ct
+AddNode campus Whitman0rev
+CreateGeoNode Memorial0 47657361 -122309688 47659746 -122309623 Memorial_Way
+AddNode campus Memorial0
+CreateGeoNode Memorial0rev 47659746 -122309623 47657361 -122309688 Memorial_Way
+AddNode campus Memorial0rev
+CreateGeoNode Memorial1 47659746 -122309623 47661249 -122309602 Memorial_Way
+AddNode campus Memorial1
+CreateGeoNode Memorial1rev 47661249 -122309602 47659746 -122309623 Memorial_Way
+AddNode campus Memorial1rev
+CreateGeoNode 45th0 47661259 -122311935 47661249 -122309602 NE_45th_St
+AddNode campus 45th0
+CreateGeoNode 45th0rev 47661249 -122309602 47661259 -122311935 NE_45th_St
+AddNode campus 45th0rev
+CreateGeoNode 15th0 47661259 -122311935 47659788 -122311972 15th_Ave_NE
+AddNode campus 15th0
+CreateGeoNode 15th0rev 47659788 -122311972 47661259 -122311935 15th_Ave_NE
+AddNode campus 15th0rev
+CreateGeoNode 15th1 47659788 -122311972 47658286 -122312016 15th_Ave_NE
+AddNode campus 15th1
+CreateGeoNode 15th1rev 47658286 -122312016 47659788 -122311972 15th_Ave_NE
+AddNode campus 15th1rev
+CreateGeoNode 15th2 47658286 -122312016 47656841 -122312059 15th_Ave_NE
+AddNode campus 15th2
+CreateGeoNode 15th2rev 47656841 -122312059 47658286 -122312016 15th_Ave_NE
+AddNode campus 15th2rev
+CreateGeoNode 15th3 47656841 -122312059 47656126 -122312080 15th_Ave_NE
+AddNode campus 15th3
+CreateGeoNode 15th3rev 47656126 -122312080 47656841 -122312059 15th_Ave_NE
+AddNode campus 15th3rev
+CreateGeoNode 15th4 47656126 -122312080 47655345 -122312059 15th_Ave_NE
+AddNode campus 15th4
+CreateGeoNode 15th4rev 47655345 -122312059 47656126 -122312080 15th_Ave_NE
+AddNode campus 15th4rev
+CreateGeoNode Grant0 47655345 -122312059 47655273 -122311394 Grant_Ln
+AddNode campus Grant0
+CreateGeoNode Grant0rev 47655273 -122311394 47655345 -122312059 Grant_Ln
+AddNode campus Grant0rev
+CreateGeoNode Grant1 47655273 -122311394 47654962 -122310383 Grant_Ln
+AddNode campus Grant1
+CreateGeoNode Grant1rev 47654962 -122310383 47655273 -122311394 Grant_Ln
+AddNode campus Grant1rev
+CreateGeoNode Grant2 47654962 -122310383 47655377 -122307733 Grant_Ln
+AddNode campus Grant2
+CreateGeoNode Grant2rev 47655377 -122307733 47654962 -122310383 Grant_Ln
+AddNode campus Grant2rev
+CreateGeoNode Chelan0 47656971 -122309023 47658980 -122306351 Chelan_Ln
+AddNode campus Chelan0
+CreateGeoNode Chelan0rev 47658980 -122306351 47656971 -122309023 Chelan_Ln
+AddNode campus Chelan0rev
+CreateGeoNode Heaven 47653031 -122305791 47653139 -122306086 Heaven
+AddNode campus Heaven
+
+
+# Add the edges to the graph.  Each edge represents an allowed turn
+# from one street to another.
+
+AddEdge campus Stevens6 Okanogan0
+AddEdge campus Stevens7rev Okanogan0
+AddEdge campus Stevens6 Stevens7
+AddEdge campus Stevens7rev Stevens6rev
+
+AddEdge campus Stevens5 Mason0
+AddEdge campus Stevens5 Stevens6
+AddEdge campus Stevens6rev Mason0
+AddEdge campus Stevens6rev Stevens5rev
+AddEdge campus Mason0rev Stevens6
+AddEdge campus Mason0rev Stevens5rev
+
+AddEdge campus Mason0 Mason1
+AddEdge campus Mason1rev Mason0rev
+
+AddEdge campus Stevens7 Stevens8
+AddEdge campus Stevens8rev Stevens7rev
+
+AddEdge campus Stevens4 Stevens5
+AddEdge campus Stevens4 Benton0rev
+AddEdge campus Stevens5rev Stevens4rev
+AddEdge campus Stevens5rev Benton0rev
+AddEdge campus Benton0 Stevens5
+AddEdge campus Benton0 Stevens4rev
+
+AddEdge campus Stevens8 Stevens9
+AddEdge campus Stevens9rev Stevens8rev
+AddEdge campus Okanogan0 Stevens9
+AddEdge campus Okanogan0 Stevens8rev
+
+AddEdge campus Grant2 Benton0
+AddEdge campus Benton0rev Grant2rev
+
+# U-turns are possible at Johnson Circle
+AddEdge campus Grant1 Grant1rev
+AddEdge campus Grant1 Grant2
+AddEdge campus Grant2rev Grant2
+AddEdge campus Grant2rev Grant1rev
+AddEdge campus Grant1 Stevens9rev
+AddEdge campus Grant2rev Stevens9rev
+AddEdge campus Stevens9 Stevens9rev
+AddEdge campus Stevens9 Grant1rev
+AddEdge campus Stevens9 Grant2
+
+AddEdge campus GeoWash0 GeoWash1
+AddEdge campus GeoWash1rev GeoWash0rev
+
+AddEdge campus Grant0 GeoWash0
+AddEdge campus Grant0 Grant1
+AddEdge campus Grant1rev GeoWash0
+AddEdge campus Grant1rev Grant0rev
+AddEdge campus GeoWash0rev Grant1
+AddEdge campus GeoWash0rev Grant0rev
+
+AddEdge campus 45th0rev 15th0
+AddEdge campus 15th0rev 45th0
+AddEdge campus 15th0 15th1
+AddEdge campus 15th1rev 15th0rev
+AddEdge campus 15th1 15th2
+AddEdge campus 15th2rev 15th1rev
+AddEdge campus 15th2 15th3
+AddEdge campus 15th3rev 15th2rev
+AddEdge campus 15th3 15th4
+AddEdge campus 15th4rev 15th3rev
+AddEdge campus 15th4 Grant0
+AddEdge campus Grant0rev 15th4rev
+
+AddEdge campus Spokane1 Skagit0
+AddEdge campus Skagit0rev Spokane1rev
+
+AddEdge campus Spokane0 Spokane1
+AddEdge campus Spokane0 Chelan0
+AddEdge campus Spokane1rev Spokane0rev
+AddEdge campus Spokane1rev Chelan0
+AddEdge campus Chelan0rev Spokane1
+AddEdge campus Chelan0rev Spokane0rev
+
+AddEdge campus Stevens3 Stevens4
+AddEdge campus Stevens3 PendOreille0
+AddEdge campus Stevens4rev Stevens3rev
+AddEdge campus Stevens4rev PendOreille0
+AddEdge campus PendOreille0rev Stevens4
+AddEdge campus PendOreille0rev Stevens3rev
+
+# U-turns are possible at the War Memorial
+AddEdge campus Spokane0rev Spokane0
+AddEdge campus Spokane0rev Memorial0
+AddEdge campus Spokane0rev GeoWash1rev
+AddEdge campus Memorial0rev Spokane0
+AddEdge campus Memorial0rev Memorial0
+AddEdge campus Memorial0rev GeoWash1rev
+AddEdge campus GeoWash1 Spokane0
+AddEdge campus GeoWash1 Memorial0
+AddEdge campus GeoWash1 GeoWash1rev
+
+AddEdge campus Stevens2 Whitman0
+AddEdge campus Stevens2 Stevens3
+AddEdge campus Stevens3rev Whitman0
+AddEdge campus Stevens3rev Stevens2rev
+AddEdge campus Whitman0rev Stevens3
+AddEdge campus Whitman0rev Stevens2rev
+
+AddEdge campus Whitman0 Whitman0rev
+
+AddEdge campus PendOreille0 PendOreille1
+AddEdge campus PendOreille0 Mason1rev
+AddEdge campus Mason1 PendOreille1
+AddEdge campus Mason1 PendOreille0rev
+AddEdge campus PendOreille1rev Mason1rev
+AddEdge campus PendOreille1rev PendOreille0rev
+
+AddEdge campus PendOreille1 PendOreille1rev
+
+AddEdge campus 45th0 Memorial1rev
+AddEdge campus Memorial1 45th0rev
+AddEdge campus Memorial1 Memorial1rev
+
+AddEdge campus Memorial1rev Memorial1
+AddEdge campus Memorial1rev Memorial0rev
+AddEdge campus Memorial1rev Stevens0
+AddEdge campus Memorial0 Memorial1
+AddEdge campus Memorial0 Stevens0
+AddEdge campus Stevens0rev Memorial1
+AddEdge campus Stevens0rev Memorial0rev
+
+AddEdge campus Stevens0 Stevens1
+AddEdge campus Stevens0 Chelan0rev
+AddEdge campus Stevens1rev Stevens0rev
+AddEdge campus Stevens1rev Chelan0rev
+AddEdge campus Chelan0 Stevens1
+AddEdge campus Chelan0 Stevens0rev
+
+AddEdge campus Stevens1 Stevens2
+AddEdge campus Stevens1 Skagit0rev
+AddEdge campus Stevens2rev Stevens1rev
+AddEdge campus Stevens2rev Skagit0rev
+AddEdge campus Skagit0 Stevens2
+AddEdge campus Skagit0 Stevens1rev
+
+AddEdge campus Stevens2 Stevens3
+AddEdge campus Stevens2 Whitman0
+AddEdge campus Stevens3rev Stevens2rev
+AddEdge campus Stevens3rev Whitman0
+AddEdge campus Whitman0rev Stevens3
+AddEdge campus Whitman0rev Stevens2rev
+
+# Benton0 -> Stevens5
+FindGeoPath campus Benton0 Benton0rev -> Stevens5 Stevens5rev
+
+# Memorial0rev -> Skagit0
+FindGeoPath campus Memorial0 Memorial0rev -> Skagit0 Skagit0rev
+
+# The shorter path has more segments
+# 45th0rev -> Grant0
+FindGeoPath campus 45th0 45th0rev -> Grant0 Grant0rev
+
+# Reversed path is different than forward path, due to one-way street
+# Stevens6 -> Stevens9
+FindGeoPath campus Stevens6 -> Stevens9
+
+# Stevens9rev -> Stevens6rev
+FindGeoPath campus Stevens9rev -> Stevens6rev
+
+# Different paths depending on final orientation
+# PendOreille1rev -> Mason0
+FindGeoPath campus PendOreille1 PendOreille1rev -> Mason0
+
+# PendOreille1rev -> Mason0rev
+FindGeoPath campus PendOreille1 PendOreille1rev -> Mason0rev
+
+# PendOreille1rev -> Mason0
+FindGeoPath campus PendOreille1 PendOreille1rev -> Mason0 Mason0rev
+
+# Two paths of similar length exist
+# Spokane0 -> Stevens2
+FindGeoPath campus Spokane0 Spokane0rev -> Stevens2 Stevens2rev
+
+# Unreachable
+# Stevens5 -> Heaven
+FindGeoPath campus Stevens5 -> Heaven
+
+
+
+
+
+
+
+# APPENDED
+# Additional test cases covering ground not touched on above
+
+
+# Discrepancies with similar start and end points
+FindGeoPath campus Spokane1rev Spokane0 -> Stevens1rev
+FindGeoPath campus Memorial0 Memorial0rev -> Skagit0
+FindGeoPath campus Memorial0 Memorial0rev -> Skagit0 Skagit0rev
+FindGeoPath campus Spokane1rev -> Stevens0 Stevens1rev

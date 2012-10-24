@@ -1,0 +1,68 @@
+# FindPath test on a 7 node graph.  In particular, tests that
+# longer but less expensive paths are returned, else the path
+# with the least number of nodes.  Additionally, checks 
+# multi-argument FindPath operations.
+
+# set of core expensive nodes
+CreateGraph X
+CreateNode b5 5
+CreateNode b6 6
+CreateNode b7 7
+AddNode X b5
+AddNode X b6
+AddNode X b7
+AddEdge X b5 b6
+AddEdge X b6 b5
+AddEdge X b5 b7
+AddEdge X b7 b5
+AddEdge X b6 b7
+
+# set of less expensive nodes
+CreateNode a1 1
+CreateNode a2 2
+CreateNode a3 3
+AddNode X a1
+AddNode X a2
+AddNode X a3
+AddEdge X b6 a2
+AddEdge X b5 a2
+AddEdge X b7 a1
+AddEdge X b7 a2
+AddEdge X b7 a3
+AddEdge X a2 b5
+AddEdge X a2 a1
+AddEdge X a1 a2
+AddEdge X a1 b5
+AddEdge X a1 b7
+AddEdge X a1 a3
+AddEdge X a1 a1
+AddEdge X a3 b7
+CreateNode c3 3
+AddNode X c3
+AddEdge X b5 c3
+AddEdge X c3 a3
+
+# test a less expensive path taken, no matter if less or more nodes
+FindPath X a3 -> a2
+FindPath X b6 -> a3
+FindPath X a3 -> b6
+
+# test the shorter of two equally-expensive paths taken
+FindPath X b5 -> a3
+
+# test multi-argument FindPath calls always follow the least
+# expensive path, else the path with the least nodes
+FindPath X b6 c3 -> a3
+FindPath X b6 -> b7 a3
+FindPath X a2 b5 c3 -> b6 b7
+FindPath X c3 b6 -> a1 b7
+FindPath X c3 -> b6 a2 b5
+FindPath X b6 a2 -> c3 b7 a3
+
+# test equal expense and equal length
+FindPath X a2 b6 -> b7 c3
+
+# test whether start node is included in expenses
+FindPath X b7 a2 -> a3 b5
+FindPath X b7 a3 -> a2 a3
+

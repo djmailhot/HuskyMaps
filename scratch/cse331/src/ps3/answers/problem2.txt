@@ -1,0 +1,57 @@
+
+class Graph
+provides collections funtionality to store nodes and their edges of a graph collection
+
+
+	Instantiates a new instance of an empty graph
+	@returns an empty graph object
+Graph ()
+constructor, self explanatory.  Also, initiated as an empty graph. 
+
+
+
+	@return true if the graph is empty, false if not
+boolean isEmpty()
+A good quick and cheap way to make sure that an operation involving assumptions about what's in the graph does not go awry.
+
+	
+	@requires n to be nonnull
+	@return true if specified node is in the graph, false if not.
+boolean containsNode (n)
+important to give feedback to user in maintaining the representation invariant.  Also can be used internally as part of the checkRep.
+
+
+	@requires n1 and n2 to be nonnull
+	@return true if specified edge from n1 to n2 is in the graph, false if not.
+boolean containsEdge (n1, n2)
+important to give feedback to user in maintaining the representation invariant.  Also can be used internally as part of the checkRep.
+
+
+
+	@return an unmodifiable set of all nodes in this graph
+Set<E> nodeSet()
+ability to examine the contents of the entire graph in the interest of providing a way to gauge geographical coverage of this graph.
+
+	
+	@requires nP to be nonnull && the graph contains nP
+	@return an unmodifiable set of the children of the specified parent node
+Set<E> edgeSet(nP)
+ability to examine edges of a specific node.  Very important to the performance of the path finding algorithm
+
+
+
+	@requires n to be nonnull && Graph !contains(node n)
+	@return a new graph with this node added, or the existing graph
+	if the node is already in the graph
+Graph addNode (n)
+immutable design of functionality to add a node to the graph.  immutable collections, while intensive on memory space, provide a much more stable and secure environment for the data set.
+
+
+
+	@requires n1 and n2 to be in the graph && no existing edge 
+	from n1 to n2 && n1 and n2 to be nonnull
+	@return a new graph with an edge added from n1 to n2, or 
+	the existing Graph if the edge already exists.
+Graph addEdge (n1, n2)
+immutable design of functionality to add a edge between two nodes.  again, immutable collections provide a much more stable and secure environment for the data set.
+

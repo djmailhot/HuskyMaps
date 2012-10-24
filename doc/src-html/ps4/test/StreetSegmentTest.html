@@ -1,0 +1,360 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    package ps4.test;<a name="line.1"></a>
+<FONT color="green">002</FONT>    <a name="line.2"></a>
+<FONT color="green">003</FONT>    import ps2.GeoPoint;<a name="line.3"></a>
+<FONT color="green">004</FONT>    import ps4.*;<a name="line.4"></a>
+<FONT color="green">005</FONT>    import junit.framework.*;<a name="line.5"></a>
+<FONT color="green">006</FONT>    import static ps2.test.TestValues.TOLERANCE;<a name="line.6"></a>
+<FONT color="green">007</FONT>    <a name="line.7"></a>
+<FONT color="green">008</FONT>    import java.util.*;<a name="line.8"></a>
+<FONT color="green">009</FONT>    <a name="line.9"></a>
+<FONT color="green">010</FONT>    public class StreetSegmentTest extends TestCase {<a name="line.10"></a>
+<FONT color="green">011</FONT>    <a name="line.11"></a>
+<FONT color="green">012</FONT>            /* Testing Analysis<a name="line.12"></a>
+<FONT color="green">013</FONT>             * <a name="line.13"></a>
+<FONT color="green">014</FONT>             *cases<a name="line.14"></a>
+<FONT color="green">015</FONT>             *   v-- number of StreetSegment objects as fields<a name="line.15"></a>
+<FONT color="green">016</FONT>             *a) 0x  validation of constructor rep invariant<a name="line.16"></a>
+<FONT color="green">017</FONT>             *b) 2x  non-zero-length segment        VS zero-length segment<a name="line.17"></a>
+<FONT color="green">018</FONT>             *c) 2x  non-zero numbersets            VS zero numbersets<a name="line.18"></a>
+<FONT color="green">019</FONT>             *d) 2x  left&amp;right zipcodes same   VS not same<a name="line.19"></a>
+<FONT color="green">020</FONT>             *e) 2x  increasingAddresses            VS decreasingAddresses<a name="line.20"></a>
+<FONT color="green">021</FONT>             *f) 1x  general stress-testing<a name="line.21"></a>
+<FONT color="green">022</FONT>             *   <a name="line.22"></a>
+<FONT color="green">023</FONT>             *   <a name="line.23"></a>
+<FONT color="green">024</FONT>             *tests<a name="line.24"></a>
+<FONT color="green">025</FONT>             *a) contains operation<a name="line.25"></a>
+<FONT color="green">026</FONT>             *b) reverse<a name="line.26"></a>
+<FONT color="green">027</FONT>             *c) double reverse<a name="line.27"></a>
+<FONT color="green">028</FONT>             *d) fraction distance<a name="line.28"></a>
+<FONT color="green">029</FONT>             *e) (implementation --&gt; hashcode)<a name="line.29"></a>
+<FONT color="green">030</FONT>             *<a name="line.30"></a>
+<FONT color="green">031</FONT>             */<a name="line.31"></a>
+<FONT color="green">032</FONT>            <a name="line.32"></a>
+<FONT color="green">033</FONT>            <a name="line.33"></a>
+<FONT color="green">034</FONT>            private final StreetNumberSet numSetNorm1;<a name="line.34"></a>
+<FONT color="green">035</FONT>            private final StreetNumberSet numSetNorm2; <a name="line.35"></a>
+<FONT color="green">036</FONT>            private final StreetNumberSet numSetZero; <a name="line.36"></a>
+<FONT color="green">037</FONT>            private final StreetNumberSet numSetZip1;<a name="line.37"></a>
+<FONT color="green">038</FONT>            private final StreetNumberSet numSetZip2;<a name="line.38"></a>
+<FONT color="green">039</FONT>            private final StreetNumberSet numSetZip3;<a name="line.39"></a>
+<FONT color="green">040</FONT>            private final StreetNumberSet numSetStress1;<a name="line.40"></a>
+<FONT color="green">041</FONT>            private final StreetNumberSet numSetStress2;<a name="line.41"></a>
+<FONT color="green">042</FONT>            <a name="line.42"></a>
+<FONT color="green">043</FONT>            <a name="line.43"></a>
+<FONT color="green">044</FONT>            /** arrays of all numbers that should be present*/<a name="line.44"></a>
+<FONT color="green">045</FONT>            private final int[] arrNorm1 = {15,7,9,11,13,18,5,42,44,57};<a name="line.45"></a>
+<FONT color="green">046</FONT>            private final int[] arrNorm2 = {2,4,6,8,10,12,16,20,30,32,34,35,36,37};<a name="line.46"></a>
+<FONT color="green">047</FONT>            private final int[] arrZero = {};<a name="line.47"></a>
+<FONT color="green">048</FONT>            private final int[] arrZip1 = {4,5,6,8,9,10,16,17,24,26,28,30,32,34,35,36,563};<a name="line.48"></a>
+<FONT color="green">049</FONT>            private final int[] arrZip2 = {2,7,11,13,15,18,20,21,22,23,25,27,29,562};<a name="line.49"></a>
+<FONT color="green">050</FONT>            // Zip3 is a combination of Zip1 and Zip2<a name="line.50"></a>
+<FONT color="green">051</FONT>            private final int[] arrZip3 = {2,4,6,7,8,10,11,13,17,21,22,23,24,26,30,32,34,563}; <a name="line.51"></a>
+<FONT color="green">052</FONT>            // Inc/Dec addresses use arrZips<a name="line.52"></a>
+<FONT color="green">053</FONT>            <a name="line.53"></a>
+<FONT color="green">054</FONT>            <a name="line.54"></a>
+<FONT color="green">055</FONT>            <a name="line.55"></a>
+<FONT color="green">056</FONT>    <a name="line.56"></a>
+<FONT color="green">057</FONT>            // constant for size of ultimate stress test<a name="line.57"></a>
+<FONT color="green">058</FONT>            // used for the size of a random number set of singles between 0 and 2000000.<a name="line.58"></a>
+<FONT color="green">059</FONT>            private final int STRESS_FACTOR = 10000;<a name="line.59"></a>
+<FONT color="green">060</FONT>            // storing data for ultimate stress testing<a name="line.60"></a>
+<FONT color="green">061</FONT>            private final int[] arrStress1 = new int[STRESS_FACTOR];<a name="line.61"></a>
+<FONT color="green">062</FONT>            private final int[] arrStress2 = new int[STRESS_FACTOR];<a name="line.62"></a>
+<FONT color="green">063</FONT>            <a name="line.63"></a>
+<FONT color="green">064</FONT>            <a name="line.64"></a>
+<FONT color="green">065</FONT>            <a name="line.65"></a>
+<FONT color="green">066</FONT>            /** StreetSegment objects, systematically covering cases */<a name="line.66"></a>
+<FONT color="green">067</FONT>            private final StreetSegment stSNormLeng;<a name="line.67"></a>
+<FONT color="green">068</FONT>            private final StreetSegment stSZeroLeng;<a name="line.68"></a>
+<FONT color="green">069</FONT>            private final StreetSegment stSNormSet;<a name="line.69"></a>
+<FONT color="green">070</FONT>            private final StreetSegment stSZeroSet;<a name="line.70"></a>
+<FONT color="green">071</FONT>            private final StreetSegment stSDiffZip;<a name="line.71"></a>
+<FONT color="green">072</FONT>            private final StreetSegment stSSameZip;<a name="line.72"></a>
+<FONT color="green">073</FONT>            private final StreetSegment stSIncAddres;<a name="line.73"></a>
+<FONT color="green">074</FONT>            private final StreetSegment stSDecAddres;<a name="line.74"></a>
+<FONT color="green">075</FONT>            private final StreetSegment stSStress;<a name="line.75"></a>
+<FONT color="green">076</FONT>            <a name="line.76"></a>
+<FONT color="green">077</FONT>            <a name="line.77"></a>
+<FONT color="green">078</FONT>            <a name="line.78"></a>
+<FONT color="green">079</FONT>    <a name="line.79"></a>
+<FONT color="green">080</FONT>            public StreetSegmentTest(String name){<a name="line.80"></a>
+<FONT color="green">081</FONT>                    super(name);<a name="line.81"></a>
+<FONT color="green">082</FONT>                    // initialize ranges<a name="line.82"></a>
+<FONT color="green">083</FONT>            <a name="line.83"></a>
+<FONT color="green">084</FONT>            // initialize StreetNumberSets<a name="line.84"></a>
+<FONT color="green">085</FONT>            numSetNorm1 = new StreetNumberSet("15,7-13,18,5,42-44,57");<a name="line.85"></a>
+<FONT color="green">086</FONT>            numSetNorm2 = new StreetNumberSet("2-8,10-12,20,30-36,35-37,16");<a name="line.86"></a>
+<FONT color="green">087</FONT>            numSetZero = new StreetNumberSet("");<a name="line.87"></a>
+<FONT color="green">088</FONT>            numSetZip1 = new StreetNumberSet("4-10,16,17,24-26,563,5,9,28-36,35");<a name="line.88"></a>
+<FONT color="green">089</FONT>            numSetZip2 = new StreetNumberSet("562,2,7,11-15,21-27,18-22,29");<a name="line.89"></a>
+<FONT color="green">090</FONT>            numSetZip3 = new StreetNumberSet("2-8,7,10,563,11-13,21-23,17,22-26,30-34");<a name="line.90"></a>
+<FONT color="green">091</FONT>    <a name="line.91"></a>
+<FONT color="green">092</FONT>            <a name="line.92"></a>
+<FONT color="green">093</FONT>            // initialize StreetSegments<a name="line.93"></a>
+<FONT color="green">094</FONT>            stSNormLeng = new StreetSegment(new GeoPoint( -700000, -700000), <a name="line.94"></a>
+<FONT color="green">095</FONT>                            new GeoPoint( 100000, -500000),"han",<a name="line.95"></a>
+<FONT color="green">096</FONT>                            numSetNorm1, numSetNorm2, "98177", "98177", <a name="line.96"></a>
+<FONT color="green">097</FONT>                            StreetClassification.parse("PRIM_HWY"),true);<a name="line.97"></a>
+<FONT color="green">098</FONT>            stSZeroLeng = new StreetSegment(new GeoPoint( -700000, -700000), <a name="line.98"></a>
+<FONT color="green">099</FONT>                            new GeoPoint( -700000, -700000),"han",<a name="line.99"></a>
+<FONT color="green">100</FONT>                            numSetNorm1, numSetNorm2, "98177", "98177", <a name="line.100"></a>
+<FONT color="green">101</FONT>                            StreetClassification.parse("PRIM_HWY"),true);<a name="line.101"></a>
+<FONT color="green">102</FONT>            stSNormSet = new StreetSegment(new GeoPoint( 500000, 100000), <a name="line.102"></a>
+<FONT color="green">103</FONT>                            new GeoPoint( 200000, 900000),"vader",<a name="line.103"></a>
+<FONT color="green">104</FONT>                            numSetNorm1, numSetNorm2, "98177", "98177", <a name="line.104"></a>
+<FONT color="green">105</FONT>                            StreetClassification.parse("PRIM_HWY"),true);<a name="line.105"></a>
+<FONT color="green">106</FONT>            stSZeroSet = new StreetSegment(new GeoPoint( -400000, 700000), <a name="line.106"></a>
+<FONT color="green">107</FONT>                            new GeoPoint( -700000, -700000),"lando",<a name="line.107"></a>
+<FONT color="green">108</FONT>                            numSetZero, numSetZero, "", "", <a name="line.108"></a>
+<FONT color="green">109</FONT>                            StreetClassification.parse("PRIM_HWY"),true);<a name="line.109"></a>
+<FONT color="green">110</FONT>            stSDiffZip = new StreetSegment(new GeoPoint( -700000, -700000), <a name="line.110"></a>
+<FONT color="green">111</FONT>                            new GeoPoint( 100000, -500000),"vader",<a name="line.111"></a>
+<FONT color="green">112</FONT>                            numSetZip1, numSetZip3, "43137", "73672", <a name="line.112"></a>
+<FONT color="green">113</FONT>                            StreetClassification.parse("PRIM_HWY"),true);<a name="line.113"></a>
+<FONT color="green">114</FONT>            stSSameZip = new StreetSegment(new GeoPoint( 200000, 900000), <a name="line.114"></a>
+<FONT color="green">115</FONT>                            new GeoPoint( 200000, 900000),"han",<a name="line.115"></a>
+<FONT color="green">116</FONT>                            numSetZip1, numSetZip2, "98177", "98177", <a name="line.116"></a>
+<FONT color="green">117</FONT>                            StreetClassification.parse("PRIM_HWY"),true);<a name="line.117"></a>
+<FONT color="green">118</FONT>            stSIncAddres = new StreetSegment(new GeoPoint( 500000, 100000), <a name="line.118"></a>
+<FONT color="green">119</FONT>                            new GeoPoint( 200000, 900000),"vader",<a name="line.119"></a>
+<FONT color="green">120</FONT>                            numSetZip3, numSetZip1, "95327", "85432",<a name="line.120"></a>
+<FONT color="green">121</FONT>                            StreetClassification.parse("PRIM_HWY"),true);<a name="line.121"></a>
+<FONT color="green">122</FONT>            stSDecAddres = new StreetSegment(new GeoPoint( 500000, 100000), <a name="line.122"></a>
+<FONT color="green">123</FONT>                            new GeoPoint( 200000, 900000),"vader",<a name="line.123"></a>
+<FONT color="green">124</FONT>                            numSetZip3, numSetZip2, "67432", "54329",<a name="line.124"></a>
+<FONT color="green">125</FONT>                            StreetClassification.parse("PRIM_HWY"),false);<a name="line.125"></a>
+<FONT color="green">126</FONT>            <a name="line.126"></a>
+<FONT color="green">127</FONT>            <a name="line.127"></a>
+<FONT color="green">128</FONT>            // ultimate stress test case for contained street addresses<a name="line.128"></a>
+<FONT color="green">129</FONT>            numSetStress1 = new StreetNumberSet(generate(arrStress1));<a name="line.129"></a>
+<FONT color="green">130</FONT>            numSetStress2 = new StreetNumberSet(generate(arrStress2));<a name="line.130"></a>
+<FONT color="green">131</FONT>            stSStress = new StreetSegment(new GeoPoint(GeoPoint.MIN_LATITUDE, <a name="line.131"></a>
+<FONT color="green">132</FONT>                            GeoPoint.MIN_LONGITUDE),new GeoPoint(GeoPoint.MAX_LATITUDE,<a name="line.132"></a>
+<FONT color="green">133</FONT>                    GeoPoint.MAX_LONGITUDE),"STRESS",<a name="line.133"></a>
+<FONT color="green">134</FONT>                            numSetStress1, numSetStress2,<a name="line.134"></a>
+<FONT color="green">135</FONT>                            "03473", "23480", StreetClassification.parse("UNKNOWN"),false);<a name="line.135"></a>
+<FONT color="green">136</FONT>            <a name="line.136"></a>
+<FONT color="green">137</FONT>            }<a name="line.137"></a>
+<FONT color="green">138</FONT>            <a name="line.138"></a>
+<FONT color="green">139</FONT>            <a name="line.139"></a>
+<FONT color="green">140</FONT>            /**<a name="line.140"></a>
+<FONT color="green">141</FONT>             * helper to populate the specified array with random numbers with domain <a name="line.141"></a>
+<FONT color="green">142</FONT>             * covering the maximum limits of primitive type int (0 to 1000000).<a name="line.142"></a>
+<FONT color="green">143</FONT>             * @return string representation of selected numbers to be used in <a name="line.143"></a>
+<FONT color="green">144</FONT>             * StreetNumberSet constructor. <a name="line.144"></a>
+<FONT color="green">145</FONT>             */<a name="line.145"></a>
+<FONT color="green">146</FONT>            private String generate(int[] arr){<a name="line.146"></a>
+<FONT color="green">147</FONT>                    Random dice = new Random();<a name="line.147"></a>
+<FONT color="green">148</FONT>                    Set&lt;Integer&gt; s = new TreeSet&lt;Integer&gt;();  // use a set for no duplicates<a name="line.148"></a>
+<FONT color="green">149</FONT>                    while(s.size() &lt; STRESS_FACTOR){<a name="line.149"></a>
+<FONT color="green">150</FONT>                            s.add(dice.nextInt(2000000)); // randomize the input<a name="line.150"></a>
+<FONT color="green">151</FONT>                            <a name="line.151"></a>
+<FONT color="green">152</FONT>                    }<a name="line.152"></a>
+<FONT color="green">153</FONT>                    <a name="line.153"></a>
+<FONT color="green">154</FONT>                    StringBuilder deathBed = new StringBuilder();<a name="line.154"></a>
+<FONT color="green">155</FONT>                    int index = 0;<a name="line.155"></a>
+<FONT color="green">156</FONT>                    Iterator&lt;Integer&gt; iter = s.iterator();<a name="line.156"></a>
+<FONT color="green">157</FONT>                    while(iter.hasNext()){<a name="line.157"></a>
+<FONT color="green">158</FONT>                            int next = iter.next();<a name="line.158"></a>
+<FONT color="green">159</FONT>                            <a name="line.159"></a>
+<FONT color="green">160</FONT>                            arr[index] = next;<a name="line.160"></a>
+<FONT color="green">161</FONT>                            deathBed.append(next+",");        // record in string form<a name="line.161"></a>
+<FONT color="green">162</FONT>                            index++;<a name="line.162"></a>
+<FONT color="green">163</FONT>                    }<a name="line.163"></a>
+<FONT color="green">164</FONT>                    // solve the fence post issue<a name="line.164"></a>
+<FONT color="green">165</FONT>                    deathBed.deleteCharAt(deathBed.length()-1);<a name="line.165"></a>
+<FONT color="green">166</FONT>                    return deathBed.toString();<a name="line.166"></a>
+<FONT color="green">167</FONT>            }<a name="line.167"></a>
+<FONT color="green">168</FONT>            <a name="line.168"></a>
+<FONT color="green">169</FONT>            <a name="line.169"></a>
+<FONT color="green">170</FONT>            <a name="line.170"></a>
+<FONT color="green">171</FONT>            <a name="line.171"></a>
+<FONT color="green">172</FONT>        /**<a name="line.172"></a>
+<FONT color="green">173</FONT>         * test valid/invalid constructor arguments<a name="line.173"></a>
+<FONT color="green">174</FONT>         */<a name="line.174"></a>
+<FONT color="green">175</FONT>            /*PRIM_HWY<a name="line.175"></a>
+<FONT color="green">176</FONT>            SEC_HWY<a name="line.176"></a>
+<FONT color="green">177</FONT>            LOCAL_ROAD<a name="line.177"></a>
+<FONT color="green">178</FONT>            UNKNOWN*/<a name="line.178"></a>
+<FONT color="green">179</FONT>        <a name="line.179"></a>
+<FONT color="green">180</FONT>    <a name="line.180"></a>
+<FONT color="green">181</FONT>            ///////// StreetSegment.fractionDist() ////////<a name="line.181"></a>
+<FONT color="green">182</FONT>        <a name="line.182"></a>
+<FONT color="green">183</FONT>        /**<a name="line.183"></a>
+<FONT color="green">184</FONT>         * test fractionDist with a manageable street segment<a name="line.184"></a>
+<FONT color="green">185</FONT>         */<a name="line.185"></a>
+<FONT color="green">186</FONT>        public void testFractionDistBasic(){<a name="line.186"></a>
+<FONT color="green">187</FONT>            StreetNumberSet setRight = new StreetNumberSet("33,2-4");<a name="line.187"></a>
+<FONT color="green">188</FONT>            StreetNumberSet setLeft = new StreetNumberSet("14,2,4,13");<a name="line.188"></a>
+<FONT color="green">189</FONT>            <a name="line.189"></a>
+<FONT color="green">190</FONT>            StreetSegment stS = new StreetSegment(new GeoPoint( -700, -700), <a name="line.190"></a>
+<FONT color="green">191</FONT>                            new GeoPoint( 100, -500),"han",<a name="line.191"></a>
+<FONT color="green">192</FONT>                            setLeft, setRight, "47942", "98177", <a name="line.192"></a>
+<FONT color="green">193</FONT>                            StreetClassification.parse("PRIM_HWY"),true);<a name="line.193"></a>
+<FONT color="green">194</FONT>            <a name="line.194"></a>
+<FONT color="green">195</FONT>            <a name="line.195"></a>
+<FONT color="green">196</FONT>            assertEquals("basic fraction distance failure",.75, stS.fractionDist(33),TOLERANCE);<a name="line.196"></a>
+<FONT color="green">197</FONT>            assertEquals("basic fraction distance failure",.25, stS.fractionDist(2),TOLERANCE);<a name="line.197"></a>
+<FONT color="green">198</FONT>            assertEquals("basic fraction distance failure",.5, stS.fractionDist(4),TOLERANCE);<a name="line.198"></a>
+<FONT color="green">199</FONT>            assertEquals("basic fraction distance failure",.6, stS.fractionDist(13),TOLERANCE);<a name="line.199"></a>
+<FONT color="green">200</FONT>            assertEquals("basic fraction distance failure",.8, stS.fractionDist(14),TOLERANCE);<a name="line.200"></a>
+<FONT color="green">201</FONT>        }<a name="line.201"></a>
+<FONT color="green">202</FONT>        <a name="line.202"></a>
+<FONT color="green">203</FONT>        <a name="line.203"></a>
+<FONT color="green">204</FONT>        /**<a name="line.204"></a>
+<FONT color="green">205</FONT>         * test fractionDist method, focusing on dual-address right-side-first specification <a name="line.205"></a>
+<FONT color="green">206</FONT>         */<a name="line.206"></a>
+<FONT color="green">207</FONT>        public void testFractionDistDiffZip(){<a name="line.207"></a>
+<FONT color="green">208</FONT>            //for increasing addresses<a name="line.208"></a>
+<FONT color="green">209</FONT>            getFractionDist(stSIncAddres, numSetZip1, arrZip3, arrZip1, true, "increasing");<a name="line.209"></a>
+<FONT color="green">210</FONT>            <a name="line.210"></a>
+<FONT color="green">211</FONT>            //for decreasing addresses<a name="line.211"></a>
+<FONT color="green">212</FONT>            getFractionDist(stSDecAddres, numSetZip2, arrZip3, arrZip2, false, "decreasing");<a name="line.212"></a>
+<FONT color="green">213</FONT>        }<a name="line.213"></a>
+<FONT color="green">214</FONT>        <a name="line.214"></a>
+<FONT color="green">215</FONT>        /**<a name="line.215"></a>
+<FONT color="green">216</FONT>         * test fractionDist method under stress<a name="line.216"></a>
+<FONT color="green">217</FONT>         */<a name="line.217"></a>
+<FONT color="green">218</FONT>        public void testFractionDistStress(){<a name="line.218"></a>
+<FONT color="green">219</FONT>            getFractionDist(stSStress, numSetStress2, arrStress1, arrStress2, false, "decreasing");<a name="line.219"></a>
+<FONT color="green">220</FONT>        }<a name="line.220"></a>
+<FONT color="green">221</FONT>        <a name="line.221"></a>
+<FONT color="green">222</FONT>        <a name="line.222"></a>
+<FONT color="green">223</FONT>            /**<a name="line.223"></a>
+<FONT color="green">224</FONT>             * helper to analyze fractionDist functionality<a name="line.224"></a>
+<FONT color="green">225</FONT>             */<a name="line.225"></a>
+<FONT color="green">226</FONT>            private void getFractionDist(StreetSegment stS, StreetNumberSet rightSet,<a name="line.226"></a>
+<FONT color="green">227</FONT>                            int[] leftAddr, int[] rightAddr, boolean increasing, String move){<a name="line.227"></a>
+<FONT color="green">228</FONT>                    <a name="line.228"></a>
+<FONT color="green">229</FONT>                    int index = 0;<a name="line.229"></a>
+<FONT color="green">230</FONT>                    while(index &lt; rightAddr.length || index &lt; leftAddr.length){<a name="line.230"></a>
+<FONT color="green">231</FONT>                            <a name="line.231"></a>
+<FONT color="green">232</FONT>                            if(index &lt; leftAddr.length){         // if in left street<a name="line.232"></a>
+<FONT color="green">233</FONT>                                    double leftDis = stS.fractionDist(leftAddr[index]);<a name="line.233"></a>
+<FONT color="green">234</FONT>                                    double truthDis = getFraction(leftAddr, leftAddr[index], increasing);<a name="line.234"></a>
+<FONT color="green">235</FONT>                                    <a name="line.235"></a>
+<FONT color="green">236</FONT>                                    if(rightSet.contains(leftAddr[index])){                                         <a name="line.236"></a>
+<FONT color="green">237</FONT>                                            // if also in right street, right value is correct<a name="line.237"></a>
+<FONT color="green">238</FONT>                                            <a name="line.238"></a>
+<FONT color="green">239</FONT>                                            truthDis = getFraction(rightAddr, leftAddr[index], increasing);<a name="line.239"></a>
+<FONT color="green">240</FONT>                                            <a name="line.240"></a>
+<FONT color="green">241</FONT>                                            assertEquals("Fractional distance for address "+leftAddr[index]+<a name="line.241"></a>
+<FONT color="green">242</FONT>                                                            " found on both sides (different zipcodes) of "+move+<a name="line.242"></a>
+<FONT color="green">243</FONT>                                                            " addresses should be the right-side address distance",<a name="line.243"></a>
+<FONT color="green">244</FONT>                                                            truthDis, leftDis, TOLERANCE*STRESS_FACTOR);<a name="line.244"></a>
+<FONT color="green">245</FONT>                                                            //leftDis is the StreetSegment fractionDist return, which <a name="line.245"></a>
+<FONT color="green">246</FONT>                                                            //should return a distance of the right-side address.<a name="line.246"></a>
+<FONT color="green">247</FONT>                                    }else{<a name="line.247"></a>
+<FONT color="green">248</FONT>                                            // else left value is correct<a name="line.248"></a>
+<FONT color="green">249</FONT>                                            <a name="line.249"></a>
+<FONT color="green">250</FONT>                                            assertEquals("Fractional distance for "+leftAddr[index]+" on left side" +<a name="line.250"></a>
+<FONT color="green">251</FONT>                                                            " for "+move+" addresses should be "+truthDis+", instead was "+<a name="line.251"></a>
+<FONT color="green">252</FONT>                                                            leftDis,truthDis, leftDis, TOLERANCE*STRESS_FACTOR);<a name="line.252"></a>
+<FONT color="green">253</FONT>                                    }<a name="line.253"></a>
+<FONT color="green">254</FONT>                            }<a name="line.254"></a>
+<FONT color="green">255</FONT>                            <a name="line.255"></a>
+<FONT color="green">256</FONT>                            if(index &lt; rightAddr.length){<a name="line.256"></a>
+<FONT color="green">257</FONT>                                    // if in right street<a name="line.257"></a>
+<FONT color="green">258</FONT>                                    <a name="line.258"></a>
+<FONT color="green">259</FONT>                                    double rightDis = stS.fractionDist(rightAddr[index]);<a name="line.259"></a>
+<FONT color="green">260</FONT>                                    double truthDis = getFraction(rightAddr, rightAddr[index], increasing);<a name="line.260"></a>
+<FONT color="green">261</FONT>                                    <a name="line.261"></a>
+<FONT color="green">262</FONT>                                    assertEquals("Fractional distance for "+rightAddr[index]+" on right side" +<a name="line.262"></a>
+<FONT color="green">263</FONT>                                                    " for "+move+" addresses should be "+truthDis+", instead was "+<a name="line.263"></a>
+<FONT color="green">264</FONT>                                                    rightDis,truthDis, rightDis,TOLERANCE*STRESS_FACTOR);<a name="line.264"></a>
+<FONT color="green">265</FONT>                            }<a name="line.265"></a>
+<FONT color="green">266</FONT>                            <a name="line.266"></a>
+<FONT color="green">267</FONT>                            index++;<a name="line.267"></a>
+<FONT color="green">268</FONT>                            <a name="line.268"></a>
+<FONT color="green">269</FONT>                    }<a name="line.269"></a>
+<FONT color="green">270</FONT>            }<a name="line.270"></a>
+<FONT color="green">271</FONT>            <a name="line.271"></a>
+<FONT color="green">272</FONT>            <a name="line.272"></a>
+<FONT color="green">273</FONT>            /**<a name="line.273"></a>
+<FONT color="green">274</FONT>             * helper for getting fraction of distance out of storage arrays<a name="line.274"></a>
+<FONT color="green">275</FONT>             */<a name="line.275"></a>
+<FONT color="green">276</FONT>            private double getFraction(int[] arr, int address, boolean increasing){<a name="line.276"></a>
+<FONT color="green">277</FONT>            int count = 0;<a name="line.277"></a>
+<FONT color="green">278</FONT>            int i;<a name="line.278"></a>
+<FONT color="green">279</FONT>            for(int j = 0; j &lt; arr.length; j++){<a name="line.279"></a>
+<FONT color="green">280</FONT>                    i = arr[j];<a name="line.280"></a>
+<FONT color="green">281</FONT>                    if(i &lt; address){<a name="line.281"></a>
+<FONT color="green">282</FONT>                            count++;<a name="line.282"></a>
+<FONT color="green">283</FONT>                    }<a name="line.283"></a>
+<FONT color="green">284</FONT>            }<a name="line.284"></a>
+<FONT color="green">285</FONT>            <a name="line.285"></a>
+<FONT color="green">286</FONT>            double value = ((double) count +1 ) / ((double) arr.length + 1);<a name="line.286"></a>
+<FONT color="green">287</FONT>            if(!increasing){<a name="line.287"></a>
+<FONT color="green">288</FONT>                    value = 1.0 - value;<a name="line.288"></a>
+<FONT color="green">289</FONT>            }<a name="line.289"></a>
+<FONT color="green">290</FONT>            return value;<a name="line.290"></a>
+<FONT color="green">291</FONT>            }<a name="line.291"></a>
+<FONT color="green">292</FONT>            <a name="line.292"></a>
+<FONT color="green">293</FONT>            <a name="line.293"></a>
+<FONT color="green">294</FONT>    }<a name="line.294"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

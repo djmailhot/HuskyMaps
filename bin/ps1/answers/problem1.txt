@@ -1,0 +1,27 @@
+
+a.
+These on-line comments describe the formula for computing mathematical operations with fractions.
+
+b.
+The requires-clause for methods is a specification observed by the client.  Conversely, any variable referenced using 'this.' notation must be a variable that is part of the implementation of the class.  A client is not expected to interact with the implementation of a program, thus boundaries of 'this.' variables are not included in the requires-clause.
+
+c.
+The division operation of the RatNum.div() method has a mathmatical prerequisite that the denominator must not be zero.  An argument of NaN, by definition, has a zero-value denominator.  Allowing such an argument to be operated on without a check would cause java to crash with a "DivideByZeroException" or it's equivalent.
+
+d.
+A static method declaration allows the class method to be called without the need to initialize a class object first.  To implement the valueOf() method as a non-static method, a dummy RatNum object will need to be initialized so that the valueOf() method can be accessed.  This is the difference between using RatNum.valueOf() as opposed to declaring RatNum myobject and then using myobject.valueOf(). 
+
+e.
+The two-argument constructor for the RatNum class does not need to convert it's input to reduced form, eliminating around 10 lines of code.  However, for those methods that do rely on the assumption of reduced form, the code contained in the constructor will need to be distributed among these methods (outlined below).  While eliminating computation time for the constructor, overall performace will most likely decrease in quality as each method requiring reduced form will need to perform the computation for every method call.
+
+RatNum.equals() must be modified to be able to equate two numbers of different reduction amounts, yet equal mathematical value ( 1/2 == 2/4).  Implemention would easily be modified by including the reduction algorithem originally located in the constructor.  Alternatively, the compareTo() method could be used.
+
+the toString() method will also need to employ it's own reduction implementation, as according to the specification.  Again, the implemention would easily be modified by including the reduction algorithem originally located in the constructor.
+
+f.
+for the add, sub, mul, and div operations, nothing is mentioned in the specification about @modifies or @effects clauses.  The basic effect of the suggested replacement code is the modification of the current object, which would create obvious discrepancies that would need to be documented in such clauses.
+
+Even more fundamental, the specification of the RatNum class specifically declares itself as immutable.  This would clearly be violated by the proposed code, which causes the method to modify the data fields of the current object.
+
+g.
+The object's data fields are all of type 'private final'.  Only constructors that are allowed to assign 'final' variables, and 'private' variables are only accessable within the class.  This protects these class data fields very effectively from modification:  even the classes own method cannot modify the 'final' variables.  The only way to attempt to break the representation invariant of the class is by initializing a RatNum object with invalid parameters.  Yet the invariance is preserved through checks that are only present in the constructor.

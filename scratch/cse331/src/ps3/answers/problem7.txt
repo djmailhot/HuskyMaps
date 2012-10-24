@@ -1,0 +1,24 @@
+
+
+With the path finding algorithm fully understood, I endeavored to create a deep test file for findPath, aptly named psTestPathFinder.
+
+This test file was purely to test complicated cases of FindPath for a 7-node graph.  In particular, I examine the expected output of same-length-different-expense cases and different-length-same-expense cases.  I also tested many cases of multiple-argument start- and end-point calls.  I feel this is the most instable use of the algorithm, and the best chance to catch implementation errors.  
+
+Interestingly, for a case of same-length-same-expense path options I choose to specify "output undefined" for the time being because there is nothing in the external specification noting what choice we are to make in such a case.  In fact, it is in general an implementation choice that is difficult to justify.  When considering the user expereince, it would do well to simple return any one of the options, even if the return path is inconsistent for the same input.  The expectation of the user is just of the shortest and least cost path.
+
+
+
+APPENDED
+
+If I was unsure on my final implementation of my Graph class, I am sure that my pathFinder will find it's code stretched to the limit with the use of the P3TestDriver.  Therefore, I decided to try testing PathFinder using it generics feature:  I used NodeCountingPath in my test code.
+
+As for Graph, I returned to it's specification tests and finally added tests to see that my graph can handle any generic object, which is an important property.
+
+
+
+APPENDED-ED
+
+Apparently, I don't know how to get ImplementationTests to run any sort of tests, nor import the incredibly useful JUnit methods from junit.framework.
+I even have my separate class MyGreatTests.java.
+
+Wayyyy too late to try to get this working.  Taking the 'leap of faith' a-la recursion from CSE 143.

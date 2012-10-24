@@ -1,0 +1,192 @@
+
+1 plan architecture
+
+2 blackbox tests for TextUI
+"One excellent strategy is to build a tiny database in which you know the answers to various queries (and which is designed to enable queries that exercise various parts of an implementation)."
+
+3 DirectionsFinder modules
+
+4 implement TextUI
+
+5 glass-box tests for TextUI
+
+
+
+
+
+	classes
+Address  -  store data of an address
+
+%%%%%%%%%%%%%%%%%%%%%  have to make this one
+DirectionsFinder  -  load database and search over it for paths
+
+KillfileReader
+StreetSegIterator
+StreetSegReader
+TextUI
+
+
+	exceptions
+InvalidAddressException  -  bad specified address of DirectionsFinder.findDirections
+InvalidDatabaseException  -  bad source database for DirectionsFinder
+KillfileReader.KillfileException
+NoPathException  -  output if not path found for DirectionsFInder.findDirections
+StreetSegReader.InvalidSourceException  -  bad specified database sourse
+
+
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+DirectionsFinder
+
+
+########## methods
+
+
+getDirectionsFinder(String databaseName, Collection<String> zf)
+          Produces a DirectionsFinder for a given database.
+
+    Parameters:
+        databaseName - the database to find directions in
+        zf - a collection of zipcodes used for zipcode filtering. Only matching zipcodes will be used. If zf is empty or null then there is no zipcode filtering for the database. 
+    Returns:
+        A DirectionsFinder whose set of segments is { s | s in (new StreetSegReader(databaseName)).streetSegs () && (s.leftZip in zf || s.rightZip in zf || (s.leftZip.trim () == s.rightZip.trim () == "") || zf == null) } 
+    Throws:
+        InvalidDatabaseException - if databaseName does not refer to a valid tiger database.
+
+
+
+
+getDirections(Address start, Address end, ps2.RouteFormatter routeFormat)
+          Gets directions from start to end.
+
+    Returns:
+        A Directions providing directions of travel from start to end. 
+    Throws:
+        InvalidAddressException - if start or end is not in the geographical area covered by this DirectionsFinder. 
+        NoPathException - if no path could be found from start to end.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+TextUI
+
+
+
+<<<<<<<<< INPUT >>>>>>>>>
+
+
+FROM TEXTUI, MAKE DirectionsFinder.getDirectionsFinder(database name, Collection<String> of zipcodes used for zipcode filtering)
+
+if zipcode string is empty, then no filtering.
+
+if database path is invalid, 
+print
+	"Database error"
+
+
+
+user interaction loop
+
+//starting number
+//starting street
+//starting zipcode
+//destination number
+//destination street
+//destination zip
+//walk OR drive?
+
+
+
+If the starting zipcode does not appear in the database
+"    No such zipcode: number street zipcode "
+
+else if the starting street does not appear in the specified zipcode
+"    No such street: number street zipcode "
+
+else if the starting number does not appear on the street in the specified zipcode
+"    No such number: number street zipcode "
+
+else repeat with the second zipcode, street, and number, error output as specified above.
+
+
+If the input for type of directions is not 'w' or 'd'
+"    Invalid direction type: direction-type "
+
+If there is no way to get from the first address to the second
+"    No path from number street zipcode to number street zipcode "
+
+
+
+
+driving
+    Start at [number street zipcode]
+    ...
+    directions formatter lines
+    ...
+    [number street zipcode] is on your [left/right]
+    Trip length: [n.n] miles
+
+
+walking
+    Start at [number street zipcode]
+    ...
+    directions formatter lines
+    ...
+    [number street zipcode] is on your [left/right]
+    Trip time: [n] minutes
+
+
+
+<<<<<<<<<<<< DIRECTIONS >>>>>>>>>>>>>>>>
+
+
+CALL DirectionsFinder(start add, end add, routeFormat class)
+
+
+have to start at adress, move right and move left ---> 
+	starting sgments are address.seg && address.seg.reverse
+	
+SPECIAL start and end address on the same street ---->
+	not specified, figure it out
+
+
+
+
+
+
+
+streetsegreader: 
+gives iterator over segments in a specified database
+.iterator() || .streetSegments()
+  -  many unnamed streets = "(unnamed street)" & users CAN'T LOOK UP ADDRESSES on these streets
+  -  many address duplicates = check xips with contains()
+
+
+segment list:
+list of all segments in a database, usefulll for debugging
+format:  streetName startPt endPt length [leftZip] [rightZip] [leftNumbers] [rightNumbers]
+
+
+
+

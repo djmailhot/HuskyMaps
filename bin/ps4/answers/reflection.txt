@@ -1,0 +1,19 @@
+
+a.
+problem 1 = 8 hours
+problem 2 = 12 hours
+problem 3 = 8 hours
+
+
+b.
+I focused too much on perfecting my data representation in NumberSet.  I should have just gone with a "good enough" approach, because the alternative means thinking much much much too hard about optimization.
+
+Additionally, focued pretty heavily on creating quality test code for cases that turned out to be implementation-based rather than specification-based (a.k.a. worthless in terms of credit on the assignment, but i suppose good piece of mind (for what I have left) )
+
+
+c.
+I don't know if the staff COULD have done anything better.  That method of cross-checking rankings is pretty interesting.  I think another lecture on how to test code would be pretty neat, especially on the deep majicks that allow people to mutate so-called immutable objects
+
+
+d.
+I wish I had stuck to a single representation for NumberSet and moved on in a sane manner.  This would have left more time to write test cases.

@@ -1,0 +1,65 @@
+<!--Minimal ant build file that needs to be created per pset.  You
+ mostly just have to use this as an example, and modify the project
+ name, and the also.compile property to be a comma-separated list of
+ other psets to compile in the shown fashion. -->
+
+<project name = "ps1" basedir = "../">
+  <property name = "psetname" value = "${ant.project.name}"/>
+  <property name = "pset" location = "${psetname}"/>
+  <import file="../common.xml"/>
+
+   <target name = "daikon-RatNumTest" depends = "build">
+    <java classname="daikon.Chicory"
+          fork="yes"
+          spawn="no"
+          dir="${pset}"
+          classpathref="common.classpath">
+      <arg value="--ppt-omit-pattern=junit|^${psetname}.test"/>
+      <arg value="--dtrace-file=daikon-RatNumTest.dtrace.gz"/>
+      <arg value="--daikon"/>
+      <arg value="--daikon_args"/>
+      <arg value="--var-omit-pattern=ZERO|NaN|serialVersionUID --config_option daikon.PptRelation.enable_object_user=false
+            --no_text_output --config_option daikon.Daikon.progress_delay=-1"/>
+      <arg value="junit.textui.TestRunner"/>
+      <arg value="${psetname}.test.RatNumTest"/>
+    </java>
+    <java classname="daikon.PrintInvariants"
+          fork="yes"
+          spawn="no"
+          classpathref="common.classpath"
+          dir="${pset}"
+          output="${pset}/daikon-RatNumTest.inv.txt">
+       <arg value="daikon-RatNumTest.inv.gz"/>
+    </java>
+
+    <echo> "Results are in daikon-RatNumTest.inv.txt" </echo>
+  </target>
+
+  <target name = "daikon-RatNumSmallTest" depends = "build">
+    <java classname="daikon.Chicory"
+          fork="yes"
+          spawn="no"
+          dir="${pset}"
+          classpathref="common.classpath">
+      <arg value="--ppt-omit-pattern=junit|^${psetname}.test"/>
+      <arg value="--dtrace-file=daikon-RatNumSmallTest.dtrace.gz"/>
+      <arg value="--daikon"/>
+      <arg value="--daikon_args"/>
+      <arg value="--var-omit-pattern=ZERO|NaN|serialVersionUID --config_option daikon.PptRelation.enable_object_user=false
+            --no_text_output --config_option daikon.Daikon.progress_delay=-1"/>
+      <arg value="junit.textui.TestRunner"/>
+      <arg value="${psetname}.test.RatNumSmallTest"/>
+    </java>
+    <java classname="daikon.PrintInvariants"
+          fork="yes"
+          spawn="no"
+          classpathref="common.classpath"
+          dir="${pset}"
+          output="${pset}/daikon-RatNumSmallTest.inv.txt">
+       <arg value="daikon-RatNumSmallTest.inv.gz"/>
+    </java>
+
+    <echo> "Results are in daikon-RatNumSmallTest.inv.txt" </echo>
+  </target>
+
+</project>

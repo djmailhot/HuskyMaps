@@ -1,0 +1,160 @@
+>>> SPECIFICATION <<<<<<<<<<<<<<<<<<<<<<<<<<
+
+/**
+ * <p>
+ * A StreetNumberSet is an immutable data object containing the range of 
+ * building numbers that are present on a street.  Building numbers 
+ * are indicative of building addresses located on a geographic street.
+ * </p>
+ * 
+ * <p>
+ * Ranges of building addresses always represent a collection of same-parity
+ * addresses.  For instance, an address range of 6-12 indicates the presence
+ * of all even addresses between 6 and 12, inclusive:  6, 8, 10, and 12.  No
+ * single address range will ever include both an even and an odd number. 
+ * </p>
+ * 
+ * 
+ * @specfield pairMap : TreeMap<Integer, Integer>	//map of min/max pairs 
+ * 					//representing same-parity ranges of building addresses present.
+ * 					//Each range minimum is a key that maps to it's maximum.
+ * 
+ * @specfield size : int		//the number of addresses represented in this set
+ */
+
+
+
+
+>>>>>>>>>> METHODS <<<<<<<<<<<<<<<<<<<<<<<<<<
+    /**
+     * Creates a StreetNumberSet containing the numbers indicated in the
+     * argument.
+     *
+     * @requires numbers != null && numbers is a space-free comma-delimited list
+     *           of zero or more disjoint parity ranges. Two parity ranges
+     *           are disjoint if they share no elements.
+     *           For example, 10-20 and 19-21 are disjoint:  as
+     *           one only contains even elements and the other contains odd.
+     *           By contrast, 1-5 and 3-7 overlap, as they both contain 3 and 5.
+     *
+     * <p>
+     * A parity range is either a single nonnegative integer "n" or a
+     * hyphen-separated pair of nonnegative integers "m-n", where m and n have
+     * the same parity and m is no greater than n. A range m-n represents the
+     * set of all numbers from m to n, inclusive, which are the same parity as m
+     * and n.
+     *
+     * <p>
+     * For instance, legal arguments to this constructor include
+     * "", "5", "22,253", "3-101", and "1914-1918,1939-1945".
+     */
+    public StreetNumberSet(String numbers) 
+
+
+    /**
+     * @return true if other is a StreetNumberSet that contains the same
+     * numbers as this.  In particular, this expression evaluates to true:
+     * <pre>new StreetNumberSet("1-9").equals(new StreetNumberSet("1-3,5-9"))</pre>
+     */
+    public boolean equals(Object other)
+
+
+    /** @return true iff i is in this */
+    public boolean contains(int i) 
+
+
+    /** @return the number of addresses represented in this NumberSet */
+    public int size()
+
+
+    /** @return the number of elements less than i in this */
+    public int orderStatistic(int i) 
+
+
+    /**
+     * @return the hash code of this number set. 
+     */
+    public int hashCode()
+
+
+
+
+>>> TESTING <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+I focused on edge cases of possible states of a NumberSet.  In particular, I spcifically tested the case of two sets being equal based on the specific address numbers they cover, not the specified ranges.  (i.e. new StreetNumberSet("1-9").equals(new StreetNumberSet("1-3,5-9")  should be true.)
+
+Additionally, I focused on the fact that the conventions for the input string to the constructor do not limit the order in which ranges are declared (i.e. an unsorted input string of "15-33,4,10-12,78,1" is entirely legal.)  Thus I made sure my implementation did not optimize its operations based on the assumption of a sorted input string.  I also tested for this.
+
+Zero-range NumberSets also were tested.
+
+So, I focused on edge cases because I felt that the normal operations would be sufficently checked in the pursuit of such special cases.
+
+
+Finally, I added in a memory stress test that creates a numberset of a specified number of randomized addresses (default, 500000) to test construction cost and operation cost.
+
+
+
+>>> REPRESENTATION <<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+	/*
+	 * 
+	 * Abstraction Function
+	 * AF(n)  =  n is a street number in this StreetNumberSet
+	 * 		then there exists some key k of pairMap, such that
+	 * 		(k <= n) && 
+	 * 		(pairMap.get(k)  >=  n)  &&
+	 * 		(k%2  ==  n%2)
+	 * 		
+	 * 
+	 * Representation Invariant
+	 * for any key k in pairMap
+	 * k > 0
+	 * pairMap.get(k) > 0
+	 * k % 2 == pairMap.get(k) % 2
+	 * that is, the min/max pair of an address range must be the same parity.
+	 * 
+	 */
+
+>>>>>>>> Representation Analysis:
+
+	In my analysis, I considered 3 factors.
+	1)  memory stress  =  how much memory the representation requires
+	2)  startup cost  =  cost to construct the set
+	3)  operating cost  =  cost to operate on the set
+
+	I felt that operating cost was the most important to optimize, follwed by memory stress.  I believe that the startup cost is the least important.  We were talking about the expected response time of the findPath algorithm as experienced by end-users.  I felt that the operations performed on the multitude of NumberSets embedded in our graph would be the most important thing to optimize in the interest of the user.  To achive this, startup cost would have to be sacrificed, which I believe is a smart trade-off.  The ratio of graphs constructed to the number of findPath operations used on each graph will be one-to-many:  a geographic map is created once, then used many times.
+
+
+>>>>>>>> Choosen Representation:
+	I choose to store my ranges as key-value pairs in a TreeMap as Integers.  This is a little memory intensive because it is a java collections class, and I am storing Integers.  However, I employ an optimization function that connects adjacent range pairs, which decreases memory usage somewhat.  The most important feature is that a TreeMap has many useful methods that rely on it's sorted nature, which cuts NumberSet operating cost substantially.
+	Stats:
+	memory stress  =  med (with optimization)
+	startup cost  =  highest
+	operating cost  =  lowest
+
+
+
+>>>>>>>>> Alternatives:
+	Store the seed string, and split it within each method to derive the data.
+	Stats:
+	memory stress  =  lowest
+	startup cost  =  lowest
+	operating cost  =  highest
+	My analysis of operating cost declares this a very poor choice.
+
+
+	Store a collection of strings each representing a "min-max" pair as a number range.
+	Stats:
+	memory stress  =  high
+	startup cost  =  med
+	operating cost  =  med
+	My analysis declares this an inefficient choice.
+
+
+	Store a collection of "range" objects, each with data fields for min and max numbers
+	Stats:
+	memory stress  =  high
+	startup cost  =  med
+	operating cost  =  med
+	This is a popular choice among the class.  However, I was disgusted with the idea of creating an entire object for each distinct range pair of min/max.  I admit, a map is just a collection of nodes.  However, the TreeMap implementation provides incredibly useful functionality for decreasing operating costs.
+	

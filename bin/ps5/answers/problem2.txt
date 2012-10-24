@@ -1,0 +1,31 @@
+
+a.
+
+Tree is not a true subtype of Graph.  Tree overrides two methods of Graph, addNode and AddEdge.  To be a true subtype, Tree must have preconditions for these methods that are no more strict than Graph's.
+
+For Graph:
+  // Adds a node to the graph
+  void addNode(N node);
+
+  // Adds an edge from parent to child
+  void addEdge(N parent, N child);
+
+
+For Tree:
+  // Throws exception regardless of input
+  void addNode(N node) 
+
+  // Throws exception regardless of input
+  void addEdge(N parent, N child) 
+
+
+As you can see, Tree sets up preconditions that are infinitely more restrictive than the preconditions of Graph.  In addition, Tree declares Exceptions for input that is valid for supertype Graph.  Therefore, Tree cannot be a true subtype of Graph.
+
+
+
+
+b.
+
+Conceptually, a subclass should offer ADDITIONAL or specially MODIFIED behavior over a superclass.  I am particularly hostile to the idea of a more RESTRICTIVE subclass.  It's like the subclass is mooching off of the functionality of the superclass while offering no fringe benefits in return.  What this translates to in terms of the implementation is that the Tree class 'Overrides' the basic functionality of a Graph, replacing it with it's own.  It just so happens that Tree's functional method calls upon super methods from Graph.
+
+Fundamentally, if you were looking for the functionality of a Graph, substituting any subclass should also satisfy this functionality.  In this case, Tree is not at all a valid substitute for a Graph.

@@ -1,0 +1,39 @@
+
+
+a.
+
+	1) base case
+if the root node is null, then no action is taken, thus no cycles can be introduced
+	2) inductive step
+	if the tree has nodes, assume deleteNode(n) is called on a Tree with no cycles.  cases:
+(a. if the root will be deleted)  Making a child of the root the new root node does not create any new edges, thus it cannot induce a cycle.  Changing the parent of a node to be one of it's siblings does not induce a cycle because a sibling can never be itself.  Deleting a node does not make a new edge, thus it cannot induce a cycle.
+(b. if a non-root will be deleted)  Finding a node does not change the tree, thus it cannot induce a cycle.  The parent of a node cannot be itself (assuming no cycles exist), thus the parent of that parent also cannot be this node.  Therefore, changing the parent of a node to be it's parent's parent does not induce a cycle.  Deleting a node does not make a new edge, thus it cannot induce a cycle.
+
+
+b.
+
+	1) base case
+if the tree is empty, the root node is null, thus there are nodes to find a path to
+
+	2) inductive step, addNode
+	if the tree has at least 1 node, assume there is a single path from the root to any node in the tree
+(a. root node is null) see base case.
+(b. root node exists)  creating a new node does not make a new edge, thus no new paths are possible.  Finding a node does not change the tree, thus no new paths are possible.  An existing node has a single path to it.  Adding a new node as the child of an existing node creates a single edge to the new node, thus there is a single path to the new node:  unique path to the existing parent + single edge to the new node.
+
+	3) inductive step, deleteNode
+	if the root node is not null, assume there is a single path from the root to any node in the tree
+(a. root node is deleted)  Making a child of the root the new root node does not introduce any new edges, thus no new paths are possible.  There is only one path to the root node, thus changing the parent of a node to be the root node allows only a single path to reach that node, so not more than one path is possible.  Deleting a node does not create any new edges, thus no new paths are possible.
+(b. if a non-root node is deleted)  Finding a node does not change the tree, thus a new path is not possible.  There is a single path to any node, thus there is a single path to that node's parent, as well as a single path to the parent of that parent.  Therefore, changing the parent of a node to be it's parent's parent does not introduce any new paths.  Deleting a node does not create any new edges, thus no new paths are possible.
+
+	4) inductive step, containsNode
+	if the root node isn't null, assume there is a single path from the root to any node in the tree
+(a. the root node is the desired node) checking the value of the root node does not change the tree, thus no new paths are possible.
+(b. a decendant of the root is the desired node)  checking the value of a node does not change the tree, thus no new paths are possible. 
+(c. the desired node is not in the tree)  checking the values of all nodes does not change the tree, thus no new paths are possible.
+
+
+c.
+
+	1) The deleteNode operation can give an existing node new children, and it never checks whether that node already has two children.
+	2) The addNode operation first finds a node that specifically has less than two children.  It then gives a new child to that node.  Thus, no node ends up with more than 2 children.
+

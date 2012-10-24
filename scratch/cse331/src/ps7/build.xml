@@ -1,0 +1,11 @@
+<!--Minimal ant build file that needs to be created per pset.  You
+ mostly just have to use this as an example, and modify the project
+ name, and the also.compile property to be a comma-separated list of
+ other psets to compile in the shown fashion. -->
+
+<project name = "ps7" basedir = "../">
+  <property name = "psetname" value = "${ant.project.name}"/>
+  <property name = "pset" location = "${psetname}"/>
+  <property name = "also.compile" value = "ps2/**/*.java ps3/**/*.java ps4/**/*.java ps6/**/*.java"/>
+  <import file="../common.xml"/>
+</project>

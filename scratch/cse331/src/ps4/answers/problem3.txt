@@ -1,0 +1,140 @@
+
+>>> SPECIFICATION <<<<<<<<<<<<<<<<<<<<<<
+
+
+/**
+ * <p>
+ * A RoutePath is a sequence of GeoSegments that represent a continuous 
+ * navigational path across the earth's surface.  It's cost is defined
+ * as the total distance traversed by the path's GeoSegments so far, plus
+ * the geographic distance to the nearest goal segment. 
+ * 
+ * <p>
+ * A Route Path is immutable. A new RoutePath is returned through
+ * the extend path operation.
+ * 
+ * <p>
+ * The elements of this path are GeoSegments.  For any single segment of the path,
+ * the segment's start point must be equal to the end point of the previous 
+ * segment, and it's end point must be equal to the start point of the next segment
+ * in the path.
+ *
+ *
+ * Specfields inherited from Path:
+ * @specfield  cost :     double       // cost of traversing this path.
+ * @specfield  elements : sequence     // sequence of nodes in this path.
+ * 
+ * 
+ * Local specfields
+ * @specfield  node : GeoSegment		// the end node of this path
+ * @specfield  goals : Set<GeoSegment> 	// collection of goal nodes for this
+ * 										// path instance 
+ */
+
+
+
+>>>>>>>>>>>>>> METHODS <<<<<<<<<<<<<<<<
+
+
+
+    /**
+     * Specified by Path interface.  In addition:
+     * @requires start point of specified GeoSegment must match end point of 
+     * of this path's end segment. 
+     */
+	public RoutePath extend(GeoSegment s)
+
+
+	/**
+	 * Specified by Path interface.  In addition:
+	 * RoutePath cost is defined as the total distance traversed by the path's
+	 * GeoSegments so far, plus the geographic distance to the nearest goal segment.
+	 * @returns a double representing the path's cost
+	 */
+	public double cost()
+	
+	
+
+    // Specified by Path interface (which extends Iterable)
+	public Iterator<GeoSegment> iterator()
+
+
+	/**
+	 * @return the end GeoSegment for this path
+	 */
+	public GeoSegment end()
+
+
+    /**
+     * @return true iff o is a RoutePath and o.elements is the
+     * same sequence as this.elements
+     **/
+    public boolean equals(Object o)
+
+
+    /**
+     * @return the hash code of this path
+     */
+    public int hashCode()
+
+
+    /**
+     * Compares the cost of this path to the given path.
+     * @return the value 0 if the cost of this path is equal to the
+     *         cost of the given path; a value less than 0 if this.cost is
+     *         less than p.cost; and a value greater than 0 if this.cost
+     *         is greater than p.cost.
+     * @see java.lang.Comparable#compareTo
+     */
+	public int compareTo(Path<? , ?> p)
+	
+
+
+
+
+>>> TESTING <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+The provided test driver example files created a rather extensive graph.  I looked at that, and went "wow... can I use that?"  I decided that the example graph of campus would be an excellent graph to build my test cases around.  In consideration for the tests that are already provided, I leave those inside, and just append to the bottom of the file new cases that I've sorted out.  (I feel a little sheepish just copying and pasting.)
+
+The cases I test are as follows:
+FindGeoPath campus Spokane1rev Spokane0 -> Stevens1rev
+FindGeoPath campus Memorial0 Memorial0rev -> Skagit0
+FindGeoPath campus Memorial0 Memorial0rev -> Skagit0 Skagit0rev
+FindGeoPath campus Spokane1rev -> Stevens0 Stevens1rev
+
+Notice how all these have interesting properties about the end and start points being very similar.  I noticed the case where the A* huristc is implemented by computing the closest goal by the distance from this path to the goal's start OR END POINT.  Distance to the end point is a very unwise choice.  If such a mistake can ever lead to the choosing of the wrong path, the tests above will catch it.
+
+
+
+
+>>> REPRESENTATION <<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+/*
+ * Abstraction Function
+ * AF(c) = < cost, elements >  where
+ * 		cost     = c.cost
+ * 		elements = 	[c.node]				if c.path == null
+ * 			 ||	[c.node] + c.path.elements		if c.path != null
+ * 
+ * 
+ * 
+ * Representation Invariant 
+ * 		(this.node != null && this.goals != null && !this.goals.isEmpty() ) &&
+ * 		(this.path == null) ==> (this.cost == this.node.cost) &&
+ * 		(this.path != null) ==> (this.cost == this.node.cost + this.path.cost)
+ * 
+ * 		In a path of n elements, for element e, {1 < e < n-1} :
+ * 			e.getP1().equals( [e-1].getP2() ) && e.getP2().equals( [e+1].getP1() )
+ * 			that is for any element, it's start point must be equal to the end point
+ * 			of the previous element, and it's end point must be equal to the start
+ * 			point of the next element
+ */
+
+
+I considered not implementing a Route object inside my RoutePath, because it seemed that RoutePath could provide all needed functionality that a Route could.  A RoutePath can iterate over all of it's parents to gather up all the GeoSegments so far.  Also, as you extend the RoutePath, it can efficiently keep track of the length of the entire path so far.  These are the only two functions that are needed from Route to be used in the PathFinder.  Finally, if a private Route is stored in RoutePath, then every Path object in the chain holds a useless and inaccessable Route object, which seems over-zealous and a waste of memory space.
+
+However, after deeper thought, I felt that the complete specification and abstraction invariant of Route was a great way to gurantee the stability of my RoutePath.  After making invariance checks on GeoSegments passed through RoutePath.extend(gs), such invariants are checked a second time within Route as I immeadiately update my private field Route with the new GeoSegment.  I felt this was a very defensive measure.  Additionally, while all necessary functionality of Route could be implemented into RoutePath, I seemed the better option to just use the implementation that I already know works:  that of Route.  Instead of keeping track of the total length of this Path, just call Route.getLength().  Instead of iterating through all Routes for GeoSegments, just call Route.getGeoSegments().  In this way, I am using my previous implemention without acutally having to extend a sub class!  (But then you could get into the whole discussion of whether RoutePath can be a subclass of Route.  Oh well, it's late)
+
+

@@ -1,0 +1,16 @@
+
+a.
+daikon reconizes the this.denom >= 0 representation invariance (RI) in both tests, which is also documented in the RatNum specification.  However, the tests don't reconize the additional representation invariance of "r.denom > 0 ==> there does not exist integer i > 1 such that r.numer mod i = 0 and r.denom mod i = 0"
+
+b.
+both tests agree on the RI of 
+this.numer >= -1
+arg != null
+
+However, they differ slightly in the next two test results
+for arg.denom, the complete test pegs the RI at arg.denom >= 0, while the shorter test determines arg.denom >= 1.   In this case, it seems the complete test just tests more cases of input to determin a more specific RI.
+
+for the last RI, both tests actually determine different expressions.
+the complete test:  arg.numer >= -1
+the small test:  this.denom >= 1
+in this respect, it seems that the increased cases of the complete test allow it to move beyond a conclusion of this.denom >= 1 because of it's ability to determin arg.denom >= 0.  The shorter test does show it's limits when determining seperately this.denom >= 1 and arg.denom >= 1 when in fact this is not the case at all.  Perhaps the shorter test is not testing negative cases?

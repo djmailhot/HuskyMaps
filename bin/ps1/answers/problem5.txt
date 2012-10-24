@@ -1,0 +1,8 @@
+
+favorites
+x^9-3*x
+x^9-3*x^4+20*x^3
+x^7+x^3-3*x^2-47*x
+
+try integrating and differentiating bunches of times, over and over!
+

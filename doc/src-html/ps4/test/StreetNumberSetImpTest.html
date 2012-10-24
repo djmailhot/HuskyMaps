@@ -1,0 +1,156 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    package ps4.test;<a name="line.1"></a>
+<FONT color="green">002</FONT>    <a name="line.2"></a>
+<FONT color="green">003</FONT>    import ps4.*;<a name="line.3"></a>
+<FONT color="green">004</FONT>    import junit.framework.*;<a name="line.4"></a>
+<FONT color="green">005</FONT>    <a name="line.5"></a>
+<FONT color="green">006</FONT>    public class StreetNumberSetImpTest extends TestCase {<a name="line.6"></a>
+<FONT color="green">007</FONT>    <a name="line.7"></a>
+<FONT color="green">008</FONT>            /** number sets */<a name="line.8"></a>
+<FONT color="green">009</FONT>            private final StreetNumberSet numSetEq1;<a name="line.9"></a>
+<FONT color="green">010</FONT>            private final StreetNumberSet numSetEq2;<a name="line.10"></a>
+<FONT color="green">011</FONT>            private final StreetNumberSet numSetDiff1;<a name="line.11"></a>
+<FONT color="green">012</FONT>            private final StreetNumberSet numSetDiff2;<a name="line.12"></a>
+<FONT color="green">013</FONT>            private final StreetNumberSet numSetZero;<a name="line.13"></a>
+<FONT color="green">014</FONT>            private final StreetNumberSet numSetBig;<a name="line.14"></a>
+<FONT color="green">015</FONT>            <a name="line.15"></a>
+<FONT color="green">016</FONT>            /** arrays of all numbers that should be present*/<a name="line.16"></a>
+<FONT color="green">017</FONT>            private final int[] arrEq1 = {14,16,18,20,22};<a name="line.17"></a>
+<FONT color="green">018</FONT>            private final int[] arrEq2 = {14,16,18,20,22};<a name="line.18"></a>
+<FONT color="green">019</FONT>            private final int[] arrDiff1 = {14,15,16,17,18,19,20,22};<a name="line.19"></a>
+<FONT color="green">020</FONT>            private final int[] arrDiff2 = {14,18,20,22};<a name="line.20"></a>
+<FONT color="green">021</FONT>            private final int[] arrZero = {};<a name="line.21"></a>
+<FONT color="green">022</FONT>            private final int[] arrBig = {15,8,10,12,7,9,11,0,13,18,5,42,44,57};<a name="line.22"></a>
+<FONT color="green">023</FONT>            <a name="line.23"></a>
+<FONT color="green">024</FONT>            <a name="line.24"></a>
+<FONT color="green">025</FONT>            public StreetNumberSetImpTest(String name){<a name="line.25"></a>
+<FONT color="green">026</FONT>                    super(name);<a name="line.26"></a>
+<FONT color="green">027</FONT>                    <a name="line.27"></a>
+<FONT color="green">028</FONT>                    // initialize ranges<a name="line.28"></a>
+<FONT color="green">029</FONT>            String numEq1 = "14-22";<a name="line.29"></a>
+<FONT color="green">030</FONT>            String numEq2 = "14-16,18,20-22";       <a name="line.30"></a>
+<FONT color="green">031</FONT>            String numDiff1 = "14-18,15-19,20-22";<a name="line.31"></a>
+<FONT color="green">032</FONT>            String numDiff2 = "14,18,20-22";<a name="line.32"></a>
+<FONT color="green">033</FONT>            String numZero = "";<a name="line.33"></a>
+<FONT color="green">034</FONT>            // non-ascending order seed string.  No specification about state of<a name="line.34"></a>
+<FONT color="green">035</FONT>            // seed string on order of numbers!<a name="line.35"></a>
+<FONT color="green">036</FONT>            String numBig = "15,8-12,7-13,0,18,5,42-44,57";   <a name="line.36"></a>
+<FONT color="green">037</FONT>            <a name="line.37"></a>
+<FONT color="green">038</FONT>            // initialize StreetNumberSets<a name="line.38"></a>
+<FONT color="green">039</FONT>            numSetEq1 = new StreetNumberSet(numEq1);<a name="line.39"></a>
+<FONT color="green">040</FONT>            numSetEq2 = new StreetNumberSet(numEq2);<a name="line.40"></a>
+<FONT color="green">041</FONT>            numSetDiff1 = new StreetNumberSet(numDiff1);<a name="line.41"></a>
+<FONT color="green">042</FONT>            numSetDiff2 = new StreetNumberSet(numDiff2);<a name="line.42"></a>
+<FONT color="green">043</FONT>            numSetZero = new StreetNumberSet(numZero);<a name="line.43"></a>
+<FONT color="green">044</FONT>            numSetBig = new StreetNumberSet(numBig);<a name="line.44"></a>
+<FONT color="green">045</FONT>            <a name="line.45"></a>
+<FONT color="green">046</FONT>            }<a name="line.46"></a>
+<FONT color="green">047</FONT>            <a name="line.47"></a>
+<FONT color="green">048</FONT>            <a name="line.48"></a>
+<FONT color="green">049</FONT>            <a name="line.49"></a>
+<FONT color="green">050</FONT>        <a name="line.50"></a>
+<FONT color="green">051</FONT>        /**<a name="line.51"></a>
+<FONT color="green">052</FONT>         * test size operation<a name="line.52"></a>
+<FONT color="green">053</FONT>         */<a name="line.53"></a>
+<FONT color="green">054</FONT>        public void testSize(){<a name="line.54"></a>
+<FONT color="green">055</FONT>            <a name="line.55"></a>
+<FONT color="green">056</FONT>            assertEquals("size should be "+getSize(arrEq1)+", instead was "+<a name="line.56"></a>
+<FONT color="green">057</FONT>                            numSetEq1.size(), getSize(arrEq1), numSetEq1.size());<a name="line.57"></a>
+<FONT color="green">058</FONT>            assertEquals("size should be "+getSize(arrDiff1)+", instead was "+<a name="line.58"></a>
+<FONT color="green">059</FONT>                            numSetDiff1.size(), getSize(arrDiff1), numSetDiff1.size());<a name="line.59"></a>
+<FONT color="green">060</FONT>            assertEquals("size should be "+getSize(arrBig)+", instead was "+<a name="line.60"></a>
+<FONT color="green">061</FONT>                            numSetBig.size(), getSize(arrBig), numSetBig.size());<a name="line.61"></a>
+<FONT color="green">062</FONT>            assertEquals("size should be "+getSize(arrZero)+", instead was "+<a name="line.62"></a>
+<FONT color="green">063</FONT>                            numSetZero.size(), getSize(arrZero), numSetZero.size());<a name="line.63"></a>
+<FONT color="green">064</FONT>        }<a name="line.64"></a>
+<FONT color="green">065</FONT>        <a name="line.65"></a>
+<FONT color="green">066</FONT>        <a name="line.66"></a>
+<FONT color="green">067</FONT>        /**<a name="line.67"></a>
+<FONT color="green">068</FONT>         * helper to test size<a name="line.68"></a>
+<FONT color="green">069</FONT>         */<a name="line.69"></a>
+<FONT color="green">070</FONT>            private int getSize(int[] arr){<a name="line.70"></a>
+<FONT color="green">071</FONT>                int count = 0;<a name="line.71"></a>
+<FONT color="green">072</FONT>                    for(int j = 0; j &lt; arr.length; j++){<a name="line.72"></a>
+<FONT color="green">073</FONT>                    count++;<a name="line.73"></a>
+<FONT color="green">074</FONT>                }<a name="line.74"></a>
+<FONT color="green">075</FONT>                    return count;<a name="line.75"></a>
+<FONT color="green">076</FONT>            }<a name="line.76"></a>
+<FONT color="green">077</FONT>        <a name="line.77"></a>
+<FONT color="green">078</FONT>            <a name="line.78"></a>
+<FONT color="green">079</FONT>        /**<a name="line.79"></a>
+<FONT color="green">080</FONT>         * test hashCode<a name="line.80"></a>
+<FONT color="green">081</FONT>         */<a name="line.81"></a>
+<FONT color="green">082</FONT>        public void testHashCode(){<a name="line.82"></a>
+<FONT color="green">083</FONT>            assertTrue("numbersets covering the same number range, even with different " +<a name="line.83"></a>
+<FONT color="green">084</FONT>                            "string seeds, should have the same hash code", numSetEq1.hashCode() == <a name="line.84"></a>
+<FONT color="green">085</FONT>                            numSetEq2.hashCode() );<a name="line.85"></a>
+<FONT color="green">086</FONT>        }<a name="line.86"></a>
+<FONT color="green">087</FONT>            <a name="line.87"></a>
+<FONT color="green">088</FONT>    <a name="line.88"></a>
+<FONT color="green">089</FONT>            <a name="line.89"></a>
+<FONT color="green">090</FONT>    }<a name="line.90"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

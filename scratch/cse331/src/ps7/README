@@ -1,0 +1,124 @@
+
+################ HUSKY MAPS SUPER SPECIAL AWESOME ############
+
+
+
+
+ >>>>>>>>>>>>>>>>>>> DEVELOPEMENT <<<<<<<<<<<<<<<<<<<<
+
+ All construction of GUI components handled by auto-generated code of NetBeans IDE 6.9.1 . The accompanying GraphicUI.form file details the front-end construction of the GUI window and all its components.
+
+
+
+
+
+
+
+ >>>>>>>>>>>>>>>>>> EXTRA FEATURES <<<<<<<<<<<<<<<<<<<<
+
+I implement the extra features of:
+1) Accept a single string for an address
+
+2) Toggle street names on and off
+
+3) Intelligent detection of user input, simply regenerating the graphical map if input fields show the same as what was last used to generate directions.
+
+4) Operate over fractional segments.  
+
+5) Consider street classification in determination of 'shortest route'
+
+6) Consider number of intersections in determination of 'shortest route'
+
+7) Advanced PathFinding optimization to handle discrepancies between new street class- and intersection- cost-determination and A*'s hypothetical distance-to-goal cost determination.  This optimization is turned on if either street classification or intersections are turned on.  My implementation of this optimization can be found within ps7.StreetPath.java
+
+8) "Quick 'n Dirty search":  Due to the limitations of the above PathFinding optimization ( detailed later in this document ), I include an option to speed up searches with an expected loss in directions quality.  This can also be used in vanilla mode ( mode of no fractional, street class, or intersections ) to speed up searches substancially.  However, again, the directions found may be of lower quality in both cases.
+
+
+
+
+
+
+
+
+ >>>>>>>>>>>>>>>>>>>> ACTIVATION <<<<<<<<<<<<<<<<<<
+
+To activate said features, use the following flag with your call to one of the UI classes:
+
+java GraphicUI -h
+java TextUI -h
+
+This will output a list of flags that can be invoked to turn on certain features of HuskyMaps, listed below:
+
+-F to turn on fractional distance, -f to turn off
+-I to turn on intersection traversal, -i to turn off
+-C to turn on street classification, -c to turn off
+
+Extra features can also all be enabled with the ps7.EnvironmentVariables.java class
+
+
+
+
+ >>>>>>>>>>>>>>>>>>> EXAMPLES <<<<<<<<<<<<<<<<<<<<<
+
+	Fractional segments consideration example 
+1100 E Union St 98122
+1152 E Madison St 98122
+(you will need to resize the map view to extremely emphasize a horizontal viewing area to see this clearly)
+
+
+
+	Street classification consideration example
+2432 NW 201st Pl 98177
+6500 58th Ave NE 98115
+( The cost weight of each kind of street can be tuned from within EnvironmentVaribles.java )
+
+
+
+	Intersection cost consideration example
+5755 35th Ave NE 98105
+1519 NE 45th St 98105
+( The cost weight of each intersection can be tuned from within EnvironmentVaribles.java )
+
+
+
+	Stress test example
+19696 Echo Lake Pl N 98133
+23304 59th Pl S 98032
+Warning, on some people's implementations, this can take 5 minutes or longer.  On mine, it takes less than 5 seconds, and my path follows I-5 for %80 of the path!
+
+
+
+	Optimized pathfinding algorithm stress example
+1821 10th Ave W 98119
+1121 33rd Ave 98122
+My optimized algorithm works really well in some directions cases, but really slows down in others.  Its related to how dense the streets are in the search area, as well as mono-road-class areas. (for example, it slows down a lot when trying to drive through the downtown area and it can't quite jump on I-5 or the Viaduct.) This search takes around 30 seconds.  With the "Quick 'n Dirty" option selected, it takes only a few seconds.  
+
+This stress test example is actually really good for determining if street classification is accounted for correctly.  Having all local roads means that an inordinate amount of A* underestimation is happening, slowing down the search.
+
+
+This next search is a ridiculously distant one, but its handled like peanuts by my algorithm because StreetPath can follow highways for a large amount of the route.
+2432 NW 201st Pl 98177
+21700 SE 265th Way 98038
+
+
+
+
+
+
+
+ >>>>>>>>>>>>>>>> Path finding optimization <<<<<<<<<<<<<<<<<<
+(My implementation of this optimization can be found within ps7.StreetPath.java)
+
+	Problem:
+The A* cost-determination of PathFinder and the Path interface was severly hampered by my implementation of the cost-consideration of intersections and street classification.  Basically, the already-traveled cost of every path was far out-stripping the hypothetical distance-to-goal cost.  The overall result was a PathFinder cost-determination that favored choosing paths that had been extended only a few times over paths that had been extended almost to a goal segment.  (In effect, once a path had reached one segment away from the goal, its choosen-route cost-determination had accumulated so many penalties that the PathFinder would extend every other path in its PriorityQueue - multiple times even - before returning to this clostest path and complete the calculation.)
+
+	Solution:
+To fix this problem, I implemented an advanced optimization architecture within StreetPath, and controlled by HuskyMapsEnvironmentVariables.java .  Basically, the distance-to-goal cost-factor is set to a flat rate ( 3.0 is default.  That is, 3.0 times the hypothetical distance-to-goal in miles.  It will make more sense if you examine HuskyMapsEnvironmentVariables.java and StreetPath.java)  StreetRoute keeps track of the absolute shortest distance any Path is from a goal out of all paths being extended.  It then calculates a 'buffer zone' from this distance ( 1.0 mile is default).  Basically, if any Path's distance to a goal exceeds the absolute shortest distance plus the buffer zone, then that path's cost is exponentially increased above the flat rate mentioned above.
+
+	How it looks:
+Visually, this creates a kind of bubble around the leading edge of the most probable path to the goal.  As the path representing the absolute shortest distance moves closer to a goal, it pulls this buffer bubble with it.  In effect, this allows normal exploration of paths within 1.0 miles of this leading edge, and discounts immediately any path beyond the bubble.  This encourages exploration of shorter-cost paths around the goal, and discourages virtually-pointless exploration widely perpendicular to the line of the most-probable path.
+
+	Limitations:
+With this new optimization, multiple-destination goals are effectively out of the question.  The optimization only works if there is a single goal segment for every created instance of the StreetPath class.
+
+

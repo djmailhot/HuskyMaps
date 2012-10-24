@@ -1,0 +1,108 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    package ps6;<a name="line.1"></a>
+<FONT color="green">002</FONT>    import java.util.Iterator;<a name="line.2"></a>
+<FONT color="green">003</FONT>    <a name="line.3"></a>
+<FONT color="green">004</FONT>    import ps2.Route;<a name="line.4"></a>
+<FONT color="green">005</FONT>    <a name="line.5"></a>
+<FONT color="green">006</FONT>    /**<a name="line.6"></a>
+<FONT color="green">007</FONT>     *   A Directions is a description of how to travel from one Address to<a name="line.7"></a>
+<FONT color="green">008</FONT>     *   another.<a name="line.8"></a>
+<FONT color="green">009</FONT>     *   @specfield start      : Address // starting point<a name="line.9"></a>
+<FONT color="green">010</FONT>     *   @specfield end        : Address // destination<a name="line.10"></a>
+<FONT color="green">011</FONT>     *   @specfield length     : double  // traveling distance, in miles (not rounded)<a name="line.11"></a>
+<FONT color="green">012</FONT>     *   @specfield route      : Route  // this sequence of segments the directions<a name="line.12"></a>
+<FONT color="green">013</FONT>     *                                                              // travel over<a name="line.13"></a>
+<FONT color="green">014</FONT>     *   @specfield directions : sequence[String] //<a name="line.14"></a>
+<FONT color="green">015</FONT>     *   directions for traveling from start to end.  Each<a name="line.15"></a>
+<FONT color="green">016</FONT>     *   String in the sequence must be one line of directions, in the format<a name="line.16"></a>
+<FONT color="green">017</FONT>     *   specified in &lt;a href="../../psets/ps6/ps6.html#dirs-format"&gt;PS6<a name="line.17"></a>
+<FONT color="green">018</FONT>     *   text based interface&lt;/a&gt;, &lt;b&gt;excluding&lt;/b&gt; the first line which<a name="line.18"></a>
+<FONT color="green">019</FONT>     *   states where you start &lt;b&gt;and&lt;/b&gt; the final line which gives the length/time<a name="line.19"></a>
+<FONT color="green">020</FONT>     *   of the trip.  The strings &lt;b&gt;must not&lt;/b&gt; include newlines at their<a name="line.20"></a>
+<FONT color="green">021</FONT>     *   ends.  The order of the Strings in the sequence must correspond to the order<a name="line.21"></a>
+<FONT color="green">022</FONT>     *   of the lines in the directions from start to end.<a name="line.22"></a>
+<FONT color="green">023</FONT>     */<a name="line.23"></a>
+<FONT color="green">024</FONT>    public interface Directions extends Iterable&lt;String&gt; {<a name="line.24"></a>
+<FONT color="green">025</FONT>    <a name="line.25"></a>
+<FONT color="green">026</FONT>        // a Directions is the result of a query to a DirectionsFinder<a name="line.26"></a>
+<FONT color="green">027</FONT>    <a name="line.27"></a>
+<FONT color="green">028</FONT>        /** @return this.length. */<a name="line.28"></a>
+<FONT color="green">029</FONT>        public double getLength ();<a name="line.29"></a>
+<FONT color="green">030</FONT>    <a name="line.30"></a>
+<FONT color="green">031</FONT>        /** @return an Iterator of Strings over this.directions */<a name="line.31"></a>
+<FONT color="green">032</FONT>        public Iterator&lt;String&gt; iterator();<a name="line.32"></a>
+<FONT color="green">033</FONT>    <a name="line.33"></a>
+<FONT color="green">034</FONT>        /** @return this.start */<a name="line.34"></a>
+<FONT color="green">035</FONT>        public Address getStart ();<a name="line.35"></a>
+<FONT color="green">036</FONT>    <a name="line.36"></a>
+<FONT color="green">037</FONT>        /** @return this.end */<a name="line.37"></a>
+<FONT color="green">038</FONT>        public Address getEnd ();<a name="line.38"></a>
+<FONT color="green">039</FONT>        <a name="line.39"></a>
+<FONT color="green">040</FONT>        /** @return this.route */<a name="line.40"></a>
+<FONT color="green">041</FONT>        public Route getRoute ();<a name="line.41"></a>
+<FONT color="green">042</FONT>    }<a name="line.42"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

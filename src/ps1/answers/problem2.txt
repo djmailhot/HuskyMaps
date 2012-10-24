@@ -1,0 +1,21 @@
+
+a.
+Actually, I didn't add any extra instances of the checkRep() method.  It is included at the end of the constructor, which turns out to be the only place it is needed.  You see, checkRep checks whether the class object agrees to the class representation invariance by testing certain properties of the 'coeff' and 'expt' data fields.  These data fields are initialized as 'private final' variables in the object, which prevents their modification by any code outside the object and any method other than a constructor inside the class.  In short, it is only the constructor that could ever modify these data fields to violate the representation invariance.  Such a case is forever protected by having the last line of the constructor be a call to the checkRep method.  Refer section g of problem 1 for further thoughts.
+
+b.
+constructor = the constructor no longer needs to check for a zero coefficient, eliminating a tiny bit of computation. minor reduction in complexity.
+
+add() = slight changes to the implementation of choosing the correct exponent value when one of the input RatTerms was zero.  Previously, if one RatTerm coeff was zero, then it was automatically assumed that it's expt would be zero as well.  The correct expt to return would be that of the non-zero RatTerm.  However, now the add method would need to differentiate between the expt of the zero RatTerm and the non-zero RatTerm.  As it turns out, this new implementation scheme is slightly more elegant than the old scheme, and I have modified my code appropriately.
+
+toString() = need to add a special case to the toString method to hand zero coefficients:  always print '0' everytime.  minor increase in complexity.
+equals() = there is slight modification to be handled in the equals method:  that of the special case of two zero coefficient terms always being equal no matter their exponent values. minor rise in complexity.
+
+checkRep() = this check method implementation is reduced by half in code.  Only slight decrease in complexity.
+
+c.
+constructor = needs to handle the special case of a NaN passed parameter: always set the coefficient to '0'.  slight increase in complexity
+
+no other methods.  It seems there is some pretty rigorous tests of this and arguments with isNaN() which is pretty darn useful.
+
+
+As the implementation stands, the coeff.isNaN() ==> expt = 0 representation invariant doesn't cause too much disruption at all.  Alternatively, coeff.equals(RatNum.ZERO) ==> expt = 0 causes widespread ripples of implementation alterations.  In this light, It's interesting that I would prefer the stronger representation invariant option here, and reject the weaker.

@@ -1,0 +1,1 @@
+I collaborated with Chris L. on the early implementations and tests, notably GeoPoint.headingTo().  With Jared, and many many others I refined my tests and discussed zero-length segments like tomorrow's apacolypse.

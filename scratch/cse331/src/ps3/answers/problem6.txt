@@ -1,0 +1,19 @@
+
+Question 1
+using the cost of node x as the path's priority blinds the algorithem to the previous progress that has been accumulated up to the point of reaching node x.  In a meta-sense, the algorithem is computing the least expensive TOTAL path, not the path of least expensive nodes.  (This is the difference between going through the mines of Moria - a very difficult, but short challenge - as compared to treking the length the of the Hithaeglir mountain range and back again - a relatively modest endeavour, but weeks in travel time.)
+
+On a more technical scale, let us represent the above as a node-weighted graph, and traverse it using the method of priority by the active node's cost.  We start at a node representing the foothills approaching Moria's West gate.  We want to end at a node representing Lorien, beyond Moria's East gate.  (See reference map)  Moria represents a node of cost 25.  The path around the southern ridge of the Hithaeglir mountains is a total of 10 nodes, each with a cost of 5.  The nodes just beyond the gates of Moria have edges to Moria, and vice-versa.  The nodes of the path around the mountains all share edges with each node's neighbor, and one node connects to the West foothills, and one node connects to Lorien.
+
+Now, if we were to find a path by node-cost priority rather than path-cost, our algorithem would find the first cost-5 node of the southern mountains a better path than the cost-25 node of Moria.  For the next iteration, it would only consider the cost of the next node of the mountain path (5) and compare it to Moria (25) - it would do this in complete disregard of the total cost of the current active path of the mountains (5 + 5 +... etc).  By the time the algorithem reaches Lorien, it will compare the last cost-5 node of the mountain path to the cost-25 Moria and conclude that the mountain path is the least-expensive path, when in reality the total cost of the mountain path would have been 50 in all.
+
+
+For your viewing reference:
+http://www.bogost.com/middle-earth.jpg
+
+
+
+
+
+
+Question 2
+This line is unneccessary because in a node-weighted graph, there is no cost to traverse an edge.  Therefore, the algorithem is much more efficient by immediately advancing along this possible path by jumping forward to the node and adding the resulting new path to the 'active' PriorityQueue.  The algorithem lets the priority queue process this new path with the additional cost of the new node and decide if the path's total cost is favorable or unfavorable as compared to all the other possible paths at that point in time.

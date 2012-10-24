@@ -1,0 +1,64 @@
+
+a.
+
+/**
+ * @specfield nodeMap : Map<node, Set<edge> >   //map of nodes, each with a 
+ * 												//corresponding set of edges
+ * 
+ * Abstract Invariant
+ * A graph must not contain two copies of the same node or two copies
+ * of the same edge
+ * 
+ */
+
+public class Graph<E>{
+	
+	/**
+	 * Abstraction Function
+	 * AF(r) = a graph g, such that
+	 * g.nodes = r.nodeMap.keySet()
+	 * g.edges(node n) = r.nodeMap.get(n)
+	 * 
+	 * 
+	 * Representation Invariant
+	 * Set<E> nodeMap.keySet() must not have duplicates
+	 * Set<E> nodeMap.get(n) for any node n must not have duplicates
+	 * 
+	 */
+
+
+b.
+
+Observers:
+isEmpty()
+containsNode(N n)
+containsEdge(N n, E e)
+
+These methods only return information about certain properties of the graph.  No access directly to the concrete representation is given, so no modification of the graph can occur.
+
+
+Operations:
+nodeSet()
+egdeSet(N n)
+
+These methods return collections of the specified data elements.  The client is given direct access to the concrete representation.  However, any modification is protected against by the use of 'Collections.unmodifiableSet(Set s)', so no modification of the graph can occur.  (Actually, I'm not sure if this function protects against altering the state of contained objects or not, i.e. a Set of 'Point' objects, and iterating over the Points and calling a 'translateHorizontally()' method on each object.  The set still contains all needed objects...) Anyway, the data types of our graph will be immutable for our purposes, so no worries.
+
+
+Modifiers:
+addNode(N n)
+addEdge(N n1, N n2)
+
+These methods are of the greatest potential to breach the representation invariant.  However, they gracefully prevent the breaking of the invariant by checking the state of the graph with the related observer:  addNode(N n) checks containsNode(n), addEdge(N n1, N n2) checks containsEdge(n1, n2).  If these observers return positive (indicating that the specified graph propertiy already exists), then each addX method immediately ceases, leaving the graph in it's original state:  unmodified and with a valid representation.
+
+
+
+
+c.
+
+I implement Map and Set collections to store the properties of a Graph.  These collections have no inherent ordering, so the only differenciation between one Map/Set and another is whether it contains identical Mappings/Objects.  These are the only data structures to hold properties of a Graph.  
+
+Therefore, to talk of two distinct concrete states - say, A and K - of a Graph implies that some property of state A is not shared by state K.  Since my Graph implementation only derives properties from said Map and Set collections, this implies that for A to be distinct from K, one of A's Map/Sets is distinct from one of K's Map/Sets.  And to say THAT implies that one of A's Map/Sets has a different collection of elements than one of K's Map/Sets (e.i, one less, one more, or one different).
+
+Now, the abstract state of the Graph is derived from every single concrete element within it's Map and Sets (refer to the abstraction function).  So to say that a Graph is of a specific abstract state implies that it's Map and Sets are at a specific and unique state.  Any change to the concrete state of the Graph's Map and Sets will always cause a change in the Graph's abstract state.  Therefore, there are no two unique concrete states of a Graph that map to the same unique abstract state.
+
+

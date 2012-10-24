@@ -1,0 +1,70 @@
+# Operations testing that checks the functionality of AddNode, AddEdge,
+# and their related observers.  Also, tests that unrelated graphs or 
+# unconnected nodes do not effect path finding outcomes.  Finally, makes 
+# sure that the abstraction invariant holds (no duplicate edges).
+
+# create generic nodes
+CreateNode f1 1
+CreateNode f2 2
+CreateNode d5 5
+CreateNode e1 1
+CreateGraph G
+CreateGraph H
+
+# test the separation of graphs
+ListNodes G
+AddNode G f1
+AddNode G f2
+ListNodes G
+ListNodes H
+AddNode H f1
+AddNode H f2
+ListNodes G
+ListNodes H
+FindPath G f1 -> f2
+
+# test adding edges
+AddEdge G f1 f2
+AddEdge H f1 f2
+ListChildren G f1
+ListChildren G f2
+ListChildren H f1
+AddEdge G f2 f1
+ListChildren H f2
+AddEdge H f2 f1
+ListChildren G f2
+ListChildren H f2
+
+# test pathfinding is different between graphs
+AddNode G d5
+AddNode H d5
+AddEdge G d5 f1
+FindPath G d5 -> f2
+FindPath H d5 -> f2
+AddEdge H d5 f2
+FindPath G d5 -> f1
+FindPath H d5 -> f1
+
+# test paths are only found through edges and self-pointing
+# edges are valid
+AddNode G e1
+FindPath G f1 -> e1
+FindPath G e1 -> f1
+AddEdge G d5 e1
+AddEdge G f2 d5
+AddEdge G f2 f2
+AddEdge G e1 e1
+FindPath G f1 -> e1
+FindPath G e1 -> f1
+FindPath G e1 -> e1
+
+# final state check with observers
+ListNodes G
+ListNodes H
+ListChildren G f1
+ListChildren G f2
+ListChildren G d5
+ListChildren G e1
+ListChildren H f1
+ListChildren H f2
+ListChildren H d5

@@ -1,0 +1,125 @@
+1.
+The biggest assumption that is made is that a zero-length GeoSegment will be used in some practical manner by the user.  Thus, my implementation tried to handle this case in a way that preserves the stability and funcinality of my program as a whole.
+
+
+In fact, in the light that any specification tests that rely on assumptions of the implementation of zero-length segments in geofeature and route... these are invalid.  Therefore, I implemented my own specification of getStart/EndHeading() for GeoFeature and Route
+
+	getStartHeading();
+     * @return direction (in standard heading) of travel at the start
+     * of the feature, in degrees, or NaN iff all segments of this 
+     * feature are zero-length segments.  (if the start segment is zero-length,
+     * will return the heading of the first non-zero segment iterating forwards)
+
+	getEndHeading();
+     * @return direction of travel at the end of the feature, in
+     * degrees, or NaN iff all segments of this feature are zero-length
+     * segments. (if the end segment is zero-length, will return the 
+     * heading of the first non-zero segment iterating backwards)
+     
+This makes the RouteFormatter much more stable in it's output, and it makes rather more sense then outputting "NaN" as the heading to follow, or even the "turn true north and go 0.0 miles" approach.  I feel confident in my specification choice because through careful checks in my tests, I avoided assuming anything about zero-length segments.  Any test that makes an assumption is invalid.
+
+
+
+
+2.
+a.
+Daikon did let me know that, due to the way I handled zero-length segments, the minimum value of heading was -1, in clear breach of the representation invariant.  Although I as implementor have free reign to handle such a case to my liking, it definitely confused daikon to some degree.  To rectify this, I attempted to implement the Double.NaN option for zero-length segments.
+
+These lines of daikon output are a little interesting:
+ps2.GeoSegment.getHeading():::EXIT151
+this.p1.latitude one of { 46809722, 47409722, 47809722 }
+this.p1.longitude one of { -123473056, -121933056, -121433056 }
+
+ps2.GeoSegment.getHeading():::EXIT153
+this.length >= 0.018257007999999998
+
+These hint that I have not spread out my test cases enough for GeoSegment.  In fact, for Feature and Route, I realize that I test everything in relation to the point of SEATTLE, which is a tiny little circle in the domain of possible latitudes and longitudes covering the negative and positive directions.
+
+
+b.
+
+This is an output that I decided to rectify.
+ps2.GeoSegment.getHeading():::EXIT151
+return == -1.0
+
+This kind of output is derived from my handling of zero-length segments.  Indeed, additionally, I realized through discussion that I test for certain properties of zero-length segments when nothing is said in the specification that such tests are valid.  In this way, I was making my own assumptions about the handling of such segments instead of keeping my thinking explicitly on what exactly the specification mentions.
+
+I eliminated tests that measured the properties of zero-length segments, as well as whether a zero-length object was equal to another zero-length object.
+
+
+And here are my changes:
+
+    /**
+     * helper to test the start heading of a GeoFeature
+     */
+    void testStartHeading(GeoSegment gs, GeoFeature gf){
+    	double hea = gs.getP1().headingTo(gs.getP2());
+>>>>>>> // assert only if not a zero-length segment
+    	if( gs.getLength() != gsZero.getLength()){
+	    	assertEquals("Start heading for "+gf.getName()+" GeoFeature " +
+	    			"should be "+hea+", instead it is "+gf.getStartHeading(),
+	    			hea, gf.getStartHeading(), TOLERANCE);
+    	}
+    }
+    
+    /**
+     * helper to test the end heading of a GeoFeature
+     */
+    void testEndHeading(GeoSegment gs, GeoFeature gf){
+    	double hea = gs.getP1().headingTo(gs.getP2());
+>>>>>>> // assert only if not a zero-length segment
+    	if( gs.getLength() != gsZero.getLength()){
+	    	assertEquals("End heading for "+gf.getName()+" GeoFeature " +
+	    			"should be "+hea+", instead it is "+gf.getEndHeading(),
+	    			hea, gf.getEndHeading(), TOLERANCE);
+    	}
+    }
+
+I try to call these helper methods for any check of heading.  They will avoid the black hole that is zero-length segments.  The same changes were made for my Route tests.
+
+
+
+
+
+
+c.
+daikon is a little interesting because of the machine learning approach it takes.  I notice that it is very good at covering the entire possible domain of values availiable.  This helps identify overlooked test cases.  However, daikon also isn't very adept at identifying the bundaries of subdomains.  It outputs many useless test results that we as implementors - having good knowledge of our specification - have no use for.
+
+
+
+
+3.
+a.
+I represented my zero-length semgent heading as Double.NaN.
+
+An alternative is to represent the heading of a zero-length segment as always 0 degrees (true North).  This is an interesting case to consider.  In the formatting of printed directions interesting cases will arise as the computer outpus a line that say something like "Take a sharp right onto Yoda's Marsh and go 0.0 miles."  Granted, any implementation of zero-length segment headings will produce something interesting, but with other implementations, at least some effort can be made in differentiating them and handling them gracefully.
+
+However, the latter case does have it's benefits over mine, as without any change to formatting, my implemetation will currently produce lines such as "Take a sharp right onto Yoda's Marsh and go NaN miles."
+
+
+b.
+@return would look something like: 
+     *    @return a new Route r such that
+     *       r.end = (gs.p2 || gs.p1)
+     *    && r.endHeading = (gs.heading || gs.reverse.heading)
+     *    && r.length = this.length + gs.length
+This basically means that, in addition to the original functionality, you can add to this route a GeoSegment such that the intersection of the end points of this route and another segment are the same.  Because of the ADDITIONAL part, this is clearly a weakening of both the preconditions and post conditions.  The original specification meets this specification, but not vice-versa.
+
+
+c.
+Route has the weakened specification of allowing segments of any name to be added with Route.addSegment().  This suggests that Route is the parent of the more-strict GeoFeature.  However, Route also keeps track of a list of GeoFeatures, wich GeoFeature does not implement (indeed, it itself IS the feature it would list).  In this respect, Route has functionality that GeoFeature does not have, indicating that perhaps GeoFeature is the parent of Route.  As we have evidence for both cases of parenthood, neither is true.
+
+
+d.
+HorsebackRouteFormatter would probably be a rather easy format to implement as a subclass.  Assuming the convensions of sticking to street sidewalks, the only difference to be made would be how fast it takes to cover one mile.
+LowEarthOrbitAstronautRouteFormatter would be a very difficult format to implement as a subclass.  The most challenging difference would be the added degree of freedom (3D instead of 2D).
+
+
+
+
+4.
+I'm uncertain at how I implemented my hash function.  I tried to keep hash value to a certain limit so as to not overload the capacity of the int class.  But in doing so, I may have inadvertently limited the scope of hash values I can return.  Overall though, I'm impressed with the way I tried to differentiate two features/routes of the same segments, but different order.
+
+Another cleaver little scheme I cooked up was how I decided to implement my specification of GeoFeature and Route's getStart/EngHeading().  I use a dynamic recursive helper method! 
+
+One of the more unnerving things I would do differently would be to initialize my testing suits in a more systematic way.  I personally feel these test files are full of cumbersome code, which limits the effectiveness to which I am able to handle all test cases.  A more systematic approach (as well as automated) would enable me to cover more ground in a timely manner.

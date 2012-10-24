@@ -1,0 +1,8 @@
+COLLABORATION
+
+
+Chris  =  general swapping of ideas late in the implementation of PathFinder.  Gave me lesson on ultimate magics to get around factory methods
+Matt  =  great mind to bounce ideas off of in PathFinder and handling generics
+Kristie  =  Guided through the netherlevels of the assignment at difficult and confusing spots
+Lianya  =  bounced ideas around with Graph implementation
+DAVIS SHEPHERD  =  discussed and guided on PathFinder implementation

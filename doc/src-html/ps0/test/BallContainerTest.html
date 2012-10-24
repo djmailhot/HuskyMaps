@@ -1,0 +1,226 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /**<a name="line.1"></a>
+<FONT color="green">002</FONT>     * This is part of the Problem Set 0: Introduction for CSE 331.<a name="line.2"></a>
+<FONT color="green">003</FONT>     */<a name="line.3"></a>
+<FONT color="green">004</FONT>    package ps0.test;<a name="line.4"></a>
+<FONT color="green">005</FONT>    import ps0.*;<a name="line.5"></a>
+<FONT color="green">006</FONT>    import java.util.Set;<a name="line.6"></a>
+<FONT color="green">007</FONT>    import java.util.HashSet;<a name="line.7"></a>
+<FONT color="green">008</FONT>    <a name="line.8"></a>
+<FONT color="green">009</FONT>    import junit.framework.TestCase;<a name="line.9"></a>
+<FONT color="green">010</FONT>    <a name="line.10"></a>
+<FONT color="green">011</FONT>    /**<a name="line.11"></a>
+<FONT color="green">012</FONT>     * BallContainerTest is a glassbox test of the BallContainer class.<a name="line.12"></a>
+<FONT color="green">013</FONT>     *<a name="line.13"></a>
+<FONT color="green">014</FONT>     * Recall that the BallContainer is a container for Balls. However, you can only<a name="line.14"></a>
+<FONT color="green">015</FONT>     * put a Ball into a BallContainer once. After you put the Ball into the BallContainer,<a name="line.15"></a>
+<FONT color="green">016</FONT>     * further attempts to do so will fail, since the Ball is already in<a name="line.16"></a>
+<FONT color="green">017</FONT>     * the BallContainer! Similarly, you cannot expect to remove a Ball from a BallContainer<a name="line.17"></a>
+<FONT color="green">018</FONT>     * if it is not inside the BallContainer.<a name="line.18"></a>
+<FONT color="green">019</FONT>     *<a name="line.19"></a>
+<FONT color="green">020</FONT>     * @see ps0.Ball<a name="line.20"></a>
+<FONT color="green">021</FONT>     * @see ps0.BallContainer<a name="line.21"></a>
+<FONT color="green">022</FONT>     */<a name="line.22"></a>
+<FONT color="green">023</FONT>    public class BallContainerTest extends TestCase {<a name="line.23"></a>
+<FONT color="green">024</FONT>    <a name="line.24"></a>
+<FONT color="green">025</FONT>        private BallContainer ballcontainer = null;<a name="line.25"></a>
+<FONT color="green">026</FONT>        private int NUM_BALLS_TO_TEST = 3;<a name="line.26"></a>
+<FONT color="green">027</FONT>        private Ball[] b = null;<a name="line.27"></a>
+<FONT color="green">028</FONT>        private double BALL_UNIT_VOLUME = 20.0;<a name="line.28"></a>
+<FONT color="green">029</FONT>        private double JUNIT_DOUBLE_DELTA = 0.0001;<a name="line.29"></a>
+<FONT color="green">030</FONT>    <a name="line.30"></a>
+<FONT color="green">031</FONT>        protected void setUp() throws Exception {<a name="line.31"></a>
+<FONT color="green">032</FONT>            assertEquals("Test case error, you must test at least 1 Ball!!", true, NUM_BALLS_TO_TEST &gt; 0);<a name="line.32"></a>
+<FONT color="green">033</FONT>            ballcontainer = new BallContainer();<a name="line.33"></a>
+<FONT color="green">034</FONT>    <a name="line.34"></a>
+<FONT color="green">035</FONT>            // Let's create the balls we need.<a name="line.35"></a>
+<FONT color="green">036</FONT>            b = new Ball[NUM_BALLS_TO_TEST];<a name="line.36"></a>
+<FONT color="green">037</FONT>            for (int i=0; i&lt;NUM_BALLS_TO_TEST; i++) {<a name="line.37"></a>
+<FONT color="green">038</FONT>                b[i] = new Ball((i+1)*BALL_UNIT_VOLUME);<a name="line.38"></a>
+<FONT color="green">039</FONT>            }<a name="line.39"></a>
+<FONT color="green">040</FONT>        }<a name="line.40"></a>
+<FONT color="green">041</FONT>    <a name="line.41"></a>
+<FONT color="green">042</FONT>    <a name="line.42"></a>
+<FONT color="green">043</FONT>        /** Test to check that BallContainer.add(Ball) is implemented correctly */<a name="line.43"></a>
+<FONT color="green">044</FONT>        public void testAdd() {<a name="line.44"></a>
+<FONT color="green">045</FONT>            double containerVolume;<a name="line.45"></a>
+<FONT color="green">046</FONT>            ballcontainer.clear();<a name="line.46"></a>
+<FONT color="green">047</FONT>            for (int i=0; i&lt;NUM_BALLS_TO_TEST; i++) {<a name="line.47"></a>
+<FONT color="green">048</FONT>                assertEquals("BallContainer.add(Ball) failed to add a new Ball!", true, ballcontainer.add(b[i]));<a name="line.48"></a>
+<FONT color="green">049</FONT>                containerVolume = ballcontainer.getVolume();<a name="line.49"></a>
+<FONT color="green">050</FONT>                assertEquals("BallContainer.add(Ball) seems to allow the same Ball to be added twice!", false, ballcontainer.add(b[i]));<a name="line.50"></a>
+<FONT color="green">051</FONT>                assertEquals("BallContainer's volume has changed, but its contents have not!",containerVolume,ballcontainer.getVolume());<a name="line.51"></a>
+<FONT color="green">052</FONT>                assertEquals("BallContainer does not contain a ball after it is supposed to have been added!", true, ballcontainer.contains(b[i]));<a name="line.52"></a>
+<FONT color="green">053</FONT>            }<a name="line.53"></a>
+<FONT color="green">054</FONT>        }<a name="line.54"></a>
+<FONT color="green">055</FONT>    <a name="line.55"></a>
+<FONT color="green">056</FONT>        /** Test to check that BallContainer.remove(Ball) is implemented correctly */<a name="line.56"></a>
+<FONT color="green">057</FONT>        public void testRemove() {<a name="line.57"></a>
+<FONT color="green">058</FONT>            ballcontainer.clear();<a name="line.58"></a>
+<FONT color="green">059</FONT>            double containerVolume;<a name="line.59"></a>
+<FONT color="green">060</FONT>            assertEquals("BallContainer.remove(Ball) should fail because ballcontainer is empty, but it didn't!", false, ballcontainer.remove(b[0]));<a name="line.60"></a>
+<FONT color="green">061</FONT>            for (int i=0; i&lt;NUM_BALLS_TO_TEST; i++) {<a name="line.61"></a>
+<FONT color="green">062</FONT>                ballcontainer.clear();<a name="line.62"></a>
+<FONT color="green">063</FONT>                for (int j=0; j&lt;i; j++) {<a name="line.63"></a>
+<FONT color="green">064</FONT>                    ballcontainer.add(b[j]);<a name="line.64"></a>
+<FONT color="green">065</FONT>                }<a name="line.65"></a>
+<FONT color="green">066</FONT>                for (int j=0; j&lt;i; j++) {<a name="line.66"></a>
+<FONT color="green">067</FONT>                    assertEquals("BallContainer.remove(Ball) failed to remove a Ball that is supposed to be inside", true, ballcontainer.remove(b[j]));<a name="line.67"></a>
+<FONT color="green">068</FONT>                    containerVolume = ballcontainer.getVolume();<a name="line.68"></a>
+<FONT color="green">069</FONT>                    assertEquals("BallContainer still contains a ball after it is supposed to have been removed!", false, ballcontainer.contains(b[j]));<a name="line.69"></a>
+<FONT color="green">070</FONT>                    assertEquals("BallContainer's volume has changed, but its contents have not!",containerVolume,ballcontainer.getVolume());<a name="line.70"></a>
+<FONT color="green">071</FONT>                }<a name="line.71"></a>
+<FONT color="green">072</FONT>                for (int j=i; j&lt;NUM_BALLS_TO_TEST; j++) {<a name="line.72"></a>
+<FONT color="green">073</FONT>                    assertEquals("BallContainer.remove(Ball) did not fail for a Ball that is not inside", false, ballcontainer.remove(b[j]));<a name="line.73"></a>
+<FONT color="green">074</FONT>                }<a name="line.74"></a>
+<FONT color="green">075</FONT>            }<a name="line.75"></a>
+<FONT color="green">076</FONT>        }<a name="line.76"></a>
+<FONT color="green">077</FONT>    <a name="line.77"></a>
+<FONT color="green">078</FONT>        /**<a name="line.78"></a>
+<FONT color="green">079</FONT>         * Test to check that BallContainer.iterator() is implemented<a name="line.79"></a>
+<FONT color="green">080</FONT>         * correctly.<a name="line.80"></a>
+<FONT color="green">081</FONT>         */<a name="line.81"></a>
+<FONT color="green">082</FONT>        public void testIterator() {<a name="line.82"></a>
+<FONT color="green">083</FONT>            Set&lt;Ball&gt; allBalls = new HashSet&lt;Ball&gt;();<a name="line.83"></a>
+<FONT color="green">084</FONT>            Set&lt;Ball&gt; seenBalls = new HashSet&lt;Ball&gt;();<a name="line.84"></a>
+<FONT color="green">085</FONT>            ballcontainer.clear();<a name="line.85"></a>
+<FONT color="green">086</FONT>            assertEquals("BallContainer is not empty after being cleared!", 0, ballcontainer.size());<a name="line.86"></a>
+<FONT color="green">087</FONT>            for (Ball aBall: b) {<a name="line.87"></a>
+<FONT color="green">088</FONT>                ballcontainer.add(aBall);<a name="line.88"></a>
+<FONT color="green">089</FONT>                allBalls.add(aBall);<a name="line.89"></a>
+<FONT color="green">090</FONT>            }<a name="line.90"></a>
+<FONT color="green">091</FONT>            int i=0;<a name="line.91"></a>
+<FONT color="green">092</FONT>            for (Ball aBall: ballcontainer) {<a name="line.92"></a>
+<FONT color="green">093</FONT>                assertTrue("Iterator returned a ball which isn't in the container",<a name="line.93"></a>
+<FONT color="green">094</FONT>                           allBalls.contains(aBall));<a name="line.94"></a>
+<FONT color="green">095</FONT>                assertFalse("Iterator returned the same ball twice",<a name="line.95"></a>
+<FONT color="green">096</FONT>                            seenBalls.contains(aBall));<a name="line.96"></a>
+<FONT color="green">097</FONT>                seenBalls.add(aBall);<a name="line.97"></a>
+<FONT color="green">098</FONT>                i++;<a name="line.98"></a>
+<FONT color="green">099</FONT>            }<a name="line.99"></a>
+<FONT color="green">100</FONT>            assertEquals("BallContainer iterator did not return enough items!", i, b.length);<a name="line.100"></a>
+<FONT color="green">101</FONT>        }<a name="line.101"></a>
+<FONT color="green">102</FONT>    <a name="line.102"></a>
+<FONT color="green">103</FONT>        /**<a name="line.103"></a>
+<FONT color="green">104</FONT>         * Test that BallContainer.clear() is implemented correctly.<a name="line.104"></a>
+<FONT color="green">105</FONT>         */<a name="line.105"></a>
+<FONT color="green">106</FONT>        public void testClear() {<a name="line.106"></a>
+<FONT color="green">107</FONT>            ballcontainer.clear();<a name="line.107"></a>
+<FONT color="green">108</FONT>            assertEquals("BallContainer is not empty after being cleared!", 0, ballcontainer.size());<a name="line.108"></a>
+<FONT color="green">109</FONT>            ballcontainer.add(b[0]);<a name="line.109"></a>
+<FONT color="green">110</FONT>            ballcontainer.clear();<a name="line.110"></a>
+<FONT color="green">111</FONT>            assertEquals("BallContainer is not empty after being cleared!", 0, ballcontainer.size());<a name="line.111"></a>
+<FONT color="green">112</FONT>        }<a name="line.112"></a>
+<FONT color="green">113</FONT>    <a name="line.113"></a>
+<FONT color="green">114</FONT>        /** Test that we can put a Ball into a BallContainer */<a name="line.114"></a>
+<FONT color="green">115</FONT>        public void testVolume() {<a name="line.115"></a>
+<FONT color="green">116</FONT>            ballcontainer.clear();<a name="line.116"></a>
+<FONT color="green">117</FONT>            assertEquals("Volume of empty BallContainer is not zero!", 0, ballcontainer.getVolume(), JUNIT_DOUBLE_DELTA);<a name="line.117"></a>
+<FONT color="green">118</FONT>            for (int i=0; i&lt;NUM_BALLS_TO_TEST; i++) {<a name="line.118"></a>
+<FONT color="green">119</FONT>                ballcontainer.add(b[i]);<a name="line.119"></a>
+<FONT color="green">120</FONT>                assertEquals("Volume of BallContainer with "+(i+1)+" ball(s) is supposed to be "+((i+1)*(i+2)*BALL_UNIT_VOLUME/2)+" but it's "<a name="line.120"></a>
+<FONT color="green">121</FONT>                             +ballcontainer.getVolume()+" instead", (i+1)*(i+2)*BALL_UNIT_VOLUME/2, ballcontainer.getVolume(), JUNIT_DOUBLE_DELTA);<a name="line.121"></a>
+<FONT color="green">122</FONT>            }<a name="line.122"></a>
+<FONT color="green">123</FONT>    <a name="line.123"></a>
+<FONT color="green">124</FONT>        }<a name="line.124"></a>
+<FONT color="green">125</FONT>    <a name="line.125"></a>
+<FONT color="green">126</FONT>        /** Test that size() returns the correct number. */<a name="line.126"></a>
+<FONT color="green">127</FONT>        public void testSize() {<a name="line.127"></a>
+<FONT color="green">128</FONT>            ballcontainer.clear();<a name="line.128"></a>
+<FONT color="green">129</FONT>            assertEquals("size() of empty BallContainer is not zero!", 0, ballcontainer.size());<a name="line.129"></a>
+<FONT color="green">130</FONT>            for (int i=0; i&lt;NUM_BALLS_TO_TEST; i++) {<a name="line.130"></a>
+<FONT color="green">131</FONT>                ballcontainer.add(b[i]);<a name="line.131"></a>
+<FONT color="green">132</FONT>                assertEquals("size() of BallContainer with "+(i+1)+" ball(s) is supposed to be "+(i+1)+" but it's "<a name="line.132"></a>
+<FONT color="green">133</FONT>                             +ballcontainer.size()+" instead", i+1, ballcontainer.size());<a name="line.133"></a>
+<FONT color="green">134</FONT>            }<a name="line.134"></a>
+<FONT color="green">135</FONT>        }<a name="line.135"></a>
+<FONT color="green">136</FONT>    <a name="line.136"></a>
+<FONT color="green">137</FONT>        /** Test that size() returns the correct number. */<a name="line.137"></a>
+<FONT color="green">138</FONT>        public void testContains() {<a name="line.138"></a>
+<FONT color="green">139</FONT>            ballcontainer.clear();<a name="line.139"></a>
+<FONT color="green">140</FONT>            for (int i=0; i&lt;NUM_BALLS_TO_TEST; i++) {<a name="line.140"></a>
+<FONT color="green">141</FONT>                assertEquals("Empty BallContainer seems to contain a ball!", false, ballcontainer.contains(b[i]));<a name="line.141"></a>
+<FONT color="green">142</FONT>            }<a name="line.142"></a>
+<FONT color="green">143</FONT>            for (int i=0; i&lt;NUM_BALLS_TO_TEST; i++) {<a name="line.143"></a>
+<FONT color="green">144</FONT>                ballcontainer.add(b[i]);<a name="line.144"></a>
+<FONT color="green">145</FONT>                assertEquals("BallContainer does not contain a Ball that is supposed to be inside!", true, ballcontainer.contains(b[i]));<a name="line.145"></a>
+<FONT color="green">146</FONT>                for (int j=i+1; j&lt;NUM_BALLS_TO_TEST; j++) {<a name="line.146"></a>
+<FONT color="green">147</FONT>                    assertEquals("BallContainer seems to contain a Ball that is not inside!", false, ballcontainer.contains(b[j]));<a name="line.147"></a>
+<FONT color="green">148</FONT>                }<a name="line.148"></a>
+<FONT color="green">149</FONT>            }<a name="line.149"></a>
+<FONT color="green">150</FONT>        }<a name="line.150"></a>
+<FONT color="green">151</FONT>    <a name="line.151"></a>
+<FONT color="green">152</FONT>        /** Test that clear removes all balls. **/<a name="line.152"></a>
+<FONT color="green">153</FONT>        public void testVolumeAfterClear() {<a name="line.153"></a>
+<FONT color="green">154</FONT>            ballcontainer.add(b[0]);<a name="line.154"></a>
+<FONT color="green">155</FONT>            ballcontainer.clear();<a name="line.155"></a>
+<FONT color="green">156</FONT>            assertEquals("The volume of BallContainer after being cleared is not reset to 0!",<a name="line.156"></a>
+<FONT color="green">157</FONT>                         0,ballcontainer.getVolume(),JUNIT_DOUBLE_DELTA);<a name="line.157"></a>
+<FONT color="green">158</FONT>        }<a name="line.158"></a>
+<FONT color="green">159</FONT>    <a name="line.159"></a>
+<FONT color="green">160</FONT>    }<a name="line.160"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

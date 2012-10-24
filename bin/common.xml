@@ -1,0 +1,361 @@
+<project default="build">
+
+
+  <!--Set up some properties that will be used throughout the build script-->
+  <property name = "term" value="10au"/>
+  <property name = "course" value="cse331"/>
+
+  <property environment="env"/>
+
+
+  <property name = "base" location = '..'/>
+  <property name = "src" location = '.'/>
+  <property name = "dest" location = "${base}/bin"/>
+  <property name = "docdest" location = "${base}/doc"/>
+  <property name = "build.compiler" value = "javac1.6"/>
+  <property name="java.api"
+            value="http://java.sun.com/javase/6/docs/api" />
+  <property name="junit.api"
+            value="http://www.junit.org/junit/javadoc/3.8.1" />
+  <property name="taglet.path" value="${base}/lib/javadoc331.jar" />
+  <condition property="extra.classpath" value="">
+   <not>
+    <isset property="extra.classpath" />
+   </not>
+  </condition>
+
+  <path id = "common.classpath">
+    <pathelement location = "${dest}"/>
+    <pathelement path="${extra.classpath}" />
+    <fileset    dir="${base}/lib">
+      <include name="*.jar" />
+    </fileset>
+  </path>
+
+
+  <target name="help">
+    <echo>cse331 ant targets:
+
+      build: build the code for this pset
+
+      doc: generate api documentation for this pset
+
+      test: run both SpecificationTests.java and ImplementationTests.java
+      as JUnit tests.
+
+      gui.test: run SpecificationTests.java and ImplementationTests.java
+      in the graphical JUnit mode.
+
+      gui.test -Duse.test=[classname]: Run a particular test in GUI mode
+
+      daikon: runs all tests through Daikon.  See
+      http://pag.csail.mit.edu/daikon/ for more information about Daikon.
+
+      validate: ensure all required files are in SVN, and that a clean
+      SVN checkout compiles and passes all tests.  Use only on attu
+      for best results.
+
+      run -Dprogram=[classname]: runs the given java program (use the
+      full name, like ps0.HelloWorld)
+
+      clean: deletes all .class files and generated documentation for this pset.
+
+      help: displays this message
+    </echo>
+  </target>
+
+  <!--Call cleancopy.check for all the required files (listed in
+  required.properties) -->
+  <target name="cleancopy" >
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties"
+         classpathref="common.classpath" />
+
+    <echo message="Pset directory: ${pset}"/>
+    <property file="${pset}/required.properties"/>
+
+    <foreach list="${required.files}"
+             trim="true"
+             target="cleancopy.check"
+             param="required.file"/>
+  </target>
+
+  <!--Make sure required.file is there.  If not, fail.-->
+  <target name="cleancopy.check">
+    <available file="${required.file}"
+               property="file.present"
+               value="yes"
+               filepath="${pset}"/>
+    <if>
+      <equals arg1="${file.present}" arg2="yes"/>
+      <then>
+        <echo message="Found required file ${required.file}"/>
+      </then>
+      <else>
+        <fail message="Could not find required file: ${required.file}"/>
+      </else>
+    </if>
+  </target>
+
+
+  <target name = "validate"
+          description = "Does a build and test on a clean SVN checkout.">
+    <echo>Validate checks out a fresh copy of the pset, checks for the
+      presence of required files, and runs all your tests to make sure
+      they pass.  This target is meant to be called from attu; don't
+      trust it to make sure everything works unless you are on attu.
+      Note: the test reports will be generated under the scratch
+      directory the validate target creates.
+    </echo>
+
+
+    <property name = "validate.upone" location="${basedir}/.."/>
+    <property name = "validate.scratch" location="${validate.upone}/scratch"/>
+    <delete dir="${validate.scratch}" quiet="true"/>
+    <mkdir dir="${validate.scratch}"/>
+    <property name = "repo.location" value = "/projects/instr/${term}/${course}/${env.USER}/REPOS"/>
+    <echo message="${repo.location}"/>
+    <exec executable="svn"
+          dir="${validate.scratch}">
+      <arg line="export file://${repo.location}/cse331"/>
+    </exec>
+
+    <exec executable="ant"
+          dir="${validate.scratch}/cse331/src/${psetname}"
+          failonerror="true" >
+      <arg value="cleancopy"/>
+    </exec>
+    <exec executable="ant"
+          dir="${validate.scratch}/cse331/src/${psetname}"
+          failonerror="true">
+      <arg value="test.strict"/>
+    </exec>
+
+    <delete dir="${validate.scratch}" quiet="true"/>
+  </target>
+
+
+
+  <target name = "single.build" unless = "also.compile">
+    <echo message = "This pset is independent; building only this one."/>
+    <javac srcdir="${pset}"
+           destdir="${dest}"
+           debug="true"
+              fork="${build.fork}"
+              executable="/usr/local/bin/javac"
+           excludes=".svn,*/package.html"
+       includeantruntime="false">
+      <compilerarg value="-Xlint"/>
+      <classpath refid = "common.classpath"/>
+    </javac>
+  </target>
+
+  <target name = "total.build" >
+    <available file = "/usr/local/bin/javac"
+                property="build.fork"
+                    value="yes"/>
+    <echo message = "Building all psets"/>
+    <javac srcdir="${src}"
+           destdir="${dest}"
+           debug="true"
+              fork="${build.fork}"
+              executable="/usr/local/bin/javac"
+           excludes=".svn,*/package.html,${staff.nocomp}"
+       includeantruntime="false">
+      <compilerarg value="-Xlint"/>
+      <classpath refid = "common.classpath"/>
+    </javac>
+  </target>
+
+  <target name = "multi.build" if = "also.compile">
+    <echo message = "This pset depends on others; building all associated psets now."/>
+    <echo message="${psetname}/**/*.java, ${also.compile}"/>
+    <javac srcdir="${src}"
+           destdir="${dest}"
+              fork="${build.fork}"
+              executable="/usr/local/bin/javac"
+           debug="true"
+           includes="${also.compile}, ${psetname}/**/*.java"
+           excludes=".svn,*/package.html,${staff.nocomp}"
+       includeantruntime="false">
+      <compilerarg value="-Xlint"/>
+      <classpath refid = "common.classpath"/>
+    </javac>
+  </target>
+
+
+
+  <target name = "build" description="Compiles the problem set">
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties"
+                 classpathref="common.classpath" />
+
+    <available file = "/usr/local/bin/javac"
+                property="build.fork"
+                    value="yes"/>
+    <antcall target = "single.build"/>
+    <antcall target = "multi.build"/>
+  </target>
+
+  <target name = "clean" description="Deletes most of the generated files">
+    <delete>
+      <fileset dir = "${pset}"
+               casesensitive = "yes"
+               includes="**/daikon*.dtrace.gz **/daikon*.inv.*">
+      </fileset>
+    </delete>
+    <delete>
+      <fileset dir="${dest}"
+           casesensitive="yes"
+           includes="**/*.class">
+      </fileset>
+    </delete>
+
+    <delete dir = "${docdest}/${psetname}"/>
+  </target>
+
+  <target name = "doc" depends = "build"
+          description = "Build all the Javadoc API documentation">
+    <mkdir dir = "${docdest}"/>
+    <javadoc sourcepath="${src}" destdir="${docdest}" linksource="yes">
+      <classpath refid = "common.classpath"/>
+      <link href="${java.api}" />
+      <link href="${junit.api}" />
+      <fileset dir="${basedir}"
+       includes="${psetname}/**/*.java, ${also.compile}, ${staff.doc}"
+       excludes="${staff.nodoc}" />
+      <taglet name="javadoc331.RequiresTaglet" path="${taglet.path}" />
+      <taglet name="javadoc331.EffectsTaglet" path="${taglet.path}" />
+      <taglet name="javadoc331.ModifiesTaglet" path="${taglet.path}" />
+      <taglet name="javadoc331.ReturnsTaglet" path="${taglet.path}" />
+      <taglet name="javadoc331.SpecfieldTaglet" path="${taglet.path}" />
+      <taglet name="javadoc331.DerivedfieldTaglet" path="${taglet.path}" />
+    </javadoc>
+  </target>
+
+  <target name = "test.spec" depends = "build">
+    <mkdir dir = "${pset}/test/reports"/>
+    <junit printsummary="yes"
+           dir="${pset}/test/"
+           fork="on"
+           failureproperty="test.spec.failed"
+           forkmode="once">
+      <classpath refid = "common.classpath"/>
+      <test name="${psetname}.test.SpecificationTests"
+            todir="${pset}/test/reports">
+        <formatter type="plain"/>
+      </test>
+      <assertions>
+        <enable/>
+      </assertions>
+    </junit>
+  </target>
+
+  <target name = "test.impl" depends = "build">
+    <mkdir dir = "${pset}/test/reports"/>
+    <junit printsummary="yes"
+           dir="${pset}/test/"
+           fork="on"
+           failureproperty="test.impl.failed"
+           forkmode="once">
+      <classpath refid = "common.classpath"/>
+      <test name="${psetname}.test.ImplementationTests"
+            todir="${pset}/test/reports">
+        <formatter type="plain"/>
+      </test>
+      <assertions>
+        <enable/>
+      </assertions>
+    </junit>
+  </target>
+
+  <target name = "test" depends = "test.impl, test.spec"
+          description="Run all standard tests on the code">
+    <echo message="Records of this testing can be found in ${basedir}/${psetname}/test/reports/"/>
+  </target>
+
+  <target name = "test.strict" depends = "test">
+    <fail if="test.impl.failed"/>
+    <fail if="test.spec.failed"/>
+  </target>
+
+  <target name = "gui.test.all" depends = "build" unless="use.test">
+    <java classname="junit.swingui.TestRunner"
+          fork="Yes"
+          spawn="Yes"
+          dir="${pset}/test/"
+          classpathref="common.classpath">
+      <arg value="${psetname}.test.ImplementationTests"/>
+      <arg value="${psetname}.test.SpecificationTests"/>
+      <assertions>
+        <enable/>
+      </assertions>
+    </java>
+  </target>
+
+  <target name = "gui.test.one" depends = "build" if="use.test">
+    <java classname="junit.swingui.TestRunner"
+          fork="Yes"
+          spawn="Yes"
+          dir="${pset}/test/"
+          classpathref="common.classpath">
+      <arg value="${use.test}"/>
+      <assertions>
+        <enable/>
+      </assertions>
+    </java>
+  </target>
+
+  <target name="gui.test"
+          description="Run tests using the JUnit GUI.  Optional parameter&#10;
+                        use.test selects a particulart test; default runs all">
+    <antcall target="gui.test.all"/>
+    <antcall target="gui.test.one"/>
+  </target>
+
+  <!-- runs daikon on the student program.  Results are prefixed with
+       ${psetname}.  The most interesting file is ${psetname}.inv.txt.
+       Note these are in the problem set directory rather than tests -->
+  <target name = "daikon" depends = "build"
+          description="Runs daikon on the program.  Results are prefixed with the pset name">
+    <java classname="daikon.Chicory"
+          fork="yes"
+          spawn="no"
+          dir="${pset}"
+          classpathref="common.classpath">
+      <arg value="--ppt-omit-pattern=junit|^${psetname}.test"/>
+      <arg value="--dtrace-file=daikon.dtrace.gz"/>
+      <arg value="--daikon"/>
+      <arg value="--daikon_args"/>
+      <arg value="--config_option daikon.PptRelation.enable_object_user=false
+            --no_text_output --config_option daikon.Daikon.progress_delay=-1"/>
+      <arg value="junit.textui.TestRunner"/>
+      <arg value="${psetname}.test.SpecificationTests"/>
+    </java>
+    <java classname="daikon.PrintInvariants"
+          fork="yes"
+          spawn="no"
+          classpathref="common.classpath"
+          dir="${pset}"
+          output="${pset}/daikon.inv.txt">
+       <arg value="daikon.inv.gz"/>
+    </java>
+    <echo> "Results are in daikon.inv.txt" </echo>
+  </target>
+
+
+  <target name = "run" depends = "build" if="program"
+          description="Runs the given program argument">
+    <java classname="${program}"
+          fork="Yes"
+          spawn="Yes"
+          dir="${pset}"
+          classpathref="common.classpath"/>
+      <assertions>
+        <enable/>
+      </assertions>
+  </target>
+
+
+  <target name = "all" depends = "build, test, doc"/>
+
+
+</project>

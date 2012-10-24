@@ -1,0 +1,70 @@
+# Operations testing that checks the functionality of AddNode, AddEdge,
+# and their related observers.  Also, tests that unrelated graphs or 
+# unconnected nodes do not effect path finding outcomes.  Finally, makes 
+# sure that the abstraction invariant holds (no duplicate edges).
+
+# create generic nodes
+created node f1 with cost 1
+created node f2 with cost 2
+created node d5 with cost 5
+created node e1 with cost 1
+created graph G
+created graph H
+
+# test the separation of graphs
+G contains: 
+added node f1 to G
+added node f2 to G
+G contains: f1 f2
+H contains: 
+added node f1 to H
+added node f2 to H
+G contains: f1 f2
+H contains: f1 f2
+no path found in G
+
+# test adding edges
+added edge from f1 to f2 in G
+added edge from f1 to f2 in H
+the children of f1 in G are: f2
+the children of f2 in G are: 
+the children of f1 in H are: f2
+added edge from f2 to f1 in G
+the children of f2 in H are: 
+added edge from f2 to f1 in H
+the children of f2 in G are: f1
+the children of f2 in H are: f1
+
+# test pathfinding is different between graphs
+added node d5 to G
+added node d5 to H
+added edge from d5 to f1 in G
+shortest path in G: d5 f1 f2
+no path found in H
+added edge from d5 to f2 in H
+shortest path in G: d5 f1
+shortest path in H: d5 f2 f1
+
+# test paths are only found through edges and self-pointing
+# edges are valid
+added node e1 to G
+no path found in G
+no path found in G
+added edge from d5 to e1 in G
+added edge from f2 to d5 in G
+added edge from f2 to f2 in G
+added edge from e1 to e1 in G
+shortest path in G: f1 f2 d5 e1
+no path found in G
+shortest path in G: e1
+
+# final state check with observers
+G contains: d5 e1 f1 f2
+H contains: d5 f1 f2
+the children of f1 in G are: f2
+the children of f2 in G are: d5 f1 f2
+the children of d5 in G are: e1 f1
+the children of e1 in G are: e1
+the children of f1 in H are: f2
+the children of f2 in H are: f1
+the children of d5 in H are: f2

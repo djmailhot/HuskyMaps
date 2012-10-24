@@ -1,0 +1,545 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    package ps2.test;<a name="line.1"></a>
+<FONT color="green">002</FONT>    <a name="line.2"></a>
+<FONT color="green">003</FONT>    import ps2.*;<a name="line.3"></a>
+<FONT color="green">004</FONT>    import static ps2.test.TestValues.TOLERANCE;<a name="line.4"></a>
+<FONT color="green">005</FONT>    <a name="line.5"></a>
+<FONT color="green">006</FONT>    import junit.framework.*;<a name="line.6"></a>
+<FONT color="green">007</FONT>    <a name="line.7"></a>
+<FONT color="green">008</FONT>    <a name="line.8"></a>
+<FONT color="green">009</FONT>    /**<a name="line.9"></a>
+<FONT color="green">010</FONT>     * Unit tests for the GeoPoint class.<a name="line.10"></a>
+<FONT color="green">011</FONT>     **/<a name="line.11"></a>
+<FONT color="green">012</FONT>    public class GeoPointTest extends TestCase {<a name="line.12"></a>
+<FONT color="green">013</FONT>    <a name="line.13"></a>
+<FONT color="green">014</FONT>        /** A GeoPoint object with the same data as eq2 **/<a name="line.14"></a>
+<FONT color="green">015</FONT>        private final GeoPoint eq1;<a name="line.15"></a>
+<FONT color="green">016</FONT>    <a name="line.16"></a>
+<FONT color="green">017</FONT>        /** A GeoPoint object with the same data as eq1 **/<a name="line.17"></a>
+<FONT color="green">018</FONT>        private final GeoPoint eq2;<a name="line.18"></a>
+<FONT color="green">019</FONT>    <a name="line.19"></a>
+<FONT color="green">020</FONT>        /** A GeoPoint object with different data than eq1 **/<a name="line.20"></a>
+<FONT color="green">021</FONT>        private final GeoPoint diff;<a name="line.21"></a>
+<FONT color="green">022</FONT>    <a name="line.22"></a>
+<FONT color="green">023</FONT>    <a name="line.23"></a>
+<FONT color="green">024</FONT>        /** A GeoPoint representing the center of Seattle **/<a name="line.24"></a>
+<FONT color="green">025</FONT>        private final GeoPoint p1;<a name="line.25"></a>
+<FONT color="green">026</FONT>    <a name="line.26"></a>
+<FONT color="green">027</FONT>    <a name="line.27"></a>
+<FONT color="green">028</FONT>        /** A GeoPoint due north of Seattle **/<a name="line.28"></a>
+<FONT color="green">029</FONT>        private final GeoPoint north;<a name="line.29"></a>
+<FONT color="green">030</FONT>    <a name="line.30"></a>
+<FONT color="green">031</FONT>        /** Heading, in degrees,  between p1 and north **/<a name="line.31"></a>
+<FONT color="green">032</FONT>        private final double nHeading;<a name="line.32"></a>
+<FONT color="green">033</FONT>    <a name="line.33"></a>
+<FONT color="green">034</FONT>        /** Distance, in miles,  between p1 and north **/<a name="line.34"></a>
+<FONT color="green">035</FONT>        private final double nDist;<a name="line.35"></a>
+<FONT color="green">036</FONT>    <a name="line.36"></a>
+<FONT color="green">037</FONT>    <a name="line.37"></a>
+<FONT color="green">038</FONT>        /** A GeoPoint due south of Seattle **/<a name="line.38"></a>
+<FONT color="green">039</FONT>        private final GeoPoint south;<a name="line.39"></a>
+<FONT color="green">040</FONT>    <a name="line.40"></a>
+<FONT color="green">041</FONT>        /** Heading, in degrees,  between p1 and south **/<a name="line.41"></a>
+<FONT color="green">042</FONT>        private final double sHeading;<a name="line.42"></a>
+<FONT color="green">043</FONT>    <a name="line.43"></a>
+<FONT color="green">044</FONT>        /** Distance, in miles,  between p1 and south **/<a name="line.44"></a>
+<FONT color="green">045</FONT>        private final double sDist;<a name="line.45"></a>
+<FONT color="green">046</FONT>    <a name="line.46"></a>
+<FONT color="green">047</FONT>    <a name="line.47"></a>
+<FONT color="green">048</FONT>        /** A GeoPoint due east of Seattle **/<a name="line.48"></a>
+<FONT color="green">049</FONT>        private final GeoPoint east;<a name="line.49"></a>
+<FONT color="green">050</FONT>    <a name="line.50"></a>
+<FONT color="green">051</FONT>        /** Heading, in degrees,  between p1 and east **/<a name="line.51"></a>
+<FONT color="green">052</FONT>        private final double eHeading;<a name="line.52"></a>
+<FONT color="green">053</FONT>    <a name="line.53"></a>
+<FONT color="green">054</FONT>        /** Distance, in miles,  between p1 and east **/<a name="line.54"></a>
+<FONT color="green">055</FONT>        private final double eDist;<a name="line.55"></a>
+<FONT color="green">056</FONT>    <a name="line.56"></a>
+<FONT color="green">057</FONT>    <a name="line.57"></a>
+<FONT color="green">058</FONT>        /** A GeoPoint due west of Seattle **/<a name="line.58"></a>
+<FONT color="green">059</FONT>        private final GeoPoint west;<a name="line.59"></a>
+<FONT color="green">060</FONT>    <a name="line.60"></a>
+<FONT color="green">061</FONT>        /** Heading, in degrees,  between p1 and west **/<a name="line.61"></a>
+<FONT color="green">062</FONT>        private final double wHeading;<a name="line.62"></a>
+<FONT color="green">063</FONT>    <a name="line.63"></a>
+<FONT color="green">064</FONT>        /** Distance, in miles,  between p1 and west **/<a name="line.64"></a>
+<FONT color="green">065</FONT>        private final double wDist;<a name="line.65"></a>
+<FONT color="green">066</FONT>    <a name="line.66"></a>
+<FONT color="green">067</FONT>    <a name="line.67"></a>
+<FONT color="green">068</FONT>        /** A GeoPoint due north east of Seattle **/<a name="line.68"></a>
+<FONT color="green">069</FONT>        private final GeoPoint northEast;<a name="line.69"></a>
+<FONT color="green">070</FONT>    <a name="line.70"></a>
+<FONT color="green">071</FONT>        /** Heading, in degrees,  between p1 and north east **/<a name="line.71"></a>
+<FONT color="green">072</FONT>        private final double neHeading;<a name="line.72"></a>
+<FONT color="green">073</FONT>    <a name="line.73"></a>
+<FONT color="green">074</FONT>        /** Distance, in miles,  between p1 and north east **/<a name="line.74"></a>
+<FONT color="green">075</FONT>        private final double neDist;<a name="line.75"></a>
+<FONT color="green">076</FONT>    <a name="line.76"></a>
+<FONT color="green">077</FONT>    <a name="line.77"></a>
+<FONT color="green">078</FONT>        /** A GeoPoint due south west of Seattle **/<a name="line.78"></a>
+<FONT color="green">079</FONT>        private final GeoPoint southWest;<a name="line.79"></a>
+<FONT color="green">080</FONT>    <a name="line.80"></a>
+<FONT color="green">081</FONT>        /** Heading, in degrees,  between p1 and south west **/<a name="line.81"></a>
+<FONT color="green">082</FONT>        private final double swHeading;<a name="line.82"></a>
+<FONT color="green">083</FONT>    <a name="line.83"></a>
+<FONT color="green">084</FONT>        /** Distance, in miles,  between p1 and south west **/<a name="line.84"></a>
+<FONT color="green">085</FONT>        private final double swDist;<a name="line.85"></a>
+<FONT color="green">086</FONT>    <a name="line.86"></a>
+<FONT color="green">087</FONT>    <a name="line.87"></a>
+<FONT color="green">088</FONT>        public GeoPointTest(String name) {<a name="line.88"></a>
+<FONT color="green">089</FONT>            super(name);<a name="line.89"></a>
+<FONT color="green">090</FONT>    <a name="line.90"></a>
+<FONT color="green">091</FONT>            int eqLat = locationToInt(47, 36, 35);<a name="line.91"></a>
+<FONT color="green">092</FONT>            int eqLong = locationToInt(-122, 19, 59);<a name="line.92"></a>
+<FONT color="green">093</FONT>            eq1 = new GeoPoint(eqLat, eqLong);<a name="line.93"></a>
+<FONT color="green">094</FONT>            eq2 = new GeoPoint(eqLat, eqLong);<a name="line.94"></a>
+<FONT color="green">095</FONT>            diff = new GeoPoint(eqLat + 50, eqLong + 50);<a name="line.95"></a>
+<FONT color="green">096</FONT>    <a name="line.96"></a>
+<FONT color="green">097</FONT>    <a name="line.97"></a>
+<FONT color="green">098</FONT>            // Center of Seattle:<a name="line.98"></a>
+<FONT color="green">099</FONT>            p1 = new GeoPoint(locationToInt(47, 36, 35),<a name="line.99"></a>
+<FONT color="green">100</FONT>                              locationToInt(-122, 19, 59));<a name="line.100"></a>
+<FONT color="green">101</FONT>            // due north<a name="line.101"></a>
+<FONT color="green">102</FONT>            north = new GeoPoint(locationToInt(47, 42, 35),<a name="line.102"></a>
+<FONT color="green">103</FONT>                                 locationToInt(-122, 19, 59));<a name="line.103"></a>
+<FONT color="green">104</FONT>            nHeading = 0;<a name="line.104"></a>
+<FONT color="green">105</FONT>            nDist = 6.904;<a name="line.105"></a>
+<FONT color="green">106</FONT>    <a name="line.106"></a>
+<FONT color="green">107</FONT>            // due south<a name="line.107"></a>
+<FONT color="green">108</FONT>            south = new GeoPoint(locationToInt(47, 30, 35),<a name="line.108"></a>
+<FONT color="green">109</FONT>                                 locationToInt(-122, 19, 59));<a name="line.109"></a>
+<FONT color="green">110</FONT>            sHeading = 180;<a name="line.110"></a>
+<FONT color="green">111</FONT>            sDist = 6.904;<a name="line.111"></a>
+<FONT color="green">112</FONT>    <a name="line.112"></a>
+<FONT color="green">113</FONT>            // due east<a name="line.113"></a>
+<FONT color="green">114</FONT>            east = new GeoPoint(locationToInt(47, 36, 35),<a name="line.114"></a>
+<FONT color="green">115</FONT>                                locationToInt(-122, 13, 59));<a name="line.115"></a>
+<FONT color="green">116</FONT>            eHeading = 90;<a name="line.116"></a>
+<FONT color="green">117</FONT>            eDist = 4.6574;<a name="line.117"></a>
+<FONT color="green">118</FONT>    <a name="line.118"></a>
+<FONT color="green">119</FONT>            // due west<a name="line.119"></a>
+<FONT color="green">120</FONT>            west = new GeoPoint(locationToInt(47, 36, 35),<a name="line.120"></a>
+<FONT color="green">121</FONT>                                locationToInt(-122, 25, 59));<a name="line.121"></a>
+<FONT color="green">122</FONT>            wHeading = 270;<a name="line.122"></a>
+<FONT color="green">123</FONT>            wDist = 4.6574;<a name="line.123"></a>
+<FONT color="green">124</FONT>    <a name="line.124"></a>
+<FONT color="green">125</FONT>            // north east<a name="line.125"></a>
+<FONT color="green">126</FONT>            northEast = new GeoPoint(locationToInt(47, 42, 35),<a name="line.126"></a>
+<FONT color="green">127</FONT>                                     locationToInt(-122, 13, 59));<a name="line.127"></a>
+<FONT color="green">128</FONT>            neHeading = 34.0033834;<a name="line.128"></a>
+<FONT color="green">129</FONT>            neDist = 8.328060444;<a name="line.129"></a>
+<FONT color="green">130</FONT>    <a name="line.130"></a>
+<FONT color="green">131</FONT>            // south west<a name="line.131"></a>
+<FONT color="green">132</FONT>            southWest = new GeoPoint(locationToInt(47, 30, 35),<a name="line.132"></a>
+<FONT color="green">133</FONT>                                     locationToInt(-122, 25, 59));<a name="line.133"></a>
+<FONT color="green">134</FONT>            swHeading = 214.0033834;<a name="line.134"></a>
+<FONT color="green">135</FONT>            swDist = 8.328060444;<a name="line.135"></a>
+<FONT color="green">136</FONT>        }<a name="line.136"></a>
+<FONT color="green">137</FONT>    <a name="line.137"></a>
+<FONT color="green">138</FONT>    <a name="line.138"></a>
+<FONT color="green">139</FONT>        /**<a name="line.139"></a>
+<FONT color="green">140</FONT>         * Convert a degree, minutes, seconds latitude or longitude value<a name="line.140"></a>
+<FONT color="green">141</FONT>         * to its associated integer value (to millionths of a degree).<a name="line.141"></a>
+<FONT color="green">142</FONT>         * Allows invalid locations to be specified for testing, but<a name="line.142"></a>
+<FONT color="green">143</FONT>         * doesn't allow negative minute/second values.<a name="line.143"></a>
+<FONT color="green">144</FONT>         **/<a name="line.144"></a>
+<FONT color="green">145</FONT>        static int locationToInt(int deg, int min, int sec) {<a name="line.145"></a>
+<FONT color="green">146</FONT>            if (min &lt; 0 || sec &lt; 0) {<a name="line.146"></a>
+<FONT color="green">147</FONT>                throw new RuntimeException("min and sec must be positive!");<a name="line.147"></a>
+<FONT color="green">148</FONT>            }<a name="line.148"></a>
+<FONT color="green">149</FONT>    <a name="line.149"></a>
+<FONT color="green">150</FONT>            double dmin = (double)min / 60;<a name="line.150"></a>
+<FONT color="green">151</FONT>            double dsec = (double)sec / (60 * 60);<a name="line.151"></a>
+<FONT color="green">152</FONT>            if (deg &gt;= 0) {<a name="line.152"></a>
+<FONT color="green">153</FONT>                return ((int)Math.round(1000000 * (deg + dmin + dsec)));<a name="line.153"></a>
+<FONT color="green">154</FONT>            } else {<a name="line.154"></a>
+<FONT color="green">155</FONT>                return ((int)Math.round(1000000 * (deg - dmin - dsec)));<a name="line.155"></a>
+<FONT color="green">156</FONT>            }<a name="line.156"></a>
+<FONT color="green">157</FONT>        }<a name="line.157"></a>
+<FONT color="green">158</FONT>    <a name="line.158"></a>
+<FONT color="green">159</FONT>    <a name="line.159"></a>
+<FONT color="green">160</FONT>    <a name="line.160"></a>
+<FONT color="green">161</FONT>        /**<a name="line.161"></a>
+<FONT color="green">162</FONT>         * Sanity check for our locationToInt() method<a name="line.162"></a>
+<FONT color="green">163</FONT>         **/<a name="line.163"></a>
+<FONT color="green">164</FONT>        public void testLocationToIntMethod() {<a name="line.164"></a>
+<FONT color="green">165</FONT>            int lat = locationToInt(42, 21, 30);<a name="line.165"></a>
+<FONT color="green">166</FONT>            int lng = locationToInt(-71, 3, 37);<a name="line.166"></a>
+<FONT color="green">167</FONT>            if (lat != 42358333) {<a name="line.167"></a>
+<FONT color="green">168</FONT>                fail("42 21 30 latitude must be 42358333, is " + lat);<a name="line.168"></a>
+<FONT color="green">169</FONT>            } else if (lng != -71060278) {<a name="line.169"></a>
+<FONT color="green">170</FONT>                fail("-71 3 37 longitude must be -71060278, is " + lng);<a name="line.170"></a>
+<FONT color="green">171</FONT>            }<a name="line.171"></a>
+<FONT color="green">172</FONT>        }<a name="line.172"></a>
+<FONT color="green">173</FONT>    <a name="line.173"></a>
+<FONT color="green">174</FONT>    <a name="line.174"></a>
+<FONT color="green">175</FONT>        /**<a name="line.175"></a>
+<FONT color="green">176</FONT>         * JUnit calls this before each testXXX method is run<a name="line.176"></a>
+<FONT color="green">177</FONT>         **/<a name="line.177"></a>
+<FONT color="green">178</FONT>        protected void setUp() {<a name="line.178"></a>
+<FONT color="green">179</FONT>    <a name="line.179"></a>
+<FONT color="green">180</FONT>        }<a name="line.180"></a>
+<FONT color="green">181</FONT>    <a name="line.181"></a>
+<FONT color="green">182</FONT>    <a name="line.182"></a>
+<FONT color="green">183</FONT>        ////////////////////////////////////////////////////<a name="line.183"></a>
+<FONT color="green">184</FONT>        // TEST LEGAL/ILLEGAL VALUES IN GeoPoint CREATION //<a name="line.184"></a>
+<FONT color="green">185</FONT>        ////////////////////////////////////////////////////<a name="line.185"></a>
+<FONT color="green">186</FONT>    <a name="line.186"></a>
+<FONT color="green">187</FONT>    <a name="line.187"></a>
+<FONT color="green">188</FONT>        /**<a name="line.188"></a>
+<FONT color="green">189</FONT>         * Tests that GeoPoints can be created with some legal latitude<a name="line.189"></a>
+<FONT color="green">190</FONT>         * and longitude values that are in the greater Seattle area, and<a name="line.190"></a>
+<FONT color="green">191</FONT>         * that the values it's provided are returned unchanged.<a name="line.191"></a>
+<FONT color="green">192</FONT>         **/<a name="line.192"></a>
+<FONT color="green">193</FONT>        public void testLegalValues1() {<a name="line.193"></a>
+<FONT color="green">194</FONT>            int valLat = locationToInt(47, 36, 0);<a name="line.194"></a>
+<FONT color="green">195</FONT>            int valLong = locationToInt(-122, 19, 50);<a name="line.195"></a>
+<FONT color="green">196</FONT>            checkLegal(valLat, valLong);<a name="line.196"></a>
+<FONT color="green">197</FONT>        }<a name="line.197"></a>
+<FONT color="green">198</FONT>    <a name="line.198"></a>
+<FONT color="green">199</FONT>    <a name="line.199"></a>
+<FONT color="green">200</FONT>        /**<a name="line.200"></a>
+<FONT color="green">201</FONT>         * Tests that GeoPoints can be created with some legal latitude<a name="line.201"></a>
+<FONT color="green">202</FONT>         * and longitude values that are in the greater Seattle area, and<a name="line.202"></a>
+<FONT color="green">203</FONT>         * that the values it's provided are returned unchanged.<a name="line.203"></a>
+<FONT color="green">204</FONT>         **/<a name="line.204"></a>
+<FONT color="green">205</FONT>        public void testLegalValues2() {<a name="line.205"></a>
+<FONT color="green">206</FONT>            int valLat = locationToInt(47, 35, 58);<a name="line.206"></a>
+<FONT color="green">207</FONT>            int valLong = locationToInt(-122, 20, 0);<a name="line.207"></a>
+<FONT color="green">208</FONT>            checkLegal(valLat, valLong);<a name="line.208"></a>
+<FONT color="green">209</FONT>        }<a name="line.209"></a>
+<FONT color="green">210</FONT>    <a name="line.210"></a>
+<FONT color="green">211</FONT>    <a name="line.211"></a>
+<FONT color="green">212</FONT>        /**<a name="line.212"></a>
+<FONT color="green">213</FONT>         * Helper method for asserting that a legal latitude/longitude<a name="line.213"></a>
+<FONT color="green">214</FONT>         * pair can be used to create a GeoPoint and that those exact same<a name="line.214"></a>
+<FONT color="green">215</FONT>         * values are then returned.<a name="line.215"></a>
+<FONT color="green">216</FONT>         **/<a name="line.216"></a>
+<FONT color="green">217</FONT>        void checkLegal(int lat, int lng) {<a name="line.217"></a>
+<FONT color="green">218</FONT>            GeoPoint g = null;<a name="line.218"></a>
+<FONT color="green">219</FONT>            try {<a name="line.219"></a>
+<FONT color="green">220</FONT>                g = new GeoPoint(lat, lng);<a name="line.220"></a>
+<FONT color="green">221</FONT>            } catch (Exception ex) {<a name="line.221"></a>
+<FONT color="green">222</FONT>                // Failed<a name="line.222"></a>
+<FONT color="green">223</FONT>                fail("Didn't allow legal (latitude,longitude) of (" +<a name="line.223"></a>
+<FONT color="green">224</FONT>                     lat + ", " + lng + ")");<a name="line.224"></a>
+<FONT color="green">225</FONT>                return;<a name="line.225"></a>
+<FONT color="green">226</FONT>            }<a name="line.226"></a>
+<FONT color="green">227</FONT>    <a name="line.227"></a>
+<FONT color="green">228</FONT>            if (g.getLatitude() != lat) {<a name="line.228"></a>
+<FONT color="green">229</FONT>                fail("Latitude should have been set to " + lat +<a name="line.229"></a>
+<FONT color="green">230</FONT>                     ", was set to " + g.getLatitude() + " instead.");<a name="line.230"></a>
+<FONT color="green">231</FONT>    <a name="line.231"></a>
+<FONT color="green">232</FONT>            } else if (g.getLongitude() != lng) {<a name="line.232"></a>
+<FONT color="green">233</FONT>                fail("Longitude should have been set to " + lng +<a name="line.233"></a>
+<FONT color="green">234</FONT>                     ", was set to " + g.getLongitude() + " instead.");<a name="line.234"></a>
+<FONT color="green">235</FONT>            }<a name="line.235"></a>
+<FONT color="green">236</FONT>        }<a name="line.236"></a>
+<FONT color="green">237</FONT>    <a name="line.237"></a>
+<FONT color="green">238</FONT>    <a name="line.238"></a>
+<FONT color="green">239</FONT>        //////////////////////////////<a name="line.239"></a>
+<FONT color="green">240</FONT>        // TEST GeoPoint.distanceTo //<a name="line.240"></a>
+<FONT color="green">241</FONT>        //////////////////////////////<a name="line.241"></a>
+<FONT color="green">242</FONT>    <a name="line.242"></a>
+<FONT color="green">243</FONT>        /**<a name="line.243"></a>
+<FONT color="green">244</FONT>         * Test that distance 0 is handled correctly: same object<a name="line.244"></a>
+<FONT color="green">245</FONT>         **/<a name="line.245"></a>
+<FONT color="green">246</FONT>        public void testDistance01() {<a name="line.246"></a>
+<FONT color="green">247</FONT>            assertEquals("Distance between a GeoPoint and itself must be 0",<a name="line.247"></a>
+<FONT color="green">248</FONT>                         0.0, p1.distanceTo(p1), TOLERANCE);<a name="line.248"></a>
+<FONT color="green">249</FONT>        }<a name="line.249"></a>
+<FONT color="green">250</FONT>    <a name="line.250"></a>
+<FONT color="green">251</FONT>    <a name="line.251"></a>
+<FONT color="green">252</FONT>        /**<a name="line.252"></a>
+<FONT color="green">253</FONT>         * Test that distance 0 is handled correctly: equal objects<a name="line.253"></a>
+<FONT color="green">254</FONT>         **/<a name="line.254"></a>
+<FONT color="green">255</FONT>        public void testDistance02() {<a name="line.255"></a>
+<FONT color="green">256</FONT>            assertEquals("Distance between two equal GeoPoints must be 0",<a name="line.256"></a>
+<FONT color="green">257</FONT>                         0.0, eq1.distanceTo(eq2), TOLERANCE);<a name="line.257"></a>
+<FONT color="green">258</FONT>        }<a name="line.258"></a>
+<FONT color="green">259</FONT>    <a name="line.259"></a>
+<FONT color="green">260</FONT>    <a name="line.260"></a>
+<FONT color="green">261</FONT>        /**<a name="line.261"></a>
+<FONT color="green">262</FONT>         * Test that points due north are handled correctly<a name="line.262"></a>
+<FONT color="green">263</FONT>         **/<a name="line.263"></a>
+<FONT color="green">264</FONT>        public void testDistanceDueNorth() {<a name="line.264"></a>
+<FONT color="green">265</FONT>            checkDist(p1, north, nDist);<a name="line.265"></a>
+<FONT color="green">266</FONT>        }<a name="line.266"></a>
+<FONT color="green">267</FONT>    <a name="line.267"></a>
+<FONT color="green">268</FONT>    <a name="line.268"></a>
+<FONT color="green">269</FONT>        /**<a name="line.269"></a>
+<FONT color="green">270</FONT>         * Test that points due south are handled correctly<a name="line.270"></a>
+<FONT color="green">271</FONT>         **/<a name="line.271"></a>
+<FONT color="green">272</FONT>        public void testDistanceDueSouth() {<a name="line.272"></a>
+<FONT color="green">273</FONT>            checkDist(p1, south, sDist);<a name="line.273"></a>
+<FONT color="green">274</FONT>        }<a name="line.274"></a>
+<FONT color="green">275</FONT>    <a name="line.275"></a>
+<FONT color="green">276</FONT>    <a name="line.276"></a>
+<FONT color="green">277</FONT>        /**<a name="line.277"></a>
+<FONT color="green">278</FONT>         * Test that points due east are handled correctly<a name="line.278"></a>
+<FONT color="green">279</FONT>         **/<a name="line.279"></a>
+<FONT color="green">280</FONT>        public void testDistanceDueEast() {<a name="line.280"></a>
+<FONT color="green">281</FONT>            checkDist(p1, east, eDist);<a name="line.281"></a>
+<FONT color="green">282</FONT>        }<a name="line.282"></a>
+<FONT color="green">283</FONT>    <a name="line.283"></a>
+<FONT color="green">284</FONT>    <a name="line.284"></a>
+<FONT color="green">285</FONT>        /**<a name="line.285"></a>
+<FONT color="green">286</FONT>         * Test that points due west are handled correctly<a name="line.286"></a>
+<FONT color="green">287</FONT>         **/<a name="line.287"></a>
+<FONT color="green">288</FONT>        public void testDistanceDueWest() {<a name="line.288"></a>
+<FONT color="green">289</FONT>            checkDist(p1, west, wDist);<a name="line.289"></a>
+<FONT color="green">290</FONT>        }<a name="line.290"></a>
+<FONT color="green">291</FONT>    <a name="line.291"></a>
+<FONT color="green">292</FONT>    <a name="line.292"></a>
+<FONT color="green">293</FONT>        /**<a name="line.293"></a>
+<FONT color="green">294</FONT>         * Test that points north east are handled correctly<a name="line.294"></a>
+<FONT color="green">295</FONT>         **/<a name="line.295"></a>
+<FONT color="green">296</FONT>        public void testDistanceDueNorthEast() {<a name="line.296"></a>
+<FONT color="green">297</FONT>            checkDist(p1, northEast, neDist);<a name="line.297"></a>
+<FONT color="green">298</FONT>        }<a name="line.298"></a>
+<FONT color="green">299</FONT>    <a name="line.299"></a>
+<FONT color="green">300</FONT>    <a name="line.300"></a>
+<FONT color="green">301</FONT>        /**<a name="line.301"></a>
+<FONT color="green">302</FONT>         * Test that points south west are handled correctly<a name="line.302"></a>
+<FONT color="green">303</FONT>         **/<a name="line.303"></a>
+<FONT color="green">304</FONT>        public void testDistanceDueSouthWest() {<a name="line.304"></a>
+<FONT color="green">305</FONT>            checkDist(p1, southWest, swDist);<a name="line.305"></a>
+<FONT color="green">306</FONT>        }<a name="line.306"></a>
+<FONT color="green">307</FONT>    <a name="line.307"></a>
+<FONT color="green">308</FONT>    <a name="line.308"></a>
+<FONT color="green">309</FONT>        /**<a name="line.309"></a>
+<FONT color="green">310</FONT>         * Helper method that asserts that the distance between p1 and p2<a name="line.310"></a>
+<FONT color="green">311</FONT>         * is dist AND that the distance between p2 and p1 is also dist.<a name="line.311"></a>
+<FONT color="green">312</FONT>         **/<a name="line.312"></a>
+<FONT color="green">313</FONT>        void checkDist(GeoPoint p1, GeoPoint p2, double dist) {<a name="line.313"></a>
+<FONT color="green">314</FONT>            assertEquals("Distance between these two points is " +<a name="line.314"></a>
+<FONT color="green">315</FONT>                         dist + ", not " + p1.distanceTo(p2),<a name="line.315"></a>
+<FONT color="green">316</FONT>                         dist, p1.distanceTo(p2), TOLERANCE);<a name="line.316"></a>
+<FONT color="green">317</FONT>            assertEquals("Reversing between these two points is " +<a name="line.317"></a>
+<FONT color="green">318</FONT>                         dist + ", not " + p2.distanceTo(p1),<a name="line.318"></a>
+<FONT color="green">319</FONT>                         dist, p2.distanceTo(p1), TOLERANCE);<a name="line.319"></a>
+<FONT color="green">320</FONT>        }<a name="line.320"></a>
+<FONT color="green">321</FONT>    <a name="line.321"></a>
+<FONT color="green">322</FONT>    <a name="line.322"></a>
+<FONT color="green">323</FONT>        /////////////////////////////<a name="line.323"></a>
+<FONT color="green">324</FONT>        // TEST GeoPoint.headingTo //<a name="line.324"></a>
+<FONT color="green">325</FONT>        /////////////////////////////<a name="line.325"></a>
+<FONT color="green">326</FONT>    <a name="line.326"></a>
+<FONT color="green">327</FONT>        /**<a name="line.327"></a>
+<FONT color="green">328</FONT>         * Test that points due north are handled correctly<a name="line.328"></a>
+<FONT color="green">329</FONT>         **/<a name="line.329"></a>
+<FONT color="green">330</FONT>        public void testHeadingDueNorth() {<a name="line.330"></a>
+<FONT color="green">331</FONT>            checkHeading(p1, north, nHeading);<a name="line.331"></a>
+<FONT color="green">332</FONT>        }<a name="line.332"></a>
+<FONT color="green">333</FONT>    <a name="line.333"></a>
+<FONT color="green">334</FONT>    <a name="line.334"></a>
+<FONT color="green">335</FONT>        /**<a name="line.335"></a>
+<FONT color="green">336</FONT>         * Test that points due south are handled correctly<a name="line.336"></a>
+<FONT color="green">337</FONT>         **/<a name="line.337"></a>
+<FONT color="green">338</FONT>        public void testHeadingDueSouth() {<a name="line.338"></a>
+<FONT color="green">339</FONT>            checkHeading(p1, south, sHeading);<a name="line.339"></a>
+<FONT color="green">340</FONT>        }<a name="line.340"></a>
+<FONT color="green">341</FONT>    <a name="line.341"></a>
+<FONT color="green">342</FONT>    <a name="line.342"></a>
+<FONT color="green">343</FONT>        /**<a name="line.343"></a>
+<FONT color="green">344</FONT>         * Test that points due e           String ns;<a name="line.344"></a>
+<FONT color="green">345</FONT>            String ew;<a name="line.345"></a>
+<FONT color="green">346</FONT>            (latitude &lt; 0) ? ew = "E" : ew = "W")<a name="line.346"></a>
+<FONT color="green">347</FONT>                    <a name="line.347"></a>
+<FONT color="green">348</FONT>            }ast are handled correctly<a name="line.348"></a>
+<FONT color="green">349</FONT>         **/<a name="line.349"></a>
+<FONT color="green">350</FONT>        public void testHeadingDueEast() {<a name="line.350"></a>
+<FONT color="green">351</FONT>            checkHeading(p1, east, eHeading);<a name="line.351"></a>
+<FONT color="green">352</FONT>        }<a name="line.352"></a>
+<FONT color="green">353</FONT>    <a name="line.353"></a>
+<FONT color="green">354</FONT>    <a name="line.354"></a>
+<FONT color="green">355</FONT>        /**<a name="line.355"></a>
+<FONT color="green">356</FONT>         * Test that points due west are handled correctly<a name="line.356"></a>
+<FONT color="green">357</FONT>         **/<a name="line.357"></a>
+<FONT color="green">358</FONT>        public void testHeadingDueWest() {<a name="line.358"></a>
+<FONT color="green">359</FONT>            checkHeading(p1, west, wHeading);<a name="line.359"></a>
+<FONT color="green">360</FONT>        }<a name="line.360"></a>
+<FONT color="green">361</FONT>    <a name="line.361"></a>
+<FONT color="green">362</FONT>    <a name="line.362"></a>
+<FONT color="green">363</FONT>        /**<a name="line.363"></a>
+<FONT color="green">364</FONT>         * Test that points north east are handled correctly<a name="line.364"></a>
+<FONT color="green">365</FONT>         **/<a name="line.365"></a>
+<FONT color="green">366</FONT>        public void testHeadingNorthEast() {<a name="line.366"></a>
+<FONT color="green">367</FONT>            checkHeading(p1, northEast, neHeading);<a name="line.367"></a>
+<FONT color="green">368</FONT>        }<a name="line.368"></a>
+<FONT color="green">369</FONT>    <a name="line.369"></a>
+<FONT color="green">370</FONT>    <a name="line.370"></a>
+<FONT color="green">371</FONT>        /**<a name="line.371"></a>
+<FONT color="green">372</FONT>         * Test that points south west are handled correctly<a name="line.372"></a>
+<FONT color="green">373</FONT>         **/<a name="line.373"></a>
+<FONT color="green">374</FONT>        public void testHeadingSouthWest() {<a name="line.374"></a>
+<FONT color="green">375</FONT>            checkHeading(p1, southWest, swHeading);<a name="line.375"></a>
+<FONT color="green">376</FONT>        }<a name="line.376"></a>
+<FONT color="green">377</FONT>    <a name="line.377"></a>
+<FONT color="green">378</FONT>    <a name="line.378"></a>
+<FONT color="green">379</FONT>        /**<a name="line.379"></a>
+<FONT color="green">380</FONT>         * Helper method that asserts that the heading between p1 and p2<a name="line.380"></a>
+<FONT color="green">381</FONT>         * is heading AND that the distance between p2 and p1 is heading + 180.<a name="line.381"></a>
+<FONT color="green">382</FONT>         **/<a name="line.382"></a>
+<FONT color="green">383</FONT>        void checkHeading(GeoPoint p1, GeoPoint p2, double heading) {<a name="line.383"></a>
+<FONT color="green">384</FONT>            assertEquals("Heading between these two points is " +<a name="line.384"></a>
+<FONT color="green">385</FONT>                         heading + ", not " + p1.headingTo(p2),<a name="line.385"></a>
+<FONT color="green">386</FONT>                         heading, p1.headingTo(p2), TOLERANCE);<a name="line.386"></a>
+<FONT color="green">387</FONT>            assertEquals("Reversing between these two points is " +<a name="line.387"></a>
+<FONT color="green">388</FONT>                         (heading + 180) + ", not " + p2.headingTo(p1),<a name="line.388"></a>
+<FONT color="green">389</FONT>                         heading, ((p2.headingTo(p1) + 180) % 360), TOLERANCE);<a name="line.389"></a>
+<FONT color="green">390</FONT>        }<a name="line.390"></a>
+<FONT color="green">391</FONT>    <a name="line.391"></a>
+<FONT color="green">392</FONT>    <a name="line.392"></a>
+<FONT color="green">393</FONT>        //////////////////////////<a name="line.393"></a>
+<FONT color="green">394</FONT>        // TEST GeoPoint.equals //<a name="line.394"></a>
+<FONT color="green">395</FONT>        //////////////////////////<a name="line.395"></a>
+<FONT color="green">396</FONT>    <a name="line.396"></a>
+<FONT color="green">397</FONT>        /**<a name="line.397"></a>
+<FONT color="green">398</FONT>         * Test positive case: same object<a name="line.398"></a>
+<FONT color="green">399</FONT>         **/<a name="line.399"></a>
+<FONT color="green">400</FONT>        public void testEquals1() {<a name="line.400"></a>
+<FONT color="green">401</FONT>            assertTrue("A GeoPoint must be equal() to itself",<a name="line.401"></a>
+<FONT color="green">402</FONT>                       eq1.equals(eq1));<a name="line.402"></a>
+<FONT color="green">403</FONT>        }<a name="line.403"></a>
+<FONT color="green">404</FONT>    <a name="line.404"></a>
+<FONT color="green">405</FONT>    <a name="line.405"></a>
+<FONT color="green">406</FONT>        /**<a name="line.406"></a>
+<FONT color="green">407</FONT>         * Test positive case: equal objects<a name="line.407"></a>
+<FONT color="green">408</FONT>         **/<a name="line.408"></a>
+<FONT color="green">409</FONT>        public void testEquals2() {<a name="line.409"></a>
+<FONT color="green">410</FONT>            assertTrue("Two GeoPoints with the same data must be equal()",<a name="line.410"></a>
+<FONT color="green">411</FONT>                       eq1.equals(eq2));<a name="line.411"></a>
+<FONT color="green">412</FONT>        }<a name="line.412"></a>
+<FONT color="green">413</FONT>    <a name="line.413"></a>
+<FONT color="green">414</FONT>    <a name="line.414"></a>
+<FONT color="green">415</FONT>        /**<a name="line.415"></a>
+<FONT color="green">416</FONT>         * Test that null values are handled correctly<a name="line.416"></a>
+<FONT color="green">417</FONT>         **/<a name="line.417"></a>
+<FONT color="green">418</FONT>        public void testNotEqualsNull() {<a name="line.418"></a>
+<FONT color="green">419</FONT>            if (!eq1.equals(null))<a name="line.419"></a>
+<FONT color="green">420</FONT>                return; // gp != null which is good.<a name="line.420"></a>
+<FONT color="green">421</FONT>            fail("Null not handled: equals(null) returns true");<a name="line.421"></a>
+<FONT color="green">422</FONT>        }<a name="line.422"></a>
+<FONT color="green">423</FONT>    <a name="line.423"></a>
+<FONT color="green">424</FONT>        /**<a name="line.424"></a>
+<FONT color="green">425</FONT>        * Test that objects of a different type are handled appropriately<a name="line.425"></a>
+<FONT color="green">426</FONT>        **/<a name="line.426"></a>
+<FONT color="green">427</FONT>        public void testNotEqualsWrongType()<a name="line.427"></a>
+<FONT color="green">428</FONT>        {<a name="line.428"></a>
+<FONT color="green">429</FONT>            if (eq1.equals(""))<a name="line.429"></a>
+<FONT color="green">430</FONT>                fail("Equality with objects of different type is incorrect.");<a name="line.430"></a>
+<FONT color="green">431</FONT>        }<a name="line.431"></a>
+<FONT color="green">432</FONT>    <a name="line.432"></a>
+<FONT color="green">433</FONT>    <a name="line.433"></a>
+<FONT color="green">434</FONT>        /**<a name="line.434"></a>
+<FONT color="green">435</FONT>         * Test that two GeoPoints with different data do not register as<a name="line.435"></a>
+<FONT color="green">436</FONT>         * equal.<a name="line.436"></a>
+<FONT color="green">437</FONT>         **/<a name="line.437"></a>
+<FONT color="green">438</FONT>        public void testNotEqualsDiff() {<a name="line.438"></a>
+<FONT color="green">439</FONT>            assertFalse("Two GeoPoints with different data must not be equal()",<a name="line.439"></a>
+<FONT color="green">440</FONT>                        eq1.equals(diff));<a name="line.440"></a>
+<FONT color="green">441</FONT>        }<a name="line.441"></a>
+<FONT color="green">442</FONT>    <a name="line.442"></a>
+<FONT color="green">443</FONT>    <a name="line.443"></a>
+<FONT color="green">444</FONT>        /**<a name="line.444"></a>
+<FONT color="green">445</FONT>         * Test that two GeoPoints with "swapped" latitude and longitude<a name="line.445"></a>
+<FONT color="green">446</FONT>         * values (i.e., they both sum to the same value) do not register<a name="line.446"></a>
+<FONT color="green">447</FONT>         * as equal.<a name="line.447"></a>
+<FONT color="green">448</FONT>         **/<a name="line.448"></a>
+<FONT color="green">449</FONT>        public void testNotEqualsSwapped() {<a name="line.449"></a>
+<FONT color="green">450</FONT>            int lat = locationToInt(1, 2, 3);<a name="line.450"></a>
+<FONT color="green">451</FONT>            int lng = locationToInt(4, 5, 6);<a name="line.451"></a>
+<FONT color="green">452</FONT>            GeoPoint e1 = new GeoPoint(lat, lng);<a name="line.452"></a>
+<FONT color="green">453</FONT>            GeoPoint e2 = new GeoPoint(lng, lat);<a name="line.453"></a>
+<FONT color="green">454</FONT>            assertFalse("Two GeoPoints with swapped data must not be equal()",<a name="line.454"></a>
+<FONT color="green">455</FONT>                        e1.equals(e2));<a name="line.455"></a>
+<FONT color="green">456</FONT>        }<a name="line.456"></a>
+<FONT color="green">457</FONT>    <a name="line.457"></a>
+<FONT color="green">458</FONT>    <a name="line.458"></a>
+<FONT color="green">459</FONT>        ////////////////////////////<a name="line.459"></a>
+<FONT color="green">460</FONT>        // TEST GeoPoint.hashCode //<a name="line.460"></a>
+<FONT color="green">461</FONT>        ////////////////////////////<a name="line.461"></a>
+<FONT color="green">462</FONT>    <a name="line.462"></a>
+<FONT color="green">463</FONT>        /**<a name="line.463"></a>
+<FONT color="green">464</FONT>         * Test positive case: same object<a name="line.464"></a>
+<FONT color="green">465</FONT>         **/<a name="line.465"></a>
+<FONT color="green">466</FONT>        public void testHashCode1() {<a name="line.466"></a>
+<FONT color="green">467</FONT>            assertEquals("A GeoPoint's hashCode must remain constant",<a name="line.467"></a>
+<FONT color="green">468</FONT>                         eq1.hashCode(), eq1.hashCode());<a name="line.468"></a>
+<FONT color="green">469</FONT>        }<a name="line.469"></a>
+<FONT color="green">470</FONT>    <a name="line.470"></a>
+<FONT color="green">471</FONT>    <a name="line.471"></a>
+<FONT color="green">472</FONT>        /**<a name="line.472"></a>
+<FONT color="green">473</FONT>         * Test positive case: equal objects<a name="line.473"></a>
+<FONT color="green">474</FONT>         **/<a name="line.474"></a>
+<FONT color="green">475</FONT>        public void testHashCode2() {<a name="line.475"></a>
+<FONT color="green">476</FONT>            assertEquals("GeoPoints with same data must have the same hashCode",<a name="line.476"></a>
+<FONT color="green">477</FONT>                         eq1.hashCode(), eq2.hashCode());<a name="line.477"></a>
+<FONT color="green">478</FONT>        }<a name="line.478"></a>
+<FONT color="green">479</FONT>    }<a name="line.479"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

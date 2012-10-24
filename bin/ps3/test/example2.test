@@ -1,0 +1,26 @@
+# Sample testing file
+# Tests graph creation/viewing and path finding with a
+# simple graph ('A') with three nodes.  Also tests
+# that the simultaneous creation of another graph
+# ('B') does not result in incorrect behavior.
+
+CreateNode n1 5
+CreateNode n3 1
+CreateGraph A
+AddNode A n1
+CreateNode n2 10
+AddNode A n2 
+CreateGraph B
+ListNodes B
+AddNode A n3
+AddEdge A n3 n1 
+AddNode B n1
+AddNode B n2
+AddEdge B n2 n1
+AddEdge A n1 n3
+AddEdge A n1 n2
+ListNodes A
+ListChildren A n1
+AddEdge A n3 n3
+ListChildren A n3
+FindPath A n3 -> n2

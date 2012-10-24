@@ -1,0 +1,14 @@
+<!--Minimal ant build file that needs to be created per pset.  You
+ mostly just have to use this as an example, and modify the project
+ name, and the also.compile property to be a comma-separated list of
+ other psets to compile in the shown fashion. -->
+
+<project name = "ps5" basedir = "../">
+  <property name = "psetname" value = "${ant.project.name}"/>
+  <property name = "pset" location = "${psetname}"/>
+  <import file="../common.xml"/>
+
+  <target name="test.strict">
+    <echo message="No tests for this problem set." />
+  </target>
+</project>

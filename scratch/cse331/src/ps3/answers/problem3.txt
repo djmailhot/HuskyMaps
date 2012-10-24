@@ -1,0 +1,23 @@
+
+I constructed only two test files with initialization and construction overhead clearly in mind.
+
+
+I first modified a provided test file to never initiate a findPath call.  This was p3TestBasicFunctionality.  This was to help test my Graph implementation before reaching problem 8.  I simply create a 2-node, 1-edge graph and call the listNodes and listChildren operations to check the data-handleing of my Graph implementation.
+
+For my second test file, psTestOperations, I grouped all my operations and observer tests into a single continuously developing test file.  With observers, I would test the object being observed before and after a particular operation had been performed to maximize the ability to gauge functionality from test results.  Additionally, two maps were constructed and added to simultaneously to demonstrate uniqueness between different graph objects.  I didn't cover every single unique conditional case having to do with two graphs in tandem (If I do operation X on graph A, what is the status of graph B before and after the operation?).  Coverage of individual graphs was more complete.
+
+
+
+APPENDED
+
+I didn't modify the ImplementationTests file before hand because I didn't have a very secure idea of my implementation.  However, even after completing my implementation I didn't add to these JUnit test files.  I felt too insecure with my implementation to commit to testing it whole-sale.  I wanted the option of coming back to the implementation, then writing white-box tests in response.
+
+
+
+
+APPENDED-ED
+
+Apparently, I don't know how to get ImplementationTests to run any sort of tests, nor import the incredibly useful JUnit methods from junit.framework.
+I even have my separate class MyGreatTests.java.
+
+Wayyyy too late to try to get this working.  Taking the 'leap of faith' a-la recursion from CSE 143.

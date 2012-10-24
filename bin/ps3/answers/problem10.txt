@@ -1,0 +1,9 @@
+
+
+NOW I used Daikon
+
+
+However....
+I think Daikon really really really suffered with the major rle generics played in our implementations.  As we've seen before Daikon is great at probing the integer domain space.  However, the best information it could tell us about our Graphs was that no inputs could ever be null.  It do not have the ability to test specific classes and/or employ specific classes when faced with generics.  Additionally, accessing the functionality of said classes is another challenge.  The greatest input I was looking for was on my algorithem.  However, without a constructor ( I implement a static findPath method) Daikon had little means to test inputs and outputs, especially considering the need for WeightedNode in particular to make the algorithem really shine.
+
+All in all, Daikon was of no help for this assignment.

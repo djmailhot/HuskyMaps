@@ -1,0 +1,5 @@
+
+
+For my representation, I used a Map of nodes with keys corresponding to the nodes in the graph, with each key pointing to a Set of nodes, all representing an edge from that key to each node in the set.  This approach does not require a dedicated class for edge nodes.  However, if dealing with edge weights, some modification of the implementation will need to occur (such as storing edge nodes as keys of another map, where edge nodes point to an integer value for their cost).
+
+I did consider storing sets of edge objects as values in my node map.  However, this does limit the funtionality of my graph collection to objects that have corresponding object-edge classes.  If I wanted a graph of simple Strings, then a new String-edge class will need to be created just for this purpose.  With the current representation, this neccessity is eliminated.

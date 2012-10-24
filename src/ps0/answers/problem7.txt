@@ -1,0 +1,14 @@
+
+a. 
+Fibonacci had a specification that any input 'n' that was negative would cause the program to throw an exception.  However, in the if statement checking the value of 'n', the test was written as "n <= 0".  Unfixed, the program considered zero to be a negative number.  On a more important level, the 'n' indexing of the fibonacci terms used by the program was zero-based indexing.  
+To fix this problem, the if statement test needed to be changed to "n < 0".
+
+
+b. 
+The BaseCase test also depended on the first if statement that checks for non-negative 'n' values.  As mentioned before, the program uses aero-based indexing.  Thus the incorrect if statement test mishandled the basic 'n' value of 0 (it treated it as a negative number).  The BaseCase test tested the 'n' values of 0 and 1.
+This problem was fixed when the exception test above was addressed.
+
+
+c. 
+The InductiveCase tested the fibonacci values of 'n' greater than 2.  However, a faulty if statement of "n <= 2" handled the zero-based indexing of 'n' incorrectly.  Additionally, the final computation of a 'normal-case' (that of this fibonacci number being the sum of the two previous numbers) was coded to subtract rather than add.
+This test was fixed by rewriting the if statement as "n < 2" and changing the final computation from "f(n-1) - f(n-2)" (a difference) to "f(n-1) + f(n-2)" (a sum).

@@ -1,0 +1,309 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    package ps4;<a name="line.1"></a>
+<FONT color="green">002</FONT>    <a name="line.2"></a>
+<FONT color="green">003</FONT>    import ps3.graph.Path;<a name="line.3"></a>
+<FONT color="green">004</FONT>    import ps2.GeoSegment;<a name="line.4"></a>
+<FONT color="green">005</FONT>    import ps2.Route;<a name="line.5"></a>
+<FONT color="green">006</FONT>    import java.util.*;<a name="line.6"></a>
+<FONT color="green">007</FONT>    <a name="line.7"></a>
+<FONT color="green">008</FONT>    <a name="line.8"></a>
+<FONT color="green">009</FONT>    /**<a name="line.9"></a>
+<FONT color="green">010</FONT>     * &lt;p&gt;<a name="line.10"></a>
+<FONT color="green">011</FONT>     * A RoutePath is a sequence of GeoSegments that represent a continuous <a name="line.11"></a>
+<FONT color="green">012</FONT>     * navigational path across the earth's surface.  It's cost is defined<a name="line.12"></a>
+<FONT color="green">013</FONT>     * as the total distance traversed by the path's GeoSegments so far, plus<a name="line.13"></a>
+<FONT color="green">014</FONT>     * the geographic distance to the nearest goal segment. <a name="line.14"></a>
+<FONT color="green">015</FONT>     * <a name="line.15"></a>
+<FONT color="green">016</FONT>     * &lt;p&gt;<a name="line.16"></a>
+<FONT color="green">017</FONT>     * A Route Path is immutable. A new RoutePath is returned through<a name="line.17"></a>
+<FONT color="green">018</FONT>     * the extend path operation.<a name="line.18"></a>
+<FONT color="green">019</FONT>     * <a name="line.19"></a>
+<FONT color="green">020</FONT>     * &lt;p&gt;<a name="line.20"></a>
+<FONT color="green">021</FONT>     * The elements of this path are GeoSegments.  For any single segment of the path,<a name="line.21"></a>
+<FONT color="green">022</FONT>     * the segment's start point must be equal to the end point of the previous <a name="line.22"></a>
+<FONT color="green">023</FONT>     * segment, and it's end point must be equal to the start point of the next segment<a name="line.23"></a>
+<FONT color="green">024</FONT>     * in the path.<a name="line.24"></a>
+<FONT color="green">025</FONT>     *<a name="line.25"></a>
+<FONT color="green">026</FONT>     *<a name="line.26"></a>
+<FONT color="green">027</FONT>     * Specfields inherited from Path:<a name="line.27"></a>
+<FONT color="green">028</FONT>     * @specfield  cost :     double       // cost of traversing this path.<a name="line.28"></a>
+<FONT color="green">029</FONT>     * @specfield  elements : sequence     // sequence of nodes in this path.<a name="line.29"></a>
+<FONT color="green">030</FONT>     * <a name="line.30"></a>
+<FONT color="green">031</FONT>     * <a name="line.31"></a>
+<FONT color="green">032</FONT>     * Local specfields<a name="line.32"></a>
+<FONT color="green">033</FONT>     * @specfield  node : GeoSegment                // the end node of this path<a name="line.33"></a>
+<FONT color="green">034</FONT>     * @specfield  goals : Set&lt;GeoSegment&gt;    // collection of goal nodes for this<a name="line.34"></a>
+<FONT color="green">035</FONT>     *                                                                              // path instance <a name="line.35"></a>
+<FONT color="green">036</FONT>     * @specfield  length : double                  // geographic length of this path<a name="line.36"></a>
+<FONT color="green">037</FONT>     */<a name="line.37"></a>
+<FONT color="green">038</FONT>    <a name="line.38"></a>
+<FONT color="green">039</FONT>    public class RoutePath implements Path&lt;GeoSegment, RoutePath&gt; {<a name="line.39"></a>
+<FONT color="green">040</FONT>            <a name="line.40"></a>
+<FONT color="green">041</FONT>            /*<a name="line.41"></a>
+<FONT color="green">042</FONT>             * Abstraction Function<a name="line.42"></a>
+<FONT color="green">043</FONT>             * AF(c) = &lt; cost, elements &gt;  where<a name="line.43"></a>
+<FONT color="green">044</FONT>             *              cost     = c.cost<a name="line.44"></a>
+<FONT color="green">045</FONT>             *              elements =      [c.node]                                        if c.path == null<a name="line.45"></a>
+<FONT color="green">046</FONT>             *                               ||     [c.node] + c.path.elements              if c.path != null<a name="line.46"></a>
+<FONT color="green">047</FONT>             * <a name="line.47"></a>
+<FONT color="green">048</FONT>             * <a name="line.48"></a>
+<FONT color="green">049</FONT>             * <a name="line.49"></a>
+<FONT color="green">050</FONT>             * Representation Invariant <a name="line.50"></a>
+<FONT color="green">051</FONT>             *              (this.node != null &amp;&amp; this.goals != null &amp;&amp; !this.goals.isEmpty() ) &amp;&amp;<a name="line.51"></a>
+<FONT color="green">052</FONT>             *              (this.path == null) ==&gt; (this.cost == this.node.cost) &amp;&amp;<a name="line.52"></a>
+<FONT color="green">053</FONT>             *              (this.path != null) ==&gt; (this.cost == this.node.cost + this.path.cost)<a name="line.53"></a>
+<FONT color="green">054</FONT>             * <a name="line.54"></a>
+<FONT color="green">055</FONT>             *              In a path of n elements, for element e, {1 &lt; e &lt; n-1} :<a name="line.55"></a>
+<FONT color="green">056</FONT>             *                      e.getP1().equals( [e-1].getP2() ) &amp;&amp; e.getP2().equals( [e+1].getP1() )<a name="line.56"></a>
+<FONT color="green">057</FONT>             *                      that is for any element, it's start point must be equal to the end point<a name="line.57"></a>
+<FONT color="green">058</FONT>             *                      of the previous element, and it's end point must be equal to the start<a name="line.58"></a>
+<FONT color="green">059</FONT>             *                      point of the next element<a name="line.59"></a>
+<FONT color="green">060</FONT>             */<a name="line.60"></a>
+<FONT color="green">061</FONT>            <a name="line.61"></a>
+<FONT color="green">062</FONT>            /** Switch to turn on checks of the representation invariant */<a name="line.62"></a>
+<FONT color="green">063</FONT>            private static final boolean CHECK_REP = false;<a name="line.63"></a>
+<FONT color="green">064</FONT>            <a name="line.64"></a>
+<FONT color="green">065</FONT>        /** Factor for modified A* of cost = path length + (distance to nearest goal) * FACTOR <a name="line.65"></a>
+<FONT color="green">066</FONT>         *  Analyzed to improve operating time by a x2 factor with no loss in accuracy. <a name="line.66"></a>
+<FONT color="green">067</FONT>         */<a name="line.67"></a>
+<FONT color="green">068</FONT>            private static final double DISTANCE_TO_GOAL_COST_FACTOR = 1.00;<a name="line.68"></a>
+<FONT color="green">069</FONT>            <a name="line.69"></a>
+<FONT color="green">070</FONT>            <a name="line.70"></a>
+<FONT color="green">071</FONT>        /** The GeoSegment at the end of the path. */<a name="line.71"></a>
+<FONT color="green">072</FONT>            private final GeoSegment node;<a name="line.72"></a>
+<FONT color="green">073</FONT>        /** A RoutePath which, when extended with 'node' at the end,<a name="line.73"></a>
+<FONT color="green">074</FONT>         *  is equal to this.  May be null iff this path has only 1 element. */<a name="line.74"></a>
+<FONT color="green">075</FONT>        private final RoutePath path;<a name="line.75"></a>
+<FONT color="green">076</FONT>        /** The length of this RoutePath. */<a name="line.76"></a>
+<FONT color="green">077</FONT>        private final double length;<a name="line.77"></a>
+<FONT color="green">078</FONT>        /** The cost of this RoutePath. */<a name="line.78"></a>
+<FONT color="green">079</FONT>        private final double cost;<a name="line.79"></a>
+<FONT color="green">080</FONT>        /** The hashcode of this RoutePath */<a name="line.80"></a>
+<FONT color="green">081</FONT>        private final int hash;<a name="line.81"></a>
+<FONT color="green">082</FONT>        <a name="line.82"></a>
+<FONT color="green">083</FONT>        /** Set of goal GeoSegments of this Path, to compute  */<a name="line.83"></a>
+<FONT color="green">084</FONT>            private final Set&lt;GeoSegment&gt; goals; // for computing cost<a name="line.84"></a>
+<FONT color="green">085</FONT>    <a name="line.85"></a>
+<FONT color="green">086</FONT>            <a name="line.86"></a>
+<FONT color="green">087</FONT>            <a name="line.87"></a>
+<FONT color="green">088</FONT>            /**<a name="line.88"></a>
+<FONT color="green">089</FONT>             * A new RoutePath with the specified set of GeoSegments acting as the<a name="line.89"></a>
+<FONT color="green">090</FONT>             * end goals for this RoutePath instance.<a name="line.90"></a>
+<FONT color="green">091</FONT>             * @requires node != null &amp;&amp; goals != null &amp;&amp; !goals.isEmpty()<a name="line.91"></a>
+<FONT color="green">092</FONT>             * @effects Creates a new single-element RoutePath with the specified <a name="line.92"></a>
+<FONT color="green">093</FONT>             * node as that element and no additional elements <a name="line.93"></a>
+<FONT color="green">094</FONT>             */<a name="line.94"></a>
+<FONT color="green">095</FONT>        public RoutePath(GeoSegment node, Set&lt;GeoSegment&gt; goals) {<a name="line.95"></a>
+<FONT color="green">096</FONT>            this(node, null, goals);<a name="line.96"></a>
+<FONT color="green">097</FONT>        }<a name="line.97"></a>
+<FONT color="green">098</FONT>            <a name="line.98"></a>
+<FONT color="green">099</FONT>            /**<a name="line.99"></a>
+<FONT color="green">100</FONT>             * @requires node != null &amp;&amp; goals != null &amp;&amp; !goals.isEmpty()<a name="line.100"></a>
+<FONT color="green">101</FONT>             * @effects Creates a new RoutePath which is the specified path<a name="line.101"></a>
+<FONT color="green">102</FONT>             * plus the specified node added as it's new end element<a name="line.102"></a>
+<FONT color="green">103</FONT>             */<a name="line.103"></a>
+<FONT color="green">104</FONT>        private RoutePath(GeoSegment node, RoutePath path, Set&lt;GeoSegment&gt; goals) {<a name="line.104"></a>
+<FONT color="green">105</FONT>            if (node == null || goals == null) {<a name="line.105"></a>
+<FONT color="green">106</FONT>                throw new IllegalArgumentException("no specified arguments can be null");<a name="line.106"></a>
+<FONT color="green">107</FONT>            }else if(goals.isEmpty()){<a name="line.107"></a>
+<FONT color="green">108</FONT>                throw new IllegalArgumentException("must have at least one goal segment");  <a name="line.108"></a>
+<FONT color="green">109</FONT>            }<a name="line.109"></a>
+<FONT color="green">110</FONT>            this.node = node;<a name="line.110"></a>
+<FONT color="green">111</FONT>            this.path = path;<a name="line.111"></a>
+<FONT color="green">112</FONT>            this.goals = goals;<a name="line.112"></a>
+<FONT color="green">113</FONT>            <a name="line.113"></a>
+<FONT color="green">114</FONT>                    double length = node.getLength();<a name="line.114"></a>
+<FONT color="green">115</FONT>                    if(path != null){<a name="line.115"></a>
+<FONT color="green">116</FONT>                            length += path.length;<a name="line.116"></a>
+<FONT color="green">117</FONT>                    }<a name="line.117"></a>
+<FONT color="green">118</FONT>                    this.length = length;<a name="line.118"></a>
+<FONT color="green">119</FONT>            <a name="line.119"></a>
+<FONT color="green">120</FONT>                    double distance = Double.MAX_VALUE;<a name="line.120"></a>
+<FONT color="green">121</FONT>                    for(GeoSegment gs : goals){<a name="line.121"></a>
+<FONT color="green">122</FONT>                            if(node.equals(gs)){    // if this path has reached a goal segment, then <a name="line.122"></a>
+<FONT color="green">123</FONT>                                                                            // cost can double as the final length <a name="line.123"></a>
+<FONT color="green">124</FONT>                                    distance = 0;<a name="line.124"></a>
+<FONT color="green">125</FONT>                                    break;<a name="line.125"></a>
+<FONT color="green">126</FONT>                            }<a name="line.126"></a>
+<FONT color="green">127</FONT>                            distance = Math.min(distance, node.getP2().distanceTo(gs.getP1()));<a name="line.127"></a>
+<FONT color="green">128</FONT>                    }<a name="line.128"></a>
+<FONT color="green">129</FONT>                    this.cost = length + distance * DISTANCE_TO_GOAL_COST_FACTOR;<a name="line.129"></a>
+<FONT color="green">130</FONT>                    <a name="line.130"></a>
+<FONT color="green">131</FONT>                    this.hash = node.hashCode() + (this.path==null ? 1 : path.hashCode());<a name="line.131"></a>
+<FONT color="green">132</FONT>                    <a name="line.132"></a>
+<FONT color="green">133</FONT>                    if(CHECK_REP)<a name="line.133"></a>
+<FONT color="green">134</FONT>                            checkRep();<a name="line.134"></a>
+<FONT color="green">135</FONT>        }<a name="line.135"></a>
+<FONT color="green">136</FONT>    <a name="line.136"></a>
+<FONT color="green">137</FONT>    <a name="line.137"></a>
+<FONT color="green">138</FONT>        /**<a name="line.138"></a>
+<FONT color="green">139</FONT>         * @throw IllegalStateException if the representation invariant is broken <a name="line.139"></a>
+<FONT color="green">140</FONT>         */<a name="line.140"></a>
+<FONT color="green">141</FONT>        private void checkRep(){<a name="line.141"></a>
+<FONT color="green">142</FONT>            GeoSegment curr = node;<a name="line.142"></a>
+<FONT color="green">143</FONT>            Iterator&lt;GeoSegment&gt; iter = iterator();<a name="line.143"></a>
+<FONT color="green">144</FONT>            while(iter.hasNext()){<a name="line.144"></a>
+<FONT color="green">145</FONT>                    GeoSegment next = iter.next();<a name="line.145"></a>
+<FONT color="green">146</FONT>                    if(!curr.getP1().equals(next.getP2())){<a name="line.146"></a>
+<FONT color="green">147</FONT>                            throw new IllegalStateException("Consecutive GeoSegments of this" +<a name="line.147"></a>
+<FONT color="green">148</FONT>                                            " RoutePath must have matching points:  this segment's end point" +<a name="line.148"></a>
+<FONT color="green">149</FONT>                                            " must match the next segment's start point");<a name="line.149"></a>
+<FONT color="green">150</FONT>                    }<a name="line.150"></a>
+<FONT color="green">151</FONT>                    curr = next;<a name="line.151"></a>
+<FONT color="green">152</FONT>            }<a name="line.152"></a>
+<FONT color="green">153</FONT>        }<a name="line.153"></a>
+<FONT color="green">154</FONT>        <a name="line.154"></a>
+<FONT color="green">155</FONT>        /**<a name="line.155"></a>
+<FONT color="green">156</FONT>         * Specified by Path interface.  In addition:<a name="line.156"></a>
+<FONT color="green">157</FONT>         * @requires specified GeoSegment is not null.  Also, the start point of <a name="line.157"></a>
+<FONT color="green">158</FONT>         * specified GeoSegment must match end point of this path's end segment.<a name="line.158"></a>
+<FONT color="green">159</FONT>         * @throws IllegalArgumentException if passed an invalid GeoSegment<a name="line.159"></a>
+<FONT color="green">160</FONT>         */<a name="line.160"></a>
+<FONT color="green">161</FONT>            public RoutePath extend(GeoSegment gs){<a name="line.161"></a>
+<FONT color="green">162</FONT>                    if(!node.getP2().equals(gs.getP1())){<a name="line.162"></a>
+<FONT color="green">163</FONT>                            throw new IllegalArgumentException("cannot extend RoutePath with a segment that" +<a name="line.163"></a>
+<FONT color="green">164</FONT>                                            " does not start at this RoutePath's end point");<a name="line.164"></a>
+<FONT color="green">165</FONT>                    }<a name="line.165"></a>
+<FONT color="green">166</FONT>                    <a name="line.166"></a>
+<FONT color="green">167</FONT>                    return new RoutePath(gs, this, goals);<a name="line.167"></a>
+<FONT color="green">168</FONT>            }<a name="line.168"></a>
+<FONT color="green">169</FONT>    <a name="line.169"></a>
+<FONT color="green">170</FONT>    <a name="line.170"></a>
+<FONT color="green">171</FONT>            /**<a name="line.171"></a>
+<FONT color="green">172</FONT>             * Specified by Path interface.  In addition:<a name="line.172"></a>
+<FONT color="green">173</FONT>             * RoutePath cost is defined as the total distance traversed by the path's<a name="line.173"></a>
+<FONT color="green">174</FONT>             * GeoSegments so far, plus the geographic distance to the nearest goal segment<a name="line.174"></a>
+<FONT color="green">175</FONT>             * (if goal segments were specified)<a name="line.175"></a>
+<FONT color="green">176</FONT>             * @returns a double representing the path's cost<a name="line.176"></a>
+<FONT color="green">177</FONT>             */<a name="line.177"></a>
+<FONT color="green">178</FONT>            public double cost(){<a name="line.178"></a>
+<FONT color="green">179</FONT>                    return cost;<a name="line.179"></a>
+<FONT color="green">180</FONT>            }<a name="line.180"></a>
+<FONT color="green">181</FONT>            <a name="line.181"></a>
+<FONT color="green">182</FONT>            <a name="line.182"></a>
+<FONT color="green">183</FONT>        // Specified by Path interface (which extends Iterable)<a name="line.183"></a>
+<FONT color="green">184</FONT>            public Iterator&lt;GeoSegment&gt; iterator(){<a name="line.184"></a>
+<FONT color="green">185</FONT>            // reverse the linked list, so that elements are returned in order<a name="line.185"></a>
+<FONT color="green">186</FONT>            // from start to end of the path.<a name="line.186"></a>
+<FONT color="green">187</FONT>            List&lt;GeoSegment&gt; accumulator = new LinkedList&lt;GeoSegment&gt;();<a name="line.187"></a>
+<FONT color="green">188</FONT>            for (RoutePath cur = this; cur!=null; cur = cur.path) {<a name="line.188"></a>
+<FONT color="green">189</FONT>                accumulator.add(0, cur.end());<a name="line.189"></a>
+<FONT color="green">190</FONT>            }<a name="line.190"></a>
+<FONT color="green">191</FONT>            return accumulator.iterator();<a name="line.191"></a>
+<FONT color="green">192</FONT>            }<a name="line.192"></a>
+<FONT color="green">193</FONT>            <a name="line.193"></a>
+<FONT color="green">194</FONT>    <a name="line.194"></a>
+<FONT color="green">195</FONT>            /**<a name="line.195"></a>
+<FONT color="green">196</FONT>             * @return the end GeoSegment for this path<a name="line.196"></a>
+<FONT color="green">197</FONT>             */<a name="line.197"></a>
+<FONT color="green">198</FONT>            public GeoSegment end(){<a name="line.198"></a>
+<FONT color="green">199</FONT>                    return node;<a name="line.199"></a>
+<FONT color="green">200</FONT>            }<a name="line.200"></a>
+<FONT color="green">201</FONT>    <a name="line.201"></a>
+<FONT color="green">202</FONT>    <a name="line.202"></a>
+<FONT color="green">203</FONT>        /**<a name="line.203"></a>
+<FONT color="green">204</FONT>         * @return true iff o is a RoutePath and o.elements is the<a name="line.204"></a>
+<FONT color="green">205</FONT>         * same sequence as this.elements<a name="line.205"></a>
+<FONT color="green">206</FONT>         **/<a name="line.206"></a>
+<FONT color="green">207</FONT>        @Override<a name="line.207"></a>
+<FONT color="green">208</FONT>        public boolean equals(Object o) {<a name="line.208"></a>
+<FONT color="green">209</FONT>            if (!(o instanceof RoutePath))<a name="line.209"></a>
+<FONT color="green">210</FONT>                return false;<a name="line.210"></a>
+<FONT color="green">211</FONT>            return this.equals((RoutePath) o);<a name="line.211"></a>
+<FONT color="green">212</FONT>        }<a name="line.212"></a>
+<FONT color="green">213</FONT>    <a name="line.213"></a>
+<FONT color="green">214</FONT>        /**<a name="line.214"></a>
+<FONT color="green">215</FONT>         * @return true iff rp.elements is the same sequence as this.elements<a name="line.215"></a>
+<FONT color="green">216</FONT>         **/<a name="line.216"></a>
+<FONT color="green">217</FONT>        public boolean equals(RoutePath rp) {<a name="line.217"></a>
+<FONT color="green">218</FONT>            return (rp != null) &amp;&amp;<a name="line.218"></a>
+<FONT color="green">219</FONT>                this.node.equals(rp.node) &amp;&amp; (this.cost() == rp.cost()) &amp;&amp;<a name="line.219"></a>
+<FONT color="green">220</FONT>                (this.path == null ? rp.path==null : this.path.equals(rp.path));<a name="line.220"></a>
+<FONT color="green">221</FONT>        }<a name="line.221"></a>
+<FONT color="green">222</FONT>    <a name="line.222"></a>
+<FONT color="green">223</FONT>        /**<a name="line.223"></a>
+<FONT color="green">224</FONT>         * @return the hash code of this path<a name="line.224"></a>
+<FONT color="green">225</FONT>         */<a name="line.225"></a>
+<FONT color="green">226</FONT>        public int hashCode(){<a name="line.226"></a>
+<FONT color="green">227</FONT>            return hash;<a name="line.227"></a>
+<FONT color="green">228</FONT>        }<a name="line.228"></a>
+<FONT color="green">229</FONT>    <a name="line.229"></a>
+<FONT color="green">230</FONT>        /**<a name="line.230"></a>
+<FONT color="green">231</FONT>         * Compares the cost of this path to the given path.<a name="line.231"></a>
+<FONT color="green">232</FONT>         * @return the value 0 if the cost of this path is equal to the<a name="line.232"></a>
+<FONT color="green">233</FONT>         *         cost of the given path; a value less than 0 if this.cost is<a name="line.233"></a>
+<FONT color="green">234</FONT>         *         less than p.cost; and a value greater than 0 if this.cost<a name="line.234"></a>
+<FONT color="green">235</FONT>         *         is greater than p.cost.<a name="line.235"></a>
+<FONT color="green">236</FONT>         * @see java.lang.Comparable#compareTo<a name="line.236"></a>
+<FONT color="green">237</FONT>         */<a name="line.237"></a>
+<FONT color="green">238</FONT>            public int compareTo(Path&lt;?, ?&gt; rp){<a name="line.238"></a>
+<FONT color="green">239</FONT>                    return Double.compare(this.cost(), rp.cost());<a name="line.239"></a>
+<FONT color="green">240</FONT>            }<a name="line.240"></a>
+<FONT color="green">241</FONT>            <a name="line.241"></a>
+<FONT color="green">242</FONT>    <a name="line.242"></a>
+<FONT color="green">243</FONT>    }<a name="line.243"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

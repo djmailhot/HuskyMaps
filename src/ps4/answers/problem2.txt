@@ -1,0 +1,161 @@
+
+>>> SPECIFICATION <<<<<<<<<<<<<<<<<<<<<<
+
+/**
+ * <p>
+ * A StreetSegment represents a straight-line geographic street on the Earth.
+ * It contains information about the building addresses located on the street.
+ * It is immutable and extends GeoSegment.
+ * </p>
+ * 
+ * <p>
+ * A geographic street has a start point and and an end point. 
+ * 'Left' and 'right' terminology refer to each side of the street when
+ * traveling from the start point to the end point of the street segment.
+ * </p>
+ * 
+ * <p>
+ * A StreetSegment stores two collections of building addresses in a
+ * StreetNumberSet object, one for each the right and left sides.
+ * It also records the zip code for the addresses of each side.  
+ * If the zip codes are different between the sides, then the same
+ * building address may show up on both sides of the street.
+ * </p>
+ * 
+ * <p>
+ * A StreetSegment will be given a 'street classification' based on
+ * the type of street it is.  This is to help differentiate a street
+ * that is, for example, a main thorough fair as opposed to a country lane.  
+ * </p>
+ * 
+ * @specfield leftNumbers : StreetNumberSet 	//left side address numbers 
+ * @specfield rightNumbers : StreetNumberSet	//right side address numbers
+ * @specfield leftZip : String			//left side zip code
+ * @specfield rightZip : String			//right side zip code
+ * @specfield streetClass : StreetClassification//the type of street
+ * @specfield increasingAddresses : boolean 	//indicates whether addresses increase from p1 to p2
+ **/
+
+>>>>>>>>>>>>>> METHODS <<<<<<<<<<<<<<<<
+
+
+    /**
+     * @return true iff sn is an address on this street
+     */
+    public boolean contains(int ns)
+
+
+
+// spec method
+    /**
+     * Returns a new StreetSegment like this one, but with its endpoints
+     * reversed.  Additionally, the right&left side-dependent data fields
+     * must also be reversed.
+     * @return a new StreetSegment ss such that
+     *      ss.name = this.name
+     *   && ss.p1 = this.p2
+     *   && ss.p2 = this.p1
+     *   && ss.leftNumbers = this.rightNumbers
+     *   && ss.rightNumbers = this.leftNumbers
+     *   && ss.leftZip = this.rightZip
+     *   && ss.rightZip = this.leftZip
+     *   && ss.increasingAddresses = !this.increasingAddresses
+     **/
+    public GeoSegment reverse() 
+
+Aside:
+"It is interesting to note that different choices of representation make the implementation of reverse() either trivial or complicated"  In fact, I don't actually see how the implementation could ever be complicated.  The right and left StreetNumberSets are self-contained objects....... !  And when you pass them into a constructor, the new StreetSegment refrences the same NumberSet objects!   Okay, I see where you're going with this.
+Addendum:
+However, if I specified that NumberSets are immutable, is this a problem?  I need to ask you what are the insidious methods that clients can use to circumvent immutable implementations.
+
+
+
+// spec method
+    /**
+     * This method assumes that the locations corresponding to street
+     * numbers on this street are spaced evenly apart (regardless of
+     * the arithmetic difference between two consecutive street
+     * numbers).  It returns the fraction of the distance that the
+     * street number sn is from p1.  The return value is a number from
+     * 0 to 1, exclusive.
+     * <p>
+     * For instance, if one side of this street contains the street numbers
+     * 1, 3, and 99, and this.increasingAddresses is true, then those
+     * numbers appear .25, .5, and .75 of the way along the street. If
+     * this.increasingAddresses is false, then the numbers appear .75, .5,
+     * and .25 of the way along the street.
+     * <p>
+     * If both sides of the street have the number sn (which can happen
+     * only if the two sides have different Zip codes), then this selects
+     * the address on the right-hand side of the street (as viewed from p1).
+     *
+     * @requires this instance of StreetSegment must contain the street number sn
+     * @return the fraction of the length of this segment that is from p1 to
+     *         the address sn
+     */
+    public double fractionDist(int sn)
+
+
+
+    /**
+     * @return the hash code of this segment
+     */
+    public int hashCode()
+
+
+Final thoughts:
+I had a number of additional methods specified that performed useful observation tasks.  However, upon deeper thought and a good consideration of the 'Defensive Programming' mentality, I decided to leave them out.  I felt that a StreetSegment is sufficiently embedded in our graph architecture that the user would not need specific access to the state values of a StreetSegment object (Classification, Zipcodes contained, etc).  These fields are used sufficiently in the StreetSegment implementation to convince me they should be self contained in the class.  In the future, if the need arises more methods can be added.
+
+
+
+>>> TESTING <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+I approached this by thinking of states of constructor arguments, and creating StreetSegments that would cover all these cases seperately.  Additionally, I parameterized my tests for each specification method of StreetSegment so that with the right arguments, I can systematically test every one of my 9 different StreetSegment unique-case objects.
+
+	/* Testing Analysis
+	 * 
+	 *cases
+	 *   v-- number of StreetSegment objects as fields
+	 *a) 0x  validation of constructor rep invariant
+	 *b) 2x  non-zero-length segment 	VS zero-length segment
+	 *c) 2x  non-zero numbersets 		VS zero numbersets
+	 *d) 2x  left&right zipcodes same 	VS not same
+	 *e) 2x  increasingAddresses 		VS decreasingAddresses
+	 *f) 1x  general stress-testing
+	 *   
+	 *   
+	 *tests
+	 *a) contains operation
+	 *b) reverse
+	 *c) double reverse
+	 *d) fraction distance
+	 *
+	 *e) all above x1 for stress case
+	 *
+	 */
+
+In addition, I added in a memory stress test that creates numbersets of a specified number of randomized addresses (default, 20000) to test construction cost and operation cost on StreetSegments.
+
+
+>>> REPRESENTATION <<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+/*
+ * Abstraction Function:
+ * AF(n)  =  n is a street number on this StreetSegment
+ * 		then there exists some k, such that
+ * 		if(leftZip == rightZip)
+ * 			then (leftNumbers.contains(k) || rightNumbers.contains(k)) 
+ * 		else(leftZip != rightZip && rightNumbers.contains(k))
+ * 
+ * 
+ * Representation Invariant:
+ * 		all fields are non-null
+ * 		if(leftZip == rightZip) 
+ * 			 !(rightNumbers.contains(k) && leftNumbers.contains(k)) for some int k
+ * 		leftZip && rightZip are a 5-digit Strings or empty Strings
+ * 		
+ */
+
+

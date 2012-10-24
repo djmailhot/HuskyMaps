@@ -1,0 +1,9 @@
+
+Lidia =  helped and encouraged through frustrating bugs that SEEMED to come from class-provided java classes.
+
+Jared = hleped out in his starting stages, leading to speedy understanding of the problem set
+
+Matt = pretty in-depth idscussions on optimizations and verifying test cases.  supplied him with ridiculously long path to test his PathFInder over
+
+Karin = tried to debub many null pointer excepotions
+

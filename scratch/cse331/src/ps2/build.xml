@@ -1,0 +1,41 @@
+<!--Minimal ant build file that needs to be created per pset.  You
+ mostly just have to use this as an example, and modify the project
+ name, and the also.compile property to be a comma-separated list of
+ other psets to compile in the shown fashion. -->
+
+<project name = "ps2" basedir = "../">
+  <property name = "psetname" value = "${ant.project.name}"/>
+  <property name = "pset" location = "${psetname}"/>
+  <!--<property name = "also.compile" value = "ps2/**/*"/>-->
+  <import file="../common.xml"/>
+
+  <!-- For ps2, only focus on GeoSegment, GeoFeature, and Route classes -->
+   <target name = "daikon" depends = "build">
+    <java classname="daikon.Chicory"
+          fork="yes"
+          spawn="no"
+          dir="${pset}"
+          classpathref="common.classpath">
+      <arg value="--ppt-omit-pattern=junit|^${psetname}.test"/>
+      <arg value="--dtrace-file=daikon.dtrace.gz"/>
+      <arg value="--daikon"/>
+      <arg value="--daikon_args"/>
+      <arg value="--ppt-select-pattern=^ps2.GeoSegment|^ps2.GeoFeature|^ps2.Route --ppt-omit-pattern=RouteFormatter --config_option daikon.PptRelation.enable_object_user=false
+            --no_text_output --config_option daikon.Daikon.progress_delay=-1"/>
+      <arg value="junit.textui.TestRunner"/>
+      <arg value="${psetname}.test.SpecificationTests"/>
+    </java>
+    <java classname="daikon.PrintInvariants"
+          fork="yes"
+          spawn="no"
+          classpathref="common.classpath"
+          dir="${pset}"
+          output="${pset}/daikon.inv.txt">
+       <arg value="daikon.inv.gz"/>
+    </java>
+
+    <echo> "Results are in daikon.inv.txt" </echo>
+
+  </target>
+
+</project>

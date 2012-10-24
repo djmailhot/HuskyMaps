@@ -1,0 +1,63 @@
+
+
+passed collection c of segments as a parameter
+
+
+g = a new Graph
+
+<FUNCTION A>
+for each segment s in the collection of segments    
+   // add the segment and it's reverse to the graph
+   g.addNode(s)
+   s_rev = s.reverse()
+   g.addNode(s_rev)
+
+   c.add(s_rev)          // add reverse to the collection of segments
+
+
+
+// mapping points to all segments that start at that point
+m = a new HashMap m of GeoPoints to HashSets of segments
+
+<FUNCTION B>
+for each segment s in the collection of segments
+   Set t
+   if m does not contain s.P1()   // if point is not already in the map
+      t = new HashSet
+   else                           // if point has already been mapped
+      t = m.get(s.P1())
+   t.add(s)
+   m.put(s.P1(), t)
+
+
+
+<FUNCTION C>
+// add edges function
+for each segment s in the collection of segments
+   // get all segments that start at this segment's end point   
+   t = m.get(s.P2())
+   if(t != null)
+      for each segment e in set t
+         m.addEdge(s, e)             // add edge to that node
+
+
+
+
+For a graph of n nodes:
+Function A represents a complexity time of O(n) because all contained operations run in constant time (assuming intelligent use of Hashing datastructure for the starting segment collection).
+
+
+Function B represents a complexity time of O(2n) because the intelligent use of a HashMap and HashSets make all related operations run in constant time.  (2n because for n nodes, n reverses were added as well)
+
+
+Function C represents a varying complexity time, based on how many valid edges there are between nodes in the graph
+	Minimum case:  there are no valid edges between nodes in the graph
+This case represents a complexity time of O(2n) because the set retrieved from the map will always be null (there are no other segments that touch this segment's end point)
+	Maximum case:  there is an edge from every node to every other node
+This case represents a complexity time of O(2n * 2n) - or O(4 * n^2) - because every node will have to operate addEdge with every other node in the graph.
+
+
+In true big-O notation, coefficients are dropped from the n term.  Thus, we are left with an algorithm complexity time of O(n) in the best case, or O(n^2) in the worst case:  the difference is based on the maximum number of nodes a single node can connect to with an edge.  If the maximum edges is zero, then O(n).  If the maximum edges is all other nodes - counted at n-1 - then O(n * (n-1)), or O(n^2)
+
+Therefore, the algorithm does meet the expectation of running in "O(n*outDegree) where n is the number of segments and outDegree is the maximum number of segments a single segment connects to."
+

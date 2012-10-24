@@ -1,0 +1,131 @@
+C1006     2000        71J7602                                 Seattle--Tacoma--Bremerton, WA                              
+C1006     2000        73J7600                                 Seattle--Bellevue--Everett, WA                              
+C1006                 76O                   12700             Camano, WA                                                  
+C1006                 76O                   12727             Camano West, WA                                             
+C1006                 76O                   64378             Oak Harbor, WA                                              
+C1006     2006        M06                           500       Seattle-Tacoma-Olympia, WA                                  
+C1006     2006        M26                              36020  Oak Harbor, WA                                              
+C100653               01S                                     Washington                                                  
+C100653   2006        LL9                           010       010                                                         
+C100653   2006        LU8                           010       010                                                         
+C100653               S33    01800                            COUPEVILLE                                                  
+C100653               S33    05940                            OAK HARBOR                                                  
+C100653               S33    08190                            SOUTH WHIDBEY                                               
+C100653               S33    08340                            STANWOOD                                                    
+C100653   200003215M2A57P                                     Ault Field                                                  
+C100653   200009365U1I57P                                     Camano                                                      
+C100653   200013155U1A57P                                     Clinton                                                     
+C100653       15185C1060P                                     Coupeville                                                  
+C100653   200025510U1A57P                                     Freeland                                                    
+C100653       38355C1058P                                     Langley                                                     
+C100653   EC0250360C1258E                                     Oak Harbor                                                  
+C100653   200650360C1258P                                     Oak Harbor                                                  
+C100653   200050360C1858P                                     Oak Harbor                                                  
+C100653   CQR050360C1858P                                     Oak Harbor                                                  
+C100653   EC0299999H1906E                                     Balance of County                                           
+C100653029              T             970100                  9701                                                        
+C100653029              T             970200                  9702                                                        
+C100653029              T             970300                  9703                                                        
+C100653029              T             970400                  9704                                                        
+C100653029              T             970500                  9705                                                        
+C100653029              T             970601                  9706.01                                                     
+C100653029              T             970602                  9706.02                                                     
+C100653029              T             970700                  9707                                                        
+C100653029              T             970800                  9708                                                        
+C100653029              T             970900                  9709                                                        
+C100653029              T             971000                  9710                                                        
+C100653029              T             971100                  9711                                                        
+C100653029              T             971300                  9713                                                        
+C100653029              T             971400                  9714                                                        
+C100653029              T             971500                  9715                                                        
+C100653029              T             971600                  9716                                                        
+C100653029              T             971700                  9717                                                        
+C100653029              T             971800                  9718                                                        
+C100653029              T             971900                  9719                                                        
+C100653029              T             972000                  9720                                                        
+C100653029              T             972100                  9721                                                        
+C1006530292000       XV2V              29001                  29Ault                                                      
+C1006530292000       XV2V              29013                  29Hillcrest                                                 
+C1006530292000       XV2V              29105                  29Oak Harbor 02                                             
+C1006530292000       XV2V              29106                  29Oak Harbor 03                                             
+C1006530292000       ZV2V              29002                  29Austin                                                    
+C1006530292000       ZV2V              29003                  29Camano                                                    
+C1006530292000       ZV2V              29004                  29Central                                                   
+C1006530292000       ZV2V              29005                  29Clinton                                                   
+C1006530292000       ZV2V              29006                  29Cornet                                                    
+C1006530292000       ZV2V              29007                  29Country Club                                              
+C1006530292000       ZV2V              29008                  29Deer Lake                                                 
+C1006530292000       ZV2V              29009                  29Dugualla                                                  
+C1006530292000       ZV2V              29010                  29Freeland                                                  
+C1006530292000       ZV2V              29011                  29Glendale                                                  
+C1006530292000       ZV2V              29012                  29Greenbank                                                 
+C1006530292000       ZV2V              29014                  29Lagoon Point                                              
+C1006530292000       ZV2V              29015                  29Livingston Bay                                            
+C1006530292000       ZV2V              29016                  29Mabana                                                    
+C1006530292000       ZV2V              29017                  29Madrona                                                   
+C1006530292000       ZV2V              29018                  29Maple Grove                                               
+C1006530292000       ZV2V              29019                  29Penn Cove                                                 
+C1006530292000       ZV2V              29020                  29Prairie                                                   
+C1006530292000       ZV2V              29021                  29San de Fuca                                               
+C1006530292000       ZV2V              29022                  29Sandy Point                                               
+C1006530292000       ZV2V              29023                  29Saratoga                                                  
+C1006530292000       ZV2V              29024                  29Scenic Heights                                            
+C1006530292000       ZV2V              29025                  29Silverlake                                                
+C1006530292000       ZV2V              29026                  29Maxwelton                                                 
+C1006530292000       ZV2V              29027                  29Swantown                                                  
+C1006530292000       ZV2V              29028                  29Triangle Cove                                             
+C1006530292000       ZV2V              29029                  29Useless Bay                                               
+C1006530292000       ZV2V              29030                  29Utsalady                                                  
+C1006530292000       ZV2V              29031                  29Westview                                                  
+C1006530292000       ZV2V              29032                  29Driftwood                                                 
+C1006530292000       ZV2V              29033                  29Admiralty                                                 
+C1006530292000       ZV2V              29034                  29Hastie Lake                                               
+C1006530292000       ZV2V              29035                  29Highland                                                  
+C1006530292000       ZV2V              29036                  29Countryside                                               
+C1006530292000       ZV2V              29037                  29Double Bluff                                              
+C1006530292000       ZV2V              29038                  29Lone Lake                                                 
+C1006530292000       ZV2V              29039                  29Bush Point                                                
+C1006530292000       ZV2V              29040                  29Possession                                                
+C1006530292000       ZV2V              29041                  29Polnell                                                   
+C1006530292000       ZV2V              29042                  29Soundview                                                 
+C1006530292000       ZV2V              29050                  29Point Allen                                               
+C1006530292000       ZV2V              29060                  29Coveland                                                  
+C1006530292000       ZV2V              29101                  29Coupeville 1                                              
+C1006530292000       ZV2V              29102                  29Coupeville 2                                              
+C1006530292000       ZV2V              29104                  29Oak Harbor 01                                             
+C1006530292000       ZV2V              29107                  29Oak Harbor 04                                             
+C1006530292000       ZV2V              29108                  29Oak Harbor 05                                             
+C1006530292000       ZV2V              29109                  29Oak Harbor 06                                             
+C1006530292000       ZV2V              29110                  29Oak Harbor 07                                             
+C1006530292000       ZV2V              29111                  29Oak Harbor 08                                             
+C1006530292000       ZV2V              29112                  29Oak Harbor 09                                             
+C1006530292000       ZV2V              29113                  29Oak Harbor 10                                             
+C1006530292000       ZV2V              29114                  29Oak Harbor 11                                             
+C1006530292000       ZV2V              29115                  29Oak Harbor 12                                             
+C1006530292000       ZV2V              29116                  29Oak Harbor 13                                             
+C1006530292000       ZV2V              29117                  29Oak Harbor 14                                             
+C1006530292000       ZV2V              29118                  29Oak Harbor 15                                             
+C1006530292000       ZV2V              29120                  29Langley 1                                                 
+C1006530292000       ZV2V              29121                  29Langley 2                                                 
+C1006530292000       ZV2V             WVADMB                  WV Admiralty Bay                                            
+C1006530292000       ZV2V             WVCREH                  WV Crescent Harbor                                          
+C1006530292000       ZV2V             WVCULB                  WV Cultus Bay                                               
+C1006530292000       ZV2V             WVELGB                  WV Elger Bay                                                
+C1006530292000       ZV2V             WVHOLH                  WV Holmes Harbor                                            
+C1006530292000       ZV2V             WVLIVB                  WVLivingston Bay                                            
+C1006530292000       ZV2V             WVMUTB                  WV Mutiny Bay                                               
+C1006530292000       ZV2V             WVOAKH                  WV Oak Harbor                                               
+C1006530292000       ZV2V             WVPENC                  WV Penn Cove                                                
+C1006530292000       ZV2V             WVPOSS                  WV Possession Sound                                         
+C1006530292000       ZV2V             WVPTSU                  WV Port Susan                                               
+C1006530292000       ZV2V             WVPUGS                  WV Puget Sound                                              
+C1006530292000       ZV2V             WVSARP                  WV Saratoga Psge                                            
+C1006530292000       ZV2V             WVSKAB                  WV Skagit Bay                                               
+C1006530292000       ZV2V             WVSTJU                  WV Strait of Juan de Fuca                                   
+C1006530292000       ZV2V             WVUSEB                  WV Useless Bay                                              
+C1006530292000       ZV2V             WVUTSB                  WV Utsalady Bay                                             
+C100653029         H1006C                                     Island                                                      
+C100653029    90400Z5A22M                                     Camano                                                      
+C100653029    90528Z5A22M                                     Central Whidbey                                             
+C100653029    92256Z5A22M                                     North Whidbey                                               
+C100653029    93168Z5A22M                                     South Whidbey                                               

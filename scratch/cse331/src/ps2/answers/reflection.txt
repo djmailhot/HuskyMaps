@@ -1,0 +1,17 @@
+
+a.
+Hours?  who knows?  I do know that I averaged 3 days of breakneck progress (8-10 hours) and a few instances of slight progress (2-4 hours).
+
+All in all, over 30 hours (maybe 40) were spent on this assignment.
+
+
+b.
+Systematic approaches to my test suites would have helped me immensely.  I cannot tell you how much time it took me to implement my test code, only to decide that a more wholesome approach would make more sense.  The big kicker was the sudden decision to reengineer my implementation of my handling of zero-length segments.
+
+c.
+I'm a busy guy, so office hours were unreachable to me.  Discussion board posts were generally thought provoking, yet never left me with a solid feeling of "this is the right way to do it".
+
+
+
+d.
+Automation of testing suites is the mother of all sugar candies.
